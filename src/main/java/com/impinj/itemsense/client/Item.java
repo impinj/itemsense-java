@@ -7,7 +7,7 @@
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  ******************************************************************************/
 
-package com.impinj.itemsense.integration.client;
+package com.impinj.itemsense.client;
 
 import java.util.Map;
 

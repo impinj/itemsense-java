@@ -6,15 +6,14 @@
  *
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  */
-package com.impinj.itemsense.integration.client;
+package com.impinj.itemsense.client;
 
 /**
- * Represents the current status of a job
+ * Represents valid "confidence" values for an item
  *
  * @author Daniel Burton
  */
-public enum JobStatus {
-  RUNNING,
-  STOPPED,
-  COMPLETE
+public enum Confidence {
+  LOW,
+  HIGH
 }

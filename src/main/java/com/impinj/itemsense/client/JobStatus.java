@@ -6,20 +6,15 @@
  *
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  */
-package com.impinj.itemsense.integration.client;
-
-import lombok.Data;
+package com.impinj.itemsense.client;
 
 /**
- * Represents a response from the jobs endpoint
+ * Represents the current status of a job
  *
  * @author Daniel Burton
  */
-@Data
-public class JobsResponse {
-  String id;
-  JobStatus status;
-  // TODO: Create a date/time deserializer for this:
-  String statusLastUpdated;
-  Job job;
+public enum JobStatus {
+  RUNNING,
+  STOPPED,
+  COMPLETE
 }

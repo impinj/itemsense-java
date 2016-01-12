@@ -10,7 +10,7 @@
 // This class is built on top of generated code. See the comments in Localhost_ItemsenseCoordinator
 // for
 // instructions if you need to re-generate that code.
-package com.impinj.itemsense.integration.client;
+package com.impinj.itemsense.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;

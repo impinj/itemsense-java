@@ -6,17 +6,18 @@
  *
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  */
-package com.impinj.itemsense.integration.client;
+package com.impinj.itemsense.client;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-/**
- * Represents a response from the jobs endpoint
- *
- * @author Daniel Burton
- */
 @Data
-public class FailureResponse {
-  String status;
-  String message;
+@NoArgsConstructor
+@AllArgsConstructor
+public class Job {
+  String version;
+  String recipeName;
+  Long durationSeconds;
+  Boolean playbackLoggingEnabled;
 }

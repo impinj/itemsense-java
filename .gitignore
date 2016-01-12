@@ -8,5 +8,20 @@
 *.war
 *.ear
 
+
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+META-INF/
+out/
+.DS_Store
+.idea/artifacts/
+.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_5_1.xml
+.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_5_1.xml
+.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jdk8_2_5_1.xml
+.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jsr310_2_5_1.xml
+.idea/vcs.xml
+
+
+target.zip
+Target/

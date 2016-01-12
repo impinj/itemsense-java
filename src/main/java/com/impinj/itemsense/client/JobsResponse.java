@@ -6,14 +6,20 @@
  *
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  */
-package com.impinj.itemsense.integration.client;
+package com.impinj.itemsense.client;
+
+import lombok.Data;
 
 /**
- * Represents valid "confidence" values for an item
+ * Represents a response from the jobs endpoint
  *
  * @author Daniel Burton
  */
-public enum Confidence {
-  LOW,
-  HIGH
+@Data
+public class JobsResponse {
+  String id;
+  JobStatus status;
+  // TODO: Create a date/time deserializer for this:
+  String statusLastUpdated;
+  Job job;
 }

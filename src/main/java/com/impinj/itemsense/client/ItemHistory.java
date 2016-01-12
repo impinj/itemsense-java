@@ -6,11 +6,10 @@
  *
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  */
-package com.impinj.itemsense.integration.client;
+package com.impinj.itemsense.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;

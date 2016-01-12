@@ -1,4 +1,4 @@
-package com.impinj.itemsense.integration.client;
+package com.impinj.itemsense.client;
 
 public class ItemSenseClientException extends Exception {
 
