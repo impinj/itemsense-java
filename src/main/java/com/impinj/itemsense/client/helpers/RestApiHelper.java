@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client;
+package com.impinj.itemsense.client.helpers;
 
 
 import com.google.gson.Gson;
@@ -45,26 +45,24 @@ public class RestApiHelper <T> {
 
     }
     public T get(String id, String path, WebTarget target){
-        Integer test =  new Integer(123);
-
         return target.path(path + "/" + id)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(this.type);
     }
     public T get(Map<String, Object> queryParams, String path, WebTarget target, Gson gson){
 
-        target.path(path);
+        target = target.path(path);
         for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
-            target.queryParam(queryParam.getKey(), queryParam.getValue());
+            target = target.queryParam(queryParam.getKey(), queryParam.getValue());
         }
         return target.request(MediaType.APPLICATION_JSON_TYPE)
                 .get(this.type);
     }
     public T[] getMultiple(Map<String, Object> queryParams, String path, WebTarget target, Gson gson){
 
-        target.path(path);
+        target = target.path(path);
         for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
-            target.queryParam(queryParam.getKey(), queryParam.getValue());
+            target  = target.queryParam(queryParam.getKey(), queryParam.getValue());
         }
         String response = target.request(MediaType.APPLICATION_JSON_TYPE)
                 .get(String.class);

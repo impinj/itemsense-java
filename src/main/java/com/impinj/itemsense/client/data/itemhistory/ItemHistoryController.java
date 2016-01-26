@@ -1,13 +1,11 @@
 package com.impinj.itemsense.client.data.itemhistory;
 
 import com.google.gson.Gson;
-import com.impinj.itemsense.client.RestApiHelper;
+import com.impinj.itemsense.client.helpers.RestApiHelper;
 import com.impinj.itemsense.client.data.EpcFormat;
 import com.impinj.itemsense.client.data.PresenceConfidence;
-import com.impinj.itemsense.client.data.item.Item;
 
 import javax.ws.rs.client.WebTarget;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -25,7 +23,7 @@ public class ItemHistoryController {
         this.restApiHelper = new RestApiHelper<ItemHistoryResponse>(ItemHistoryResponse.class);
     }
 
-    public ItemHistoryResponse getItemHistory(EpcFormat epcFormat, String epcPrefix, String fromZone, String toZone, PresenceConfidence presenceConfidence, String facility,
+    public ItemHistoryResponse getItemHistory(EpcFormat epcFormat, String epcPrefix, String fromZone, String toZone, String fromFacility, String toFacility, PresenceConfidence presenceConfidence, String facility,
                                               Integer pageSize, String pageMarker){
         HashMap<String, Object> queryParams =  new HashMap<>();
         if(epcPrefix != null && !epcPrefix.isEmpty()){
@@ -36,6 +34,12 @@ public class ItemHistoryController {
         }
         if(toZone != null && !toZone.isEmpty()){
             queryParams.put("toZone", toZone);
+        }
+        if(fromFacility != null && !fromFacility.isEmpty()){
+            queryParams.put("fromFacility", fromFacility);
+        }
+        if(toFacility != null && !toFacility.isEmpty()){
+            queryParams.put("toFacility", toFacility);
         }
         if(presenceConfidence != null){
             queryParams.put("presenceConfidence", presenceConfidence.toString());
@@ -54,14 +58,14 @@ public class ItemHistoryController {
             queryParams.put("pageSize", pageSize);
         }
 
-        return this.restApiHelper.get(queryParams,"/data/items/show", target, gson);
+        return this.restApiHelper.get(queryParams,"/data/items/show/history", target, gson);
 
     }
     public ItemHistoryResponse getItemHistory(){
-        return this.getItemHistory(null, null, null, null, null, null, null, null);
+        return this.getItemHistory(null, null, null, null, null, null, null, null, null, null);
     }
 
-    public Collection<ItemHistory> getAllItemHistory(EpcFormat epcFormat, String epcPrefix, String fromZone, String toZone, PresenceConfidence presenceConfidence, String facility,
+    public Collection<ItemHistory> getAllItemHistory(EpcFormat epcFormat, String epcPrefix, String fromZone, String toZone, String fromFacility, String toFacility,  PresenceConfidence presenceConfidence, String facility,
                                         String pageMarker){
         ItemHistoryResponse response;
         String nextPageMarker = "";
@@ -70,7 +74,7 @@ public class ItemHistoryController {
 
         do{
 
-            response = this.getItemHistory(epcFormat, epcPrefix, fromZone, toZone, presenceConfidence, facility, pageSize, nextPageMarker);
+            response = this.getItemHistory(epcFormat, epcPrefix, fromZone, toZone, fromFacility, toFacility, presenceConfidence, facility, pageSize, nextPageMarker);
             if(response.getHistory()!=null){
                 Collections.addAll(items, response.getHistory());
             }
@@ -81,10 +85,10 @@ public class ItemHistoryController {
         return items;
     }
     public Collection<ItemHistory> getAllItemHistory(EpcFormat epcFormat){
-        return getAllItemHistory(epcFormat,  null, null, null, null, null, null);
+        return getAllItemHistory(epcFormat,  null, null, null,  null, null, null, null, null);
     }
     public Collection<ItemHistory> getAllItemHistory(){
-        return getAllItemHistory(null, null, null, null, null, null, null);
+        return getAllItemHistory(null, null, null, null, null, null, null, null, null);
     }
 
 }

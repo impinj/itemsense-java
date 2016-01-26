@@ -1,7 +1,7 @@
 package com.impinj.itemsense.client.data.item;
 
 import com.google.gson.Gson;
-import com.impinj.itemsense.client.RestApiHelper;
+import com.impinj.itemsense.client.helpers.RestApiHelper;
 import com.impinj.itemsense.client.data.EpcFormat;
 import com.impinj.itemsense.client.data.PresenceConfidence;
 

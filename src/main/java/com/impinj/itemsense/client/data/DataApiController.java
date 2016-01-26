@@ -3,6 +3,7 @@ package com.impinj.itemsense.client.data;
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.data.item.ItemController;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistoryController;
+
 import lombok.Data;
 
 import javax.ws.rs.client.Client;

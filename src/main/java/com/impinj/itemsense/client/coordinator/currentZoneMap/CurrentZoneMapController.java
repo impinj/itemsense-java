@@ -1,7 +1,7 @@
 package com.impinj.itemsense.client.coordinator.currentZoneMap;
 
 import com.google.gson.Gson;
-import com.impinj.itemsense.client.RestApiHelper;
+import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
