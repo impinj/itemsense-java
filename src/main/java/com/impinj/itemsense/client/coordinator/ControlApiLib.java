@@ -10,7 +10,7 @@
 // This class is built on top of generated code. See the comments in Localhost_ItemsenseCoordinator
 // for
 // instructions if you need to re-generate that code.
-package com.impinj.itemsense.client;
+package com.impinj.itemsense.client.coordinator;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,6 +32,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import com.impinj.itemsense.client.FailureResponse;
+import com.impinj.itemsense.client.ItemSenseClientException;
+import com.impinj.itemsense.client.coordinator.job.Job;
+import com.impinj.itemsense.client.coordinator.job.JobStatus;
+import com.impinj.itemsense.client.coordinator.job.JobsResponse;
+import com.impinj.itemsense.client.data.ZoneTransitionQueueFilter;
 import lombok.extern.log4j.Log4j;
 
 

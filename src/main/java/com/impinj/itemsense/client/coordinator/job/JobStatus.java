@@ -6,7 +6,7 @@
  *
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  */
-package com.impinj.itemsense.client;
+package com.impinj.itemsense.client.coordinator.job;
 
 /**
  * Represents the current status of a job

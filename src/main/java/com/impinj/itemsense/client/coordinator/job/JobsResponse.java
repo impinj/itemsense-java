@@ -6,18 +6,20 @@
  *
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  */
-package com.impinj.itemsense.client;
+package com.impinj.itemsense.client.coordinator.job;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+/**
+ * Represents a response from the jobs endpoint
+ *
+ * @author Daniel Burton
+ */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Job {
-  String version;
-  String recipeName;
-  Long durationSeconds;
-  Boolean playbackLoggingEnabled;
+public class JobsResponse {
+  String id;
+  JobStatus status;
+  // TODO: Create a date/time deserializer for this:
+  String statusLastUpdated;
+  Job job;
 }

@@ -8,9 +8,7 @@
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  */
 
-package com.impinj.itemsense.client;
-
-import java.util.Optional;
+package com.impinj.itemsense.client.coordinator;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ZoneTransitionQueueFilter {
-  private Optional<String> fromZone = Optional.empty();
-  private Optional<String> toZone = Optional.empty();
-  private Optional<String> epc = Optional.empty();
+public class QueueConfiguration {
+  private String serverUrl;
+  private String queue;
 }

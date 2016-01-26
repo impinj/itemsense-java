@@ -7,7 +7,7 @@
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  */
 
-package com.impinj.itemsense.client;
+package com.impinj.itemsense.client.data;
 
 import java.net.URI;
 import java.util.ArrayList;

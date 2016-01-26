@@ -8,7 +8,7 @@
  * (c) Copyright Impinj, Inc. 2015. All rights reserved.
  */
 
-package com.impinj.itemsense.client;
+package com.impinj.itemsense.client.coordinator;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
