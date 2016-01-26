@@ -7,9 +7,8 @@ import com.impinj.itemsense.client.data.PresenceConfidence;
 import com.impinj.itemsense.client.data.item.Item;
 
 import javax.ws.rs.client.WebTarget;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Created by jcombopi on 1/26/16.
@@ -62,25 +61,29 @@ public class ItemHistoryController {
         return this.getItemHistory(null, null, null, null, null, null, null, null);
     }
 
-    public Collection<Item> getAllItemHistory(EpcFormat epcFormat, String epcPrefix, String fromZone, String toZone, PresenceConfidence presenceConfidence, String facility,
+    public Collection<ItemHistory> getAllItemHistory(EpcFormat epcFormat, String epcPrefix, String fromZone, String toZone, PresenceConfidence presenceConfidence, String facility,
                                         String pageMarker){
         ItemHistoryResponse response;
+        String nextPageMarker = "";
         int pageSize = 1000;
-        Collection<Item> items= new ArrayList<Item>();
+        Collection<ItemHistory> items= new ArrayList<>();
 
         do{
-            response = this.getItemHistory(epcPrefix, fromZone, toZone, presenceConfidence, epcFormat, facility, pageSize, response.getNextPageMarker());
-            if(response.getItemHistory()!=null){
-                items.addAll(response.getItemHistory());
+
+            response = this.getItemHistory(epcFormat, epcPrefix, fromZone, toZone, presenceConfidence, facility, pageSize, nextPageMarker);
+            if(response.getHistory()!=null){
+                Collections.addAll(items, response.getHistory());
             }
-        }while(response.getNextPageMarker() != null && !response.getNextPageMarker().isEmpty());
+            nextPageMarker = response.getNextPageMarker();
+
+        }while(nextPageMarker != null && !nextPageMarker.isEmpty());
 
         return items;
     }
-    public Collection<Item> getAllItemHistory(EpcFormat epcFormat){
-        return getAllItemHistory(epcFormat, null, null, null,null, null, null);
+    public Collection<ItemHistory> getAllItemHistory(EpcFormat epcFormat){
+        return getAllItemHistory(epcFormat,  null, null, null, null, null, null);
     }
-    public Collection<Item> getAllItemHistory(){
+    public Collection<ItemHistory> getAllItemHistory(){
         return getAllItemHistory(null, null, null, null, null, null, null);
     }
 

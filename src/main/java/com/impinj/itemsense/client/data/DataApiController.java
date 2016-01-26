@@ -12,6 +12,7 @@ import java.net.URI;
 /**
  * Created by jcombopi on 1/26/16.
  */
+
 @Data
 public class DataApiController {
 

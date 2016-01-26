@@ -20,7 +20,7 @@ public class ItemController {
     public ItemController(final Gson gson, WebTarget target) {
         this.gson = gson;
         this.target = target;
-        this.restApiHelper = new RestApiHelper<ItemResponse>(ItemsResponse.class);
+        this.restApiHelper = new RestApiHelper<ItemResponse>(ItemResponse.class);
     }
 
     public ItemResponse getItems(EpcFormat epcFormat, String epcPrefix, String zoneNames, PresenceConfidence presenceConfidence, String facility,
@@ -58,15 +58,17 @@ public class ItemController {
     public Collection<Item> getAllItems(EpcFormat epcFormat, String epcPrefix, String zoneNames, PresenceConfidence presenceConfidence, String facility,
                                         String pageMarker){
         ItemResponse response;
+        String nextPageMarker = "";
         int pageSize = 1000;
         Collection<Item> items= new ArrayList<Item>();
 
         do{
-            response = this.getItems(epcPrefix, zoneNames, presenceConfidence, epcFormat, facility, pageSize, response.getNextPageMarker());
+            response = this.getItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, pageSize, nextPageMarker);
             if(response.getItems()!=null){
-                items.addAll(response.getItems());
+                Collections.addAll(items, response.getItems());
             }
-        }while(response.getNextPageMarker() != null && !response.getNextPageMaker().isEmpty());
+            nextPageMarker = response.getNextPageMarker();
+        }while(nextPageMarker != null && !nextPageMarker.isEmpty());
 
         return items;
     }
