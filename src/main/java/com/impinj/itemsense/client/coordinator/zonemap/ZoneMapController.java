@@ -1,8 +1,11 @@
 package com.impinj.itemsense.client.coordinator.zonemap;
 
 import com.google.gson.Gson;
+import com.impinj.itemsense.client.RestApiHelper;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 
 /**
@@ -10,42 +13,35 @@ import java.net.URI;
  */
 public class ZoneMapController {
 
-   public ZoneMapController(final Gson gson, final Client client, final URI uri ){
+    private Gson gson;
+    private WebTarget target;
+    private RestApiHelper<ZoneMap> restApiHelper;
 
-   }
-    /**
-     *
-     * @param zoneMap
-     * @return
-     */
-    public ZoneMap createZoneMap(ZoneMap zoneMap){
-
+    public ZoneMapController(final Gson gson, WebTarget target) {
+        this.gson = gson;
+        this.target = target;
+        this.restApiHelper = new RestApiHelper<ZoneMap>(ZoneMap.class);
     }
-    public ZoneMap updateZoneMap(ZoneMap zoneMap){
 
+    public ZoneMap createZoneMap(ZoneMap zoneMap) {
+        return this.restApiHelper.post(zoneMap, "/configuration/zoneMaps/create", target, gson);
     }
-    public void deleteZoneMap(String zoneMapName){
 
+    public ZoneMap updateZoneMap(ZoneMap zoneMap) {
+        return this.restApiHelper.put(zoneMap, "/configuration/zoneMaps/create", target, gson);
     }
-    public ZoneMap getZoneMap(String zoneMapName){
 
+    public Response deleteZoneMap(String zoneMapName) {
+        return this.restApiHelper.delete(zoneMapName, "/configuration/zoneMaps/destroy", target);
     }
-    public ZoneMap[] getZoneMaps(){
 
+    public ZoneMap getZoneMap(String zoneMapName) {
+        return this.restApiHelper.get(zoneMapName, "/configuration/zoneMaps/show", target);
     }
-    public CurrentZoneMap setCurrentZoneMap(String name){
 
+    public ZoneMap[] getZoneMaps() {
+        return this.restApiHelper.getMultiple(null, "/configuration/zoneMaps/show", target, gson);
     }
-    public void clearCurrentZoneMap(String name){
 
-    }
-    public void clearCurrentZoneMap(String name, String facility){
 
-    }
-    public CurrentZoneMap getCurrentZoneMap(String facility){
-
-    }
-    public CurrentZoneMap[] getCurrentZoneMaps(){
-
-    }
 }

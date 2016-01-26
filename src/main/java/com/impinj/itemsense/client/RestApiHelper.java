@@ -51,6 +51,15 @@ public class RestApiHelper <T> {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(this.type);
     }
+    public T get(Map<String, Object> queryParams, String path, WebTarget target, Gson gson){
+
+        target.path(path);
+        for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
+            target.queryParam(queryParam.getKey(), queryParam.getValue());
+        }
+        return target.request(MediaType.APPLICATION_JSON_TYPE)
+                .get(this.type);
+    }
     public T[] getMultiple(Map<String, Object> queryParams, String path, WebTarget target, Gson gson){
 
         target.path(path);

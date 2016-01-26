@@ -1,8 +1,11 @@
 package com.impinj.itemsense.client.coordinator.user;
 
 import com.google.gson.Gson;
+import com.impinj.itemsense.client.RestApiHelper;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 
 /**
@@ -10,22 +13,28 @@ import java.net.URI;
  */
 public class UserController {
 
-    public UserController(final Gson gson, final Client client, final URI uri ){
+    private Gson gson;
+    private WebTarget target;
+    private RestApiHelper<User> restApiHelper;
 
+    public UserController(final Gson gson,  WebTarget target ){
+        this.gson = gson;
+        this.target = target;
+        this.restApiHelper = new RestApiHelper<User>(User.class);
     }
     public User createUser(User user){
-
+        return this.restApiHelper.post( user, "/configuration/users/create",target, gson);
     }
     public User updateUser(User user){
-
+        return this.restApiHelper.put( user, "/configuration/users/create",target, gson);
     }
-    public void deleteUser(User userName){
-
+    public Response deleteUser(String userName){
+        return this.restApiHelper.delete(userName, "/configuration/users/destroy",target);
     }
-    public User getUser(User userName){
-
+    public User getUser(String userName){
+        return this.restApiHelper.get(userName, "/configuration/users/show", target);
     }
-    public User[] getUseres(){
-
+    public User[] getUsers(){
+        return this.restApiHelper.getMultiple(null, "/configuration/users/show", target, gson);
     }
 }

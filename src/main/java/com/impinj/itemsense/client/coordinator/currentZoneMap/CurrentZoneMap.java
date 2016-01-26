@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.coordinator.zonemap;
+package com.impinj.itemsense.client.coordinator.currentZoneMap;
 
 /**
  * Created by jcombopi on 1/25/16.

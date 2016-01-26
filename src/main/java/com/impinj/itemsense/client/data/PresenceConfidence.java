@@ -8,12 +8,8 @@
  */
 package com.impinj.itemsense.client.data;
 
-/**
- * Represents valid "confidence" values for an item
- *
- * @author Daniel Burton
- */
-public enum Confidence {
+
+public enum PresenceConfidence {
   LOW,
   HIGH
 }
