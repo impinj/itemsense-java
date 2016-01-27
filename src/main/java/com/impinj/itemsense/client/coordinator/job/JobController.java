@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 
 import javax.ws.rs.client.WebTarget;
+import java.util.Collection;
 
 /**
  * Created by jcombopi on 1/25/16.
@@ -20,7 +21,7 @@ public class JobController {
         this.restApiHelper = new RestApiHelper<Job>(Job.class);
     }
 
-    public Job[] getJobs() {
+    public Collection<Job> getJobs() {
         return this.restApiHelper.getMultiple(null, "/control/jobs/show", target, gson);
     }
 

@@ -3,9 +3,11 @@ package com.impinj.itemsense.client.coordinator.readerdefintion;
 
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
+import com.sun.tools.hat.internal.parser.Reader;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.util.Collection;
 
 
 /**
@@ -38,7 +40,7 @@ public class ReaderDefinitionController {
         return this.restApiHelper.get(readerDefinitionName, "/configuration/readerDefinitions/show", target);
     }
 
-    public ReaderDefinition[] getReaderDefinitions() {
+    public Collection<ReaderDefinition> getReaderDefinitions() {
         return this.restApiHelper.getMultiple(null, "/configuration/readerDefinitions/show", target, gson);
     }
 

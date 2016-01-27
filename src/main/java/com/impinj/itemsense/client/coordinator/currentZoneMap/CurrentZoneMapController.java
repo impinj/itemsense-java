@@ -2,9 +2,11 @@ package com.impinj.itemsense.client.coordinator.currentZoneMap;
 
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
+import org.omg.CORBA.Current;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.util.Collection;
 
 /**
  * Created by jcombopi on 1/26/16.
@@ -37,7 +39,7 @@ public class CurrentZoneMapController {
         return this.restApiHelper.get(facility, "/configuration/currentZoneMap/show", target);
     }
 
-    public CurrentZoneMap[] getCurrentZoneMaps() {
+    public Collection<CurrentZoneMap> getCurrentZoneMaps() {
         return this.restApiHelper.getMultiple(null, "/configuration/currentZoneMap/show", target, gson);
     }
 }

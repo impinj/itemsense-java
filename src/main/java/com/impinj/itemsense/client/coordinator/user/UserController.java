@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.util.Collection;
 
 /**
  * Created by jcombopi on 1/25/16.
@@ -37,7 +38,7 @@ public class UserController {
         return this.restApiHelper.get(userName, "/configuration/users/show", target);
     }
 
-    public User[] getUsers() {
+    public Collection<User> getUsers() {
         return this.restApiHelper.getMultiple(null, "/configuration/users/show", target, gson);
     }
 }

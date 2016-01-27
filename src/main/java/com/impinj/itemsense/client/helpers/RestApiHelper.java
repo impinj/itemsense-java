@@ -1,16 +1,24 @@
 package com.impinj.itemsense.client.helpers;
 
 
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -55,25 +63,36 @@ public class RestApiHelper<T> {
     public T get(Map<String, Object> queryParams, String path, WebTarget target, Gson gson) {
 
         target = target.path(path);
-        for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
-            target = target.queryParam(queryParam.getKey(), queryParam.getValue());
+        if(queryParams != null) {
+            for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
+                target = target.queryParam(queryParam.getKey(), queryParam.getValue());
+            }
         }
         return target.request(MediaType.APPLICATION_JSON_TYPE)
                 .get(this.type);
     }
 
 
-    public T[] getMultiple(Map<String, Object> queryParams, String path, WebTarget target, Gson gson) {
-
+    public ArrayList<T> getMultiple(Map<String, Object> queryParams, String path, WebTarget target, Gson gson) {
         target = target.path(path);
-        for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
-            target = target.queryParam(queryParam.getKey(), queryParam.getValue());
+        if(queryParams!=null) {
+            for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
+                target = target.queryParam(queryParam.getKey(), queryParam.getValue());
+            }
         }
+
         String response = target.request(MediaType.APPLICATION_JSON_TYPE)
                 .get(String.class);
 
-        return gson.fromJson(response, new TypeToken<T>() {
-        }.getType());
+
+        List<Map> tmpList = gson.fromJson(response, new ArrayList<Map>().getClass());
+
+        ArrayList<T> testList = tmpList.stream().map(obj-> gson.fromJson( gson.toJson(obj), this.type )).collect(Collectors.toCollection(ArrayList<T>::new));
+
+        return testList;
+
+
+
 
     }
 
