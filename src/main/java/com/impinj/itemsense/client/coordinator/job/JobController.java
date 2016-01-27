@@ -14,21 +14,25 @@ public class JobController {
     private WebTarget target;
     private RestApiHelper<Job> restApiHelper;
 
-    public JobController(final Gson gson, final WebTarget target){
+    public JobController(final Gson gson, final WebTarget target) {
         this.gson = gson;
         this.target = target;
         this.restApiHelper = new RestApiHelper<Job>(Job.class);
     }
-    public Job[] getJobs(){
+
+    public Job[] getJobs() {
         return this.restApiHelper.getMultiple(null, "/control/jobs/show", target, gson);
     }
-    public Job getJob(String jobId){
+
+    public Job getJob(String jobId) {
         return this.restApiHelper.get(jobId, "/control/jobs/show", target);
     }
-    public Job startJob(Job job){
+
+    public Job startJob(Job job) {
         return this.restApiHelper.post(job, "/control/jobs/start", target, gson);
     }
-    public Job stopJob(String jobId){
+
+    public Job stopJob(String jobId) {
         return this.restApiHelper.post(null, "/control/jobs/stop/" + jobId, target, gson);
     }
 

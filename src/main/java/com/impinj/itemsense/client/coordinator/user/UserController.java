@@ -15,24 +15,29 @@ public class UserController {
     private WebTarget target;
     private RestApiHelper<User> restApiHelper;
 
-    public UserController(final Gson gson,  WebTarget target ){
+    public UserController(final Gson gson, WebTarget target) {
         this.gson = gson;
         this.target = target;
         this.restApiHelper = new RestApiHelper<User>(User.class);
     }
-    public User createUser(User user){
-        return this.restApiHelper.post( user, "/configuration/users/create",target, gson);
+
+    public User createUser(User user) {
+        return this.restApiHelper.post(user, "/configuration/users/create", target, gson);
     }
-    public User updateUser(User user){
-        return this.restApiHelper.put( user, "/configuration/users/create",target, gson);
+
+    public User updateUser(User user) {
+        return this.restApiHelper.put(user, "/configuration/users/create", target, gson);
     }
-    public Response deleteUser(String userName){
-        return this.restApiHelper.delete(userName, "/configuration/users/destroy",target);
+
+    public Response deleteUser(String userName) {
+        return this.restApiHelper.delete(userName, "/configuration/users/destroy", target);
     }
-    public User getUser(String userName){
+
+    public User getUser(String userName) {
         return this.restApiHelper.get(userName, "/configuration/users/show", target);
     }
-    public User[] getUsers(){
+
+    public User[] getUsers() {
         return this.restApiHelper.getMultiple(null, "/configuration/users/show", target, gson);
     }
 }

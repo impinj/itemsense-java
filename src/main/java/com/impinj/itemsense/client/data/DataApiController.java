@@ -22,7 +22,7 @@ public class DataApiController {
     private WebTarget target;
     private Gson gson;
 
-    public DataApiController(final Gson gson, final Client client, final URI uri ) {
+    public DataApiController(final Gson gson, final Client client, final URI uri) {
         this.gson = gson;
         this.target = client.target(uri);
         this.itemController = new ItemController(gson, target);

@@ -24,58 +24,61 @@ public class ItemController {
     }
 
     public ItemResponse getItems(EpcFormat epcFormat, String epcPrefix, String zoneNames, PresenceConfidence presenceConfidence, String facility,
-                                 Integer pageSize, String pageMarker){
-        HashMap<String, Object> queryParams =  new HashMap<>();
-        if(epcPrefix != null && !epcPrefix.isEmpty()){
+                                 Integer pageSize, String pageMarker) {
+        HashMap<String, Object> queryParams = new HashMap<>();
+        if (epcPrefix != null && !epcPrefix.isEmpty()) {
             queryParams.put("epcPrefix", epcPrefix);
         }
-        if(zoneNames != null && !zoneNames.isEmpty()){
+        if (zoneNames != null && !zoneNames.isEmpty()) {
             queryParams.put("zoneNames", zoneNames);
         }
-        if(presenceConfidence != null){
+        if (presenceConfidence != null) {
             queryParams.put("presenceConfidence", presenceConfidence.toString());
         }
-        if(epcFormat != null){
+        if (epcFormat != null) {
             queryParams.put("epcFormat", epcFormat.toString());
         }
-        if(facility != null && !facility.isEmpty()){
+        if (facility != null && !facility.isEmpty()) {
             queryParams.put("facility", facility);
         }
-        if(pageMarker != null && !pageMarker.isEmpty()){
+        if (pageMarker != null && !pageMarker.isEmpty()) {
             queryParams.put("pageMarker", pageMarker);
         }
-        if(pageSize != null ){
+        if (pageSize != null) {
             queryParams.put("pageSize", pageSize);
         }
 
-        return this.restApiHelper.get(queryParams,"/data/items/show", target, gson);
+        return this.restApiHelper.get(queryParams, "/data/items/show", target, gson);
 
     }
-    public ItemResponse getItems(){
+
+    public ItemResponse getItems() {
         return this.getItems(null, null, null, null, null, null, null);
     }
 
     public Collection<Item> getAllItems(EpcFormat epcFormat, String epcPrefix, String zoneNames, PresenceConfidence presenceConfidence, String facility,
-                                        String pageMarker){
+                                        String pageMarker) {
         ItemResponse response;
         String nextPageMarker = "";
         int pageSize = 1000;
-        Collection<Item> items= new ArrayList<Item>();
+        Collection<Item> items = new ArrayList<Item>();
 
-        do{
+        do {
             response = this.getItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, pageSize, nextPageMarker);
-            if(response.getItems()!=null){
+            if (response.getItems() != null) {
                 Collections.addAll(items, response.getItems());
             }
             nextPageMarker = response.getNextPageMarker();
-        }while(nextPageMarker != null && !nextPageMarker.isEmpty());
+        } while (nextPageMarker != null && !nextPageMarker.isEmpty());
 
         return items;
     }
-    public Collection<Item> getAllItems(EpcFormat epcFormat){
+
+    public Collection<Item> getAllItems(EpcFormat epcFormat) {
         return getAllItems(epcFormat, null, null, null, null, null);
     }
-    public Collection<Item> getAllItems(){
+
+    public Collection<Item> getAllItems() {
         return getAllItems(null, null, null, null, null, null);
     }
 

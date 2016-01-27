@@ -34,7 +34,7 @@ public class CoordinatorApiController {
     private WebTarget target;
     private Gson gson;
 
-    public CoordinatorApiController(final Gson gson, final Client client, final URI uri ){
+    public CoordinatorApiController(final Gson gson, final Client client, final URI uri) {
         this.gson = gson;
         this.target = client.target(uri);
         this.currentZoneMapController = new CurrentZoneMapController(gson, target);

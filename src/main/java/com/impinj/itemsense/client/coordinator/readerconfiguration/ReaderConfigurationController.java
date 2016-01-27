@@ -14,24 +14,29 @@ public class ReaderConfigurationController {
     private WebTarget target;
     private RestApiHelper<ReaderConfiguration> restApiHelper;
 
-    public ReaderConfigurationController(final Gson gson,  WebTarget target ){
+    public ReaderConfigurationController(final Gson gson, WebTarget target) {
         this.gson = gson;
         this.target = target;
         this.restApiHelper = new RestApiHelper<ReaderConfiguration>(ReaderConfiguration.class);
     }
-    public ReaderConfiguration createReaderConfiguration(ReaderConfiguration readerConfiguration){
-        return this.restApiHelper.post( readerConfiguration, "/configuration/readerConfigurations/create",target, gson);
+
+    public ReaderConfiguration createReaderConfiguration(ReaderConfiguration readerConfiguration) {
+        return this.restApiHelper.post(readerConfiguration, "/configuration/readerConfigurations/create", target, gson);
     }
-    public ReaderConfiguration updateReaderConfiguration(ReaderConfiguration readerConfiguration){
-        return this.restApiHelper.put( readerConfiguration, "/configuration/readerConfigurations/create",target, gson);
+
+    public ReaderConfiguration updateReaderConfiguration(ReaderConfiguration readerConfiguration) {
+        return this.restApiHelper.put(readerConfiguration, "/configuration/readerConfigurations/create", target, gson);
     }
-    public Response deleteReaderConfiguration(String readerConfigurationName){
-        return this.restApiHelper.delete(readerConfigurationName, "/configuration/readerConfigurations/destroy",target);
+
+    public Response deleteReaderConfiguration(String readerConfigurationName) {
+        return this.restApiHelper.delete(readerConfigurationName, "/configuration/readerConfigurations/destroy", target);
     }
-    public ReaderConfiguration getReaderConfiguration(String readerConfigurationName){
+
+    public ReaderConfiguration getReaderConfiguration(String readerConfigurationName) {
         return this.restApiHelper.get(readerConfigurationName, "/configuration/readerConfigurations/show", target);
     }
-    public ReaderConfiguration[] getReaderConfigurations(){
+
+    public ReaderConfiguration[] getReaderConfigurations() {
         return this.restApiHelper.getMultiple(null, "/configuration/readerConfigurations/show", target, gson);
     }
 
