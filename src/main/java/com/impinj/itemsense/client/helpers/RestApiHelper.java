@@ -63,7 +63,7 @@ public class RestApiHelper<T> {
     public T get(Map<String, Object> queryParams, String path, WebTarget target, Gson gson) {
 
         target = target.path(path);
-        if(queryParams != null) {
+        if (queryParams != null) {
             for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
                 target = target.queryParam(queryParam.getKey(), queryParam.getValue());
             }
@@ -75,7 +75,7 @@ public class RestApiHelper<T> {
 
     public ArrayList<T> getMultiple(Map<String, Object> queryParams, String path, WebTarget target, Gson gson) {
         target = target.path(path);
-        if(queryParams!=null) {
+        if (queryParams != null) {
             for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
                 target = target.queryParam(queryParam.getKey(), queryParam.getValue());
             }
@@ -84,15 +84,11 @@ public class RestApiHelper<T> {
         String response = target.request(MediaType.APPLICATION_JSON_TYPE)
                 .get(String.class);
 
-
         List<Map> tmpList = gson.fromJson(response, new ArrayList<Map>().getClass());
 
-        ArrayList<T> testList = tmpList.stream().map(obj-> gson.fromJson( gson.toJson(obj), this.type )).collect(Collectors.toCollection(ArrayList<T>::new));
+        ArrayList<T> collection = tmpList.stream().map(obj -> gson.fromJson(gson.toJson(obj), this.type)).collect(Collectors.toCollection(ArrayList<T>::new));
 
-        return testList;
-
-
-
+        return collection;
 
     }
 
