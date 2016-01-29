@@ -3,7 +3,6 @@ package com.impinj.itemsense.client.coordinator.readerdefintion;
 
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
-import com.sun.tools.hat.internal.parser.Reader;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -25,23 +24,23 @@ public class ReaderDefinitionController {
     }
 
     public ReaderDefinition createReaderDefinition(ReaderDefinition readerDefinition) {
-        return this.restApiHelper.post(readerDefinition, "/configuration/readerDefinitions/create", target, gson);
+        return this.restApiHelper.post(readerDefinition, "/configuration/v1/readerDefinitions/create", target, gson);
     }
 
     public ReaderDefinition updateReaderDefinition(ReaderDefinition readerDefinition) {
-        return this.restApiHelper.put(readerDefinition, "/configuration/readerDefinitions/create", target, gson);
+        return this.restApiHelper.put(readerDefinition, "/configuration/v1/readerDefinitions/create", target, gson);
     }
 
     public Response deleteReaderDefinition(String readerDefinitionName) {
-        return this.restApiHelper.delete(readerDefinitionName, "/configuration/readerDefinitions/destroy", target);
+        return this.restApiHelper.delete(readerDefinitionName, "/configuration/v1/readerDefinitions/destroy", target);
     }
 
     public ReaderDefinition getReaderDefinition(String readerDefinitionName) {
-        return this.restApiHelper.get(readerDefinitionName, "/configuration/readerDefinitions/show", target);
+        return this.restApiHelper.get(readerDefinitionName, "/configuration/v1/readerDefinitions/show", target);
     }
 
     public Collection<ReaderDefinition> getReaderDefinitions() {
-        return this.restApiHelper.getMultiple(null, "/configuration/readerDefinitions/show", target, gson);
+        return this.restApiHelper.getMultiple(null, "/configuration/v1/readerDefinitions/show", target, gson);
     }
 
 }

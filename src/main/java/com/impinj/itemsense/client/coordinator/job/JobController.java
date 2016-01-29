@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 
 import javax.ws.rs.client.WebTarget;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -13,28 +14,31 @@ import java.util.Collection;
 public class JobController {
     private Gson gson;
     private WebTarget target;
-    private RestApiHelper<Job> restApiHelper;
+    private RestApiHelper<Job> restApiHelperPoster;
+    private RestApiHelper<JobResponse> restApiHelperGetter;
 
     public JobController(final Gson gson, final WebTarget target) {
         this.gson = gson;
         this.target = target;
-        this.restApiHelper = new RestApiHelper<Job>(Job.class);
+        this.restApiHelperPoster = new RestApiHelper<Job>(Job.class);
+        this.restApiHelperGetter = new RestApiHelper<JobResponse>(JobResponse.class);
     }
 
-    public Collection<Job> getJobs() {
-        return this.restApiHelper.getMultiple(null, "/control/jobs/show", target, gson);
+    public ArrayList<JobResponse> getJobs() {
+        return this.restApiHelperGetter.getMultiple(null, "/control/v1/jobs/show", target, gson);
     }
 
-    public Job getJob(String jobId) {
-        return this.restApiHelper.get(jobId, "/control/jobs/show", target);
+    public JobResponse getJob(String jobId) {
+        return this.restApiHelperGetter.get(jobId, "/control/v1/jobs/show", target);
     }
 
     public Job startJob(Job job) {
-        return this.restApiHelper.post(job, "/control/jobs/start", target, gson);
+
+        return this.restApiHelperPoster.post(job, "/control/v1/jobs/start", target, gson);
     }
 
     public Job stopJob(String jobId) {
-        return this.restApiHelper.post(null, "/control/jobs/stop/" + jobId, target, gson);
+        return this.restApiHelperPoster.post(null, "/control/v1/jobs/stop/" + jobId, target, gson);
     }
 
     //TODO: add Job Stats API calls

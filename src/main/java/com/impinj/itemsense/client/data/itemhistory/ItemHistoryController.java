@@ -58,7 +58,7 @@ public class ItemHistoryController {
             queryParams.put("pageSize", pageSize);
         }
 
-        return this.restApiHelper.get(queryParams, "/data/items/show/history", target, gson);
+        return this.restApiHelper.get(queryParams, "/data/v1/items/show/history", target, gson);
 
     }
 

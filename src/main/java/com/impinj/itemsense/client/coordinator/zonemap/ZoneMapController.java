@@ -23,23 +23,23 @@ public class ZoneMapController {
     }
 
     public ZoneMap createZoneMap(ZoneMap zoneMap) {
-        return this.restApiHelper.post(zoneMap, "/configuration/zoneMaps/create", target, gson);
+        return this.restApiHelper.post(zoneMap, "/configuration/v1/zoneMaps/create", target, gson);
     }
 
     public ZoneMap updateZoneMap(ZoneMap zoneMap) {
-        return this.restApiHelper.put(zoneMap, "/configuration/zoneMaps/create", target, gson);
+        return this.restApiHelper.put(zoneMap, "/configuration/v1/zoneMaps/create", target, gson);
     }
 
     public Response deleteZoneMap(String zoneMapName) {
-        return this.restApiHelper.delete(zoneMapName, "/configuration/zoneMaps/destroy", target);
+        return this.restApiHelper.delete(zoneMapName, "/configuration/v1/zoneMaps/destroy", target);
     }
 
     public ZoneMap getZoneMap(String zoneMapName) {
-        return this.restApiHelper.get(zoneMapName, "/configuration/zoneMaps/show", target);
+        return this.restApiHelper.get(zoneMapName, "/configuration/v1/zoneMaps/show", target);
     }
 
     public Collection<ZoneMap> getZoneMaps() {
-        return this.restApiHelper.getMultiple(null, "/configuration/zoneMaps/show", target, gson);
+        return this.restApiHelper.getMultiple(null, "/configuration/v1/zoneMaps/show", target, gson);
     }
 
 

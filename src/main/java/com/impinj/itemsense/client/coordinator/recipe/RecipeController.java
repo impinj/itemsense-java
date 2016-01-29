@@ -24,22 +24,22 @@ public class RecipeController {
     }
 
     public Recipe createRecipe(Recipe recipe) {
-        return this.restApiHelper.post(recipe, "/configuration/recipes/create", target, gson);
+        return this.restApiHelper.post(recipe, "/configuration/v1/recipes/create", target, gson);
     }
 
     public Recipe updateRecipe(Recipe recipe) {
-        return this.restApiHelper.put(recipe, "/configuration/recipes/create", target, gson);
+        return this.restApiHelper.put(recipe, "/configuration/v1/recipes/create", target, gson);
     }
 
     public Response deleteRecipe(String recipeName) {
-        return this.restApiHelper.delete(recipeName, "/configuration/recipes/destroy", target);
+        return this.restApiHelper.delete(recipeName, "/configuration/v1/recipes/destroy", target);
     }
 
     public Recipe getRecipe(String recipeName) {
-        return this.restApiHelper.get(recipeName, "/configuration/recipes/show", target);
+        return this.restApiHelper.get(recipeName, "/configuration/v1/recipes/show", target);
     }
 
     public Collection<Recipe> getRecipes() {
-        return this.restApiHelper.getMultiple(null, "/configuration/recipes/show", target, gson);
+        return this.restApiHelper.getMultiple(null, "/configuration/v1/recipes/show", target, gson);
     }
 }

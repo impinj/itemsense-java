@@ -24,22 +24,22 @@ public class CurrentZoneMapController {
     }
 
     public CurrentZoneMap setCurrentZoneMap(String zoneMapName) {
-        return this.restApiHelper.post(null, "/configuration/currentZoneMap/select/" + zoneMapName, target, gson);
+        return this.restApiHelper.post(null, "/configuration/v1/currentZoneMap/select/" + zoneMapName, target, gson);
     }
 
     public Response clearCurrentZoneMap() {
-        return this.restApiHelper.delete("", "/configuration/currentZoneMap/clear", target);
+        return this.restApiHelper.delete("", "/configuration/v1/currentZoneMap/clear", target);
     }
 
     public Response clearCurrentZoneMap(String facility) {
-        return this.restApiHelper.delete(facility, "/configuration/currentZoneMap/clear", target);
+        return this.restApiHelper.delete(facility, "/configuration/v1/currentZoneMap/clear", target);
     }
 
     public CurrentZoneMap getCurrentZoneMap(String facility) {
-        return this.restApiHelper.get(facility, "/configuration/currentZoneMap/show", target);
+        return this.restApiHelper.get(facility, "/configuration/v1/currentZoneMap/show", target);
     }
 
-    public Collection<CurrentZoneMap> getCurrentZoneMaps() {
-        return this.restApiHelper.getMultiple(null, "/configuration/currentZoneMap/show", target, gson);
+    public CurrentZoneMap getCurrentZoneMap() {
+        return this.restApiHelper.get( "/configuration/v1/currentZoneMap/show", target);
     }
 }

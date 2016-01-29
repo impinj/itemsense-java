@@ -23,22 +23,22 @@ public class UserController {
     }
 
     public User createUser(User user) {
-        return this.restApiHelper.post(user, "/configuration/users/create", target, gson);
+        return this.restApiHelper.post(user, "/configuration/v1/users/create", target, gson);
     }
 
     public User updateUser(User user) {
-        return this.restApiHelper.put(user, "/configuration/users/create", target, gson);
+        return this.restApiHelper.put(user, "/configuration/v1/users/create", target, gson);
     }
 
     public Response deleteUser(String userName) {
-        return this.restApiHelper.delete(userName, "/configuration/users/destroy", target);
+        return this.restApiHelper.delete(userName, "/configuration/v1/users/destroy", target);
     }
 
     public User getUser(String userName) {
-        return this.restApiHelper.get(userName, "/configuration/users/show", target);
+        return this.restApiHelper.get(userName, "/configuration/v1/users/show", target);
     }
 
     public Collection<User> getUsers() {
-        return this.restApiHelper.getMultiple(null, "/configuration/users/show", target, gson);
+        return this.restApiHelper.getMultiple(null, "/configuration/v1/users/show", target, gson);
     }
 }

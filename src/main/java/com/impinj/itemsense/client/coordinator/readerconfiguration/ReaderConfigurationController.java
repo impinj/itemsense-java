@@ -22,23 +22,23 @@ public class ReaderConfigurationController {
     }
 
     public ReaderConfiguration createReaderConfiguration(ReaderConfiguration readerConfiguration) {
-        return this.restApiHelper.post(readerConfiguration, "/configuration/readerConfigurations/create", target, gson);
+        return this.restApiHelper.post(readerConfiguration, "/configuration/v1/readerConfigurations/create", target, gson);
     }
 
     public ReaderConfiguration updateReaderConfiguration(ReaderConfiguration readerConfiguration) {
-        return this.restApiHelper.put(readerConfiguration, "/configuration/readerConfigurations/create", target, gson);
+        return this.restApiHelper.put(readerConfiguration, "/configuration/v1/readerConfigurations/create", target, gson);
     }
 
     public Response deleteReaderConfiguration(String readerConfigurationName) {
-        return this.restApiHelper.delete(readerConfigurationName, "/configuration/readerConfigurations/destroy", target);
+        return this.restApiHelper.delete(readerConfigurationName, "/configuration/v1/readerConfigurations/destroy", target);
     }
 
     public ReaderConfiguration getReaderConfiguration(String readerConfigurationName) {
-        return this.restApiHelper.get(readerConfigurationName, "/configuration/readerConfigurations/show", target);
+        return this.restApiHelper.get(readerConfigurationName, "/configuration/v1/readerConfigurations/show", target);
     }
 
     public Collection<ReaderConfiguration> getReaderConfigurations() {
-        return this.restApiHelper.getMultiple(null, "/configuration/readerConfigurations/show", target, gson);
+        return this.restApiHelper.getMultiple(null, "/configuration/v1/readerConfigurations/show", target, gson);
     }
 
 }

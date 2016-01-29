@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 /**
  * Created by jcombopi on 1/25/16.
@@ -20,19 +21,22 @@ public class FacilityController {
         this.restApiHelper = new RestApiHelper<Facility>(Facility.class);
     }
 
-    public Facility getFacilities(String facilityName) {
-        return this.restApiHelper.get(facilityName, "configuration/facilities/show", target);
+    public Facility getFacility(String facilityName) {
+        return this.restApiHelper.get(facilityName, "/configuration/v1/facilities/show", target);
+    }
+    public ArrayList<Facility> getAllFacilities(){
+        return this.restApiHelper.getMultiple(null, "/configuration/v1/facilities/show", target, gson);
     }
 
     public Facility create(Facility facility) {
-        return this.restApiHelper.post(facility, "configuration/facilities/create", target, gson);
+        return this.restApiHelper.post(facility, "/configuration/v1/facilities/create", target, gson);
     }
 
     public Facility createOrReplace(Facility facility) {
-        return this.restApiHelper.put(facility, "configuration/facilities/createOrReplace", target, gson);
+        return this.restApiHelper.put(facility, "/configuration/v1/facilities/createOrReplace", target, gson);
     }
 
     public Response destroy(String facilityName) {
-        return this.restApiHelper.delete(facilityName, "configuration/facilities/destroy", target);
+        return this.restApiHelper.delete(facilityName, "/configuration/v1/facilities/destroy", target);
     }
 }

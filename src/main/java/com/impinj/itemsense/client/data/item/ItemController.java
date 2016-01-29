@@ -48,7 +48,7 @@ public class ItemController {
             queryParams.put("pageSize", pageSize);
         }
 
-        return this.restApiHelper.get(queryParams, "/data/items/show", target, gson);
+        return this.restApiHelper.get(queryParams, "/data/v1/items/show", target, gson);
 
     }
 
