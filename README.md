@@ -5,7 +5,8 @@ itemsense-java is API wrapper for the core ItemSense functionality. This wrapper
 
 ## Usage
 itemsense-java is available as a dependency on Maven Central [here.](http://mvnrepository.com/artifact/com.impinj/itemsense-client)
-```<dependency>
+```
+<dependency>
 	<groupId>com.impinj</groupId>
 	<artifactId>itemsense-client</artifactId>
 	<version>2.0.1</version>
