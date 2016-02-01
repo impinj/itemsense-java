@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -37,7 +38,7 @@ public class ReaderConfigurationController {
         return this.restApiHelper.get(readerConfigurationName, "/configuration/v1/readerConfigurations/show", target);
     }
 
-    public Collection<ReaderConfiguration> getReaderConfigurations() {
+    public ArrayList<ReaderConfiguration> getReaderConfigurations() {
         return this.restApiHelper.getMultiple(null, "/configuration/v1/readerConfigurations/show", target, gson);
     }
 

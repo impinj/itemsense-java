@@ -20,11 +20,11 @@ public class Recipe {
     private boolean presencePipelineEnabled;
     private boolean locationReportingEnabled;
     private ZoneModel zoneModel;
-    private int minimumMovementInMeters;
-    private int locationUpdateIntervalInSeconds;
-    private int historyWindowSizeInCyces;
-    private int computeWindowSizeInCycles;
-    private int computeWindowTimeInSeconds;
+    private Integer minimumMovementInMeters;
+    private Integer locationUpdateIntervalInSeconds;
+    private Integer historyWindowSizeInCyces;
+    private Integer computeWindowSizeInCycles;
+    private Integer computeWindowTimeInSeconds;
     private LocationAggregationModel locationAggregationModel;
 }
 

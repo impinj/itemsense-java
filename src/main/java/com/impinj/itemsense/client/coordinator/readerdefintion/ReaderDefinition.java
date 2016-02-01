@@ -14,12 +14,12 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReaderDefinition {
+    private String name;
+    private String address;
+    private String facility;
     private String readerZone;
     private Map<Integer, String> antennaZones;
-    private String facility;
     private Placement placement;
-    private String address;
-    private String name;
     private ReaderType type;
 
 }

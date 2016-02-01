@@ -5,9 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.google.common.base.Preconditions;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -17,12 +15,12 @@ import java.time.format.DateTimeFormatter;
 /**
  * Created by jcombopi on 1/26/16.
  */
-public class ZonedDateTimeDeserializer extends JsonDeserializer<ZonedDateTime> implements com.google.gson.JsonDeserializer<ZonedDateTime> {
+public class ZonedDateTimeSerialization extends JsonDeserializer<ZonedDateTime> implements com.google.gson.JsonDeserializer<ZonedDateTime>, com.google.gson.JsonSerializer<ZonedDateTime> {
 
 
     @Override
     public ZonedDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-        System.out.println("ZonedDateTimeDeserializer::deserialize()");
+        System.out.println("ZonedDateTimeSerialization::deserialize()");
         return ZonedDateTime.parse(jsonParser.getText());
     }
 
@@ -33,5 +31,10 @@ public class ZonedDateTimeDeserializer extends JsonDeserializer<ZonedDateTime> i
     @Override
     public ZonedDateTime deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         return ZonedDateTime.parse(jsonElement.getAsString());
+    }
+
+    @Override
+    public JsonElement serialize(ZonedDateTime zonedDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
+        return new JsonPrimitive(zonedDateTime.toString());
     }
 }

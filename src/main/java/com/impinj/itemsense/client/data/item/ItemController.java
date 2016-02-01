@@ -56,12 +56,12 @@ public class ItemController {
         return this.getItems(null, null, null, null, null, null, null);
     }
 
-    public Collection<Item> getAllItems(EpcFormat epcFormat, String epcPrefix, String zoneNames, PresenceConfidence presenceConfidence, String facility,
+    public ArrayList<Item> getAllItems(EpcFormat epcFormat, String epcPrefix, String zoneNames, PresenceConfidence presenceConfidence, String facility,
                                         String pageMarker) {
         ItemResponse response;
-        String nextPageMarker = "";
+        String nextPageMarker = null    ;
         int pageSize = 1000;
-        Collection<Item> items = new ArrayList<Item>();
+        ArrayList<Item> items = new ArrayList<Item>();
 
         do {
             response = this.getItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, pageSize, nextPageMarker);
@@ -74,11 +74,11 @@ public class ItemController {
         return items;
     }
 
-    public Collection<Item> getAllItems(EpcFormat epcFormat) {
+    public ArrayList<Item> getAllItems(EpcFormat epcFormat) {
         return getAllItems(epcFormat, null, null, null, null, null);
     }
 
-    public Collection<Item> getAllItems() {
+    public ArrayList<Item> getAllItems() {
         return getAllItems(null, null, null, null, null, null);
     }
 

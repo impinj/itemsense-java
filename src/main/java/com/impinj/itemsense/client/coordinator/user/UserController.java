@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -38,7 +39,7 @@ public class UserController {
         return this.restApiHelper.get(userName, "/configuration/v1/users/show", target);
     }
 
-    public Collection<User> getUsers() {
+    public ArrayList<User> getUsers() {
         return this.restApiHelper.getMultiple(null, "/configuration/v1/users/show", target, gson);
     }
 }

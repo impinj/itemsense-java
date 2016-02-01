@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -39,7 +40,7 @@ public class RecipeController {
         return this.restApiHelper.get(recipeName, "/configuration/v1/recipes/show", target);
     }
 
-    public Collection<Recipe> getRecipes() {
+    public ArrayList<Recipe> getRecipes() {
         return this.restApiHelper.getMultiple(null, "/configuration/v1/recipes/show", target, gson);
     }
 }

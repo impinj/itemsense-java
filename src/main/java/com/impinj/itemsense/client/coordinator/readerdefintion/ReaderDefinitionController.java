@@ -6,6 +6,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -39,7 +40,7 @@ public class ReaderDefinitionController {
         return this.restApiHelper.get(readerDefinitionName, "/configuration/v1/readerDefinitions/show", target);
     }
 
-    public Collection<ReaderDefinition> getReaderDefinitions() {
+    public ArrayList<ReaderDefinition> getReaderDefinitions() {
         return this.restApiHelper.getMultiple(null, "/configuration/v1/readerDefinitions/show", target, gson);
     }
 

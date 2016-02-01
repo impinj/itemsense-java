@@ -76,7 +76,7 @@ public class CurrentZoneMapControllerTest {
                 .withBody(gson.toJson(seattleTest))));
 
 
-        CurrentZoneMap currentZoneMap = currentZoneMapController.getCurrentZoneMap();
+        CurrentZoneMap currentZoneMap = currentZoneMapController.getCurrentZoneMap("Seattle");
 
         Assert.assertThat(currentZoneMap, instanceOf(CurrentZoneMap.class));
         Assert.assertEquals(currentZoneMap, seattleTest);

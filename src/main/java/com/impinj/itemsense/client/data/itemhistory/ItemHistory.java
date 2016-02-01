@@ -1,7 +1,7 @@
 package com.impinj.itemsense.client.data.itemhistory;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.impinj.itemsense.client.helpers.ZonedDateTimeDeserializer;
+import com.impinj.itemsense.client.helpers.ZonedDateTimeSerialization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class ItemHistory {
     private String fromFacility;
     private String toFacility;
 
-    @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
+    @JsonDeserialize(using = ZonedDateTimeSerialization.class)
     private ZonedDateTime observationTime;
 
 }

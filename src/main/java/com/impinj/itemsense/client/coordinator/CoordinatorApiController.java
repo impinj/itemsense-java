@@ -11,7 +11,7 @@ import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinitionC
 import com.impinj.itemsense.client.coordinator.recipe.RecipeController;
 import com.impinj.itemsense.client.coordinator.user.UserController;
 import com.impinj.itemsense.client.coordinator.zonemap.ZoneMapController;
-import com.impinj.itemsense.client.helpers.ZonedDateTimeDeserializer;
+import com.impinj.itemsense.client.helpers.ZonedDateTimeSerialization;
 import lombok.Data;
 
 import javax.ws.rs.client.Client;
@@ -38,7 +38,7 @@ public class CoordinatorApiController {
     private Gson gson;
 
     public CoordinatorApiController(final Client client, final URI uri) {
-        this(new GsonBuilder().registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeDeserializer()).create(), client, uri);
+        this(new GsonBuilder().registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeSerialization()).create(), client, uri);
     }
     public CoordinatorApiController(final Gson gson, final Client client, final URI uri){
         this.target = client.target(uri);

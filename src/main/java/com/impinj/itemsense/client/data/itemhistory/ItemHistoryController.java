@@ -66,12 +66,12 @@ public class ItemHistoryController {
         return this.getItemHistory(null, null, null, null, null, null, null, null, null, null);
     }
 
-    public Collection<ItemHistory> getAllItemHistory(EpcFormat epcFormat, String epcPrefix, String fromZone, String toZone, String fromFacility, String toFacility, PresenceConfidence presenceConfidence, String facility,
+    public ArrayList<ItemHistory> getAllItemHistory(EpcFormat epcFormat, String epcPrefix, String fromZone, String toZone, String fromFacility, String toFacility, PresenceConfidence presenceConfidence, String facility,
                                                      String pageMarker) {
         ItemHistoryResponse response;
         String nextPageMarker = "";
         int pageSize = 1000;
-        Collection<ItemHistory> items = new ArrayList<>();
+        ArrayList<ItemHistory> items = new ArrayList<>();
 
         do {
 
@@ -86,11 +86,11 @@ public class ItemHistoryController {
         return items;
     }
 
-    public Collection<ItemHistory> getAllItemHistory(EpcFormat epcFormat) {
+    public ArrayList<ItemHistory> getAllItemHistory(EpcFormat epcFormat) {
         return getAllItemHistory(epcFormat, null, null, null, null, null, null, null, null);
     }
 
-    public Collection<ItemHistory> getAllItemHistory() {
+    public ArrayList<ItemHistory> getAllItemHistory() {
         return getAllItemHistory(null, null, null, null, null, null, null, null, null);
     }
 

@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -38,7 +39,7 @@ public class ZoneMapController {
         return this.restApiHelper.get(zoneMapName, "/configuration/v1/zoneMaps/show", target);
     }
 
-    public Collection<ZoneMap> getZoneMaps() {
+    public ArrayList<ZoneMap> getZoneMaps() {
         return this.restApiHelper.getMultiple(null, "/configuration/v1/zoneMaps/show", target, gson);
     }
 
