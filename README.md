@@ -1,7 +1,7 @@
 # itemsense-java
 
 ## Overview
-itemsense-java is API wrapper for the core ItemSense functionality. This wrapper will be kept up to date with the latest ItemSense features.
+itemsense-java is an API wrapper library for Impinj's ItemSense. This wrapper will be kept up to date with the latest ItemSense features.
 
 ## Usage
 itemsense-java is available as a dependency on Maven Central [here.](http://mvnrepository.com/artifact/com.impinj/itemsense-client)
