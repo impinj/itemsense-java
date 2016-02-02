@@ -48,18 +48,22 @@ public class ItemController {
             queryParams.put("pageSize", pageSize);
         }
 
-        return this.restApiHelper.get(queryParams, "/data/v1/items/show", target, gson);
+        return this.getItems(queryParams);
 
+    }
+
+    public ItemResponse getItems(HashMap<String, Object> queryParams) {
+        return this.restApiHelper.get(queryParams, "/data/v1/items/show", target, gson);
     }
 
     public ItemResponse getItems() {
-        return this.getItems(null, null, null, null, null, null, null);
+        return this.getItems(null);
     }
 
     public ArrayList<Item> getAllItems(EpcFormat epcFormat, String epcPrefix, String zoneNames, PresenceConfidence presenceConfidence, String facility,
-                                        String pageMarker) {
+                                       String pageMarker) {
         ItemResponse response;
-        String nextPageMarker = null    ;
+        String nextPageMarker = null;
         int pageSize = 1000;
         ArrayList<Item> items = new ArrayList<Item>();
 

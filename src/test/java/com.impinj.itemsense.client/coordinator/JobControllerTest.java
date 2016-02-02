@@ -58,7 +58,6 @@ public class JobControllerTest {
                 .withBody(jobResponseStrings)));
 
         ArrayList<JobResponse> jobs = jobController.getJobs();
-
         Assert.assertEquals(jobs.size(), 1);
         Assert.assertThat(jobs, instanceOf(ArrayList.class));
         Assert.assertThat(jobs.get(0), instanceOf(JobResponse.class));

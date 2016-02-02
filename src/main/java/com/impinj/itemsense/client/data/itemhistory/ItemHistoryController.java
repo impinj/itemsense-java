@@ -58,12 +58,16 @@ public class ItemHistoryController {
             queryParams.put("pageSize", pageSize);
         }
 
-        return this.restApiHelper.get(queryParams, "/data/v1/items/show/history", target, gson);
+        return this.getItemHistory(queryParams);
 
     }
 
+    public ItemHistoryResponse getItemHistory(HashMap<String, Object> queryParams){
+        return this.restApiHelper.get(queryParams, "/data/v1/items/show/history", target, gson);
+    }
+
     public ItemHistoryResponse getItemHistory() {
-        return this.getItemHistory(null, null, null, null, null, null, null, null, null, null);
+        return this.getItemHistory(null);
     }
 
     public ArrayList<ItemHistory> getAllItemHistory(EpcFormat epcFormat, String epcPrefix, String fromZone, String toZone, String fromFacility, String toFacility, PresenceConfidence presenceConfidence, String facility,
