@@ -1,7 +1,7 @@
 # itemsense-java
 > itemsense-java is an API wrapper library for Impinj's ItemSense. This wrapper will be kept up to date with the latest ItemSense features.
 
-## install
+## Install
 itemsense-java is available as a dependency on Maven Central [here.](http://mvnrepository.com/artifact/com.impinj/itemsense-client)
 
 ```
@@ -221,7 +221,7 @@ coordinator.getJobController().startJob(job) // starts a job
 
 coordinator.getJobController().stopJob(jobId) //stops a job based on the id
 
-
+```
 
 ### Items
 
