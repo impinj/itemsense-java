@@ -130,11 +130,11 @@ coordinator.getFacilityController().getFacility(facilityName) // returns a facil
 
 coordinator.getFacilityController().getFacilities() // returns all of the facilities for an itemsense instance
 
-coordinator.getFacilityController().create(facility) // creates a facility
+coordinator.getFacilityController().createFacility(facility) // creates a facility
 
-coordinator.getFacilityController().createOrReplace(facility) //updates a faciity
+coordinator.getFacilityController().updateFacility(facility) //updates a faciity
 
-coordinator.getFacilityController().destroy(facilityName) //deletes a faciity
+coordinator.getFacilityController().deleteFacility(facilityName) //deletes a faciity
 ```
 
 

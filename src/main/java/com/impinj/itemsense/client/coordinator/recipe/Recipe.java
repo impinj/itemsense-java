@@ -4,6 +4,7 @@ package com.impinj.itemsense.client.coordinator.recipe;
  * Created by jcombopi on 1/25/16.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Recipe {
     private String name;
     private String readerConfigurationName;

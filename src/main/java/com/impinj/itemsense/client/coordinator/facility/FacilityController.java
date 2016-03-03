@@ -28,15 +28,15 @@ public class FacilityController {
         return this.restApiHelper.getMultiple(null, "/configuration/v1/facilities/show", target, gson);
     }
 
-    public Facility create(Facility facility) {
+    public Facility createFacility(Facility facility) {
         return this.restApiHelper.post(facility, "/configuration/v1/facilities/create", target, gson);
     }
 
-    public Facility createOrReplace(Facility facility) {
+    public Facility updateFacility(Facility facility) {
         return this.restApiHelper.put(facility, "/configuration/v1/facilities/createOrReplace", target, gson);
     }
 
-    public Response destroy(String facilityName) {
+    public Response deleteFacility(String facilityName) {
         return this.restApiHelper.delete(facilityName, "/configuration/v1/facilities/destroy", target);
     }
 }
