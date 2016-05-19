@@ -1,30 +1,30 @@
 package com.impinj.itemsense.client.coordinator.currentZoneMap;
 
-import com.google.gson.Gson;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
-import org.omg.CORBA.Current;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-import java.util.Collection;
 
 /**
  * Created by jcombopi on 1/26/16.
  */
 public class CurrentZoneMapController {
-    private Gson gson;
+
     private WebTarget target;
     private RestApiHelper<CurrentZoneMap> restApiHelper;
 
 
-    public CurrentZoneMapController(final Gson gson, WebTarget target) {
-        this.gson = gson;
+    public CurrentZoneMapController(WebTarget target) {
         this.target = target;
         this.restApiHelper = new RestApiHelper<CurrentZoneMap>(CurrentZoneMap.class);
     }
 
+    public Response setCurrentZoneMapAsResponse(String zoneMapName){
+        return this.restApiHelper.post(null, "/configuration/v1/currentZoneMap/select/" + zoneMapName, target);
+    }
+
     public CurrentZoneMap setCurrentZoneMap(String zoneMapName) {
-        return this.restApiHelper.post(null, "/configuration/v1/currentZoneMap/select/" + zoneMapName, target, gson);
+        return setCurrentZoneMapAsResponse(zoneMapName).readEntity(CurrentZoneMap.class);
     }
 
     public Response clearCurrentZoneMap() {
@@ -35,11 +35,20 @@ public class CurrentZoneMapController {
         return this.restApiHelper.delete(facility, "/configuration/v1/currentZoneMap/clear", target);
     }
 
+    public Response getCurrentZoneMapAsResponse(String facility){
+        if(facility != null && !facility.isEmpty()){
+            return this.restApiHelper.get(facility, "/configuration/v1/currentZoneMap/show", target);
+        }
+        else{
+            return this.restApiHelper.get( "/configuration/v1/currentZoneMap/show", target);
+        }
+    }
+
     public CurrentZoneMap getCurrentZoneMap(String facility) {
-        return this.restApiHelper.get(facility, "/configuration/v1/currentZoneMap/show", target);
+       return getCurrentZoneMapAsResponse(facility).readEntity(CurrentZoneMap.class);
     }
 
     public CurrentZoneMap getCurrentZoneMap() {
-        return this.restApiHelper.get( "/configuration/v1/currentZoneMap/show", target);
+        return getCurrentZoneMapAsResponse(null).readEntity(CurrentZoneMap.class);
     }
 }

@@ -1,35 +1,32 @@
 package com.impinj.itemsense.client.coordinator.readerdefintion;
 
 
-import com.google.gson.Gson;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 
 
 /**
  * Created by jcombopi on 1/25/16.
  */
 public class ReaderDefinitionController {
-    private Gson gson;
     private WebTarget target;
     private RestApiHelper<ReaderDefinition> restApiHelper;
 
-    public ReaderDefinitionController(final Gson gson, WebTarget target) {
-        this.gson = gson;
+    public ReaderDefinitionController(WebTarget target) {
         this.target = target;
         this.restApiHelper = new RestApiHelper<ReaderDefinition>(ReaderDefinition.class);
     }
 
     public ReaderDefinition createReaderDefinition(ReaderDefinition readerDefinition) {
-        return this.restApiHelper.post(readerDefinition, "/configuration/v1/readerDefinitions/create", target, gson);
+        return this.createReaderDefinitionAsResponse(readerDefinition).readEntity(ReaderDefinition.class);
     }
 
     public ReaderDefinition updateReaderDefinition(ReaderDefinition readerDefinition) {
-        return this.restApiHelper.put(readerDefinition, "/configuration/v1/readerDefinitions/create", target, gson);
+        return this.updateReaderDefinitionAsResponse(readerDefinition).readEntity(ReaderDefinition.class);
     }
 
     public Response deleteReaderDefinition(String readerDefinitionName) {
@@ -37,11 +34,29 @@ public class ReaderDefinitionController {
     }
 
     public ReaderDefinition getReaderDefinition(String readerDefinitionName) {
-        return this.restApiHelper.get(readerDefinitionName, "/configuration/v1/readerDefinitions/show", target);
+        return this.getReaderDefinitionAsResponse(readerDefinitionName).readEntity(ReaderDefinition.class);
     }
 
     public ArrayList<ReaderDefinition> getReaderDefinitions() {
-        return this.restApiHelper.getMultiple(null, "/configuration/v1/readerDefinitions/show", target, gson);
+        ReaderDefinition[] readerDefinitions = this.getReaderDefinitionsAsResponse().readEntity(ReaderDefinition[].class);
+        return new ArrayList<ReaderDefinition>(Arrays.asList(readerDefinitions));
     }
+
+    public Response createReaderDefinitionAsResponse(ReaderDefinition readerDefinition) {
+        return this.restApiHelper.post(readerDefinition, "/configuration/v1/readerDefinitions/create", target);
+    }
+
+    public Response updateReaderDefinitionAsResponse(ReaderDefinition readerDefinition) {
+        return this.restApiHelper.put(readerDefinition, "/configuration/v1/readerDefinitions/create", target);
+    }
+
+    public Response getReaderDefinitionAsResponse(String readerDefinitionName) {
+        return this.restApiHelper.get(readerDefinitionName, "/configuration/v1/readerDefinitions/show", target);
+    }
+
+    public Response getReaderDefinitionsAsResponse() {
+        return this.restApiHelper.get("/configuration/v1/readerDefinitions/show", target);
+    }
+
 
 }

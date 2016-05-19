@@ -1,39 +1,55 @@
 package com.impinj.itemsense.client.coordinator.facility;
 
-import com.google.gson.Gson;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by jcombopi on 1/25/16.
  */
 public class FacilityController {
     private RestApiHelper<Facility> restApiHelper;
-    private Gson gson;
     private WebTarget target;
 
-    public FacilityController(final Gson gson, WebTarget target) {
-        this.gson = gson;
+    public FacilityController(WebTarget target) {
         this.target = target;
         this.restApiHelper = new RestApiHelper<Facility>(Facility.class);
     }
 
     public Facility getFacility(String facilityName) {
+        return this.getFacilityAsResponse(facilityName).readEntity(Facility.class);
+    }
+
+    public Response getFacilityAsResponse(String facilityName) {
         return this.restApiHelper.get(facilityName, "/configuration/v1/facilities/show", target);
     }
-    public ArrayList<Facility> getAllFacilities(){
-        return this.restApiHelper.getMultiple(null, "/configuration/v1/facilities/show", target, gson);
+
+    public Response getAllFacilitiesAsResponse() {
+        return this.restApiHelper.get("/configuration/v1/facilities/show", target);
+    }
+
+    public ArrayList<Facility> getAllFacilities() {
+        Facility[] facilities = getAllFacilitiesAsResponse().readEntity(Facility[].class);
+        return new ArrayList<Facility>(Arrays.asList(facilities));
+    }
+
+    public Response createFacilityAsResponse(Facility facility) {
+        return this.restApiHelper.post(facility, "/configuration/v1/facilities/create", target);
     }
 
     public Facility createFacility(Facility facility) {
-        return this.restApiHelper.post(facility, "/configuration/v1/facilities/create", target, gson);
+        return this.createFacilityAsResponse(facility).readEntity(Facility.class);
+    }
+
+    public Response updateFacilityAsResponse(Facility facility) {
+        return this.restApiHelper.put(facility, "/configuration/v1/facilities/createOrReplace", target);
     }
 
     public Facility updateFacility(Facility facility) {
-        return this.restApiHelper.put(facility, "/configuration/v1/facilities/createOrReplace", target, gson);
+        return this.updateFacilityAsResponse(facility).readEntity(Facility.class);
     }
 
     public Response deleteFacility(String facilityName) {

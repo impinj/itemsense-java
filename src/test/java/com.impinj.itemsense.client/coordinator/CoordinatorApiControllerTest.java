@@ -1,10 +1,7 @@
 package com.impinj.itemsense.client.coordinator;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Created by jcombopi on 1/27/16.

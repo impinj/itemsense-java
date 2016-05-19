@@ -6,10 +6,8 @@ package com.impinj.itemsense.client.coordinator;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
-
 import com.impinj.itemsense.client.coordinator.user.User;
 import com.impinj.itemsense.client.coordinator.user.UserController;
-
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.*;
 
@@ -19,7 +17,6 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 

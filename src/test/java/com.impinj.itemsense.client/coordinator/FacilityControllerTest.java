@@ -1,10 +1,6 @@
 package com.impinj.itemsense.client.coordinator;
 
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.coordinator.facility.Facility;
@@ -16,6 +12,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.net.URI;
 import java.util.ArrayList;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
 
 
 /**

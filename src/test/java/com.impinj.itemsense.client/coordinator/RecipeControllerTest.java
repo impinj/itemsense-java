@@ -19,7 +19,6 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 
