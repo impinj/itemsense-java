@@ -17,6 +17,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -68,7 +69,7 @@ public class ZoneMapControllerTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(gson.toJson(testZoneMaps))));
 
-        ArrayList<ZoneMap> zoneMaps = zoneMapController.getZoneMaps();
+        List<ZoneMap> zoneMaps = zoneMapController.getZoneMaps();
 
         Assert.assertEquals(zoneMaps.size(), 1);
         Assert.assertThat(zoneMaps, instanceOf(ArrayList.class));

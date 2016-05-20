@@ -6,6 +6,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by jcombopi on 1/25/16.
@@ -25,7 +26,7 @@ public class JobController {
         return this.restApiHelperGetter.get( "/control/v1/jobs/show", target);
     }
 
-    public ArrayList<JobResponse> getJobs() {
+    public List<JobResponse> getJobs() {
         JobResponse[] jobResponses = getJobsAsResponse().readEntity(JobResponse[].class);
         return new ArrayList<JobResponse>(Arrays.asList(jobResponses));
     }

@@ -7,6 +7,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by jcombopi on 1/25/16.
@@ -37,7 +38,7 @@ public class UserController {
         return this.getUserAsResponse(userName).readEntity(User.class);
     }
 
-    public ArrayList<User> getUsers() {
+    public List<User> getUsers() {
         User[] users = this.getUsersAsResponse().readEntity(User[].class);
         return new ArrayList<User>(Arrays.asList(users));
     }

@@ -6,6 +6,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -37,7 +38,7 @@ public class RecipeController {
        return this.getRecipeAsResponse(recipeName).readEntity(Recipe.class);
     }
 
-    public ArrayList<Recipe> getRecipes() {
+    public List<Recipe> getRecipes() {
         Recipe[] recipes =  this.getRecipesAsResponse().readEntity(Recipe[].class);
         return new ArrayList<Recipe>(Arrays.asList(recipes));
     }

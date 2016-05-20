@@ -17,6 +17,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -67,7 +68,7 @@ public class RecipeControllerTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(gson.toJson(testDefinitions))));
 
-        ArrayList<Recipe> recipes = recipeController.getRecipes();
+        List<Recipe> recipes = recipeController.getRecipes();
 
         Assert.assertEquals(recipes.size(), 1);
         Assert.assertThat(recipes, instanceOf(ArrayList.class));

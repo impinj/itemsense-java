@@ -6,6 +6,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by jcombopi on 1/25/16.
@@ -35,7 +36,7 @@ public class ReaderConfigurationController {
         return getReaderConfigurationAsResponse(readerConfigurationName).readEntity(ReaderConfiguration.class);
     }
 
-    public ArrayList<ReaderConfiguration> getReaderConfigurations() {
+    public List<ReaderConfiguration> getReaderConfigurations() {
         ReaderConfiguration[] readerConfigurations = this.getReaderConfigurationsAsResponse().readEntity(ReaderConfiguration[].class);
         return new ArrayList<ReaderConfiguration>(Arrays.asList(readerConfigurations));
     }

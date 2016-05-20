@@ -7,6 +7,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -37,7 +38,7 @@ public class ReaderDefinitionController {
         return this.getReaderDefinitionAsResponse(readerDefinitionName).readEntity(ReaderDefinition.class);
     }
 
-    public ArrayList<ReaderDefinition> getReaderDefinitions() {
+    public List<ReaderDefinition> getReaderDefinitions() {
         ReaderDefinition[] readerDefinitions = this.getReaderDefinitionsAsResponse().readEntity(ReaderDefinition[].class);
         return new ArrayList<ReaderDefinition>(Arrays.asList(readerDefinitions));
     }

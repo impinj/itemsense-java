@@ -6,6 +6,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -37,7 +38,7 @@ public class ZoneMapController {
         return this.getZoneMapAsResponse(zoneMapName).readEntity(ZoneMap.class);
     }
 
-    public ArrayList<ZoneMap> getZoneMaps() {
+    public List<ZoneMap> getZoneMaps() {
         ZoneMap[] zoneMaps = this.getZoneMapsAsResponse().readEntity(ZoneMap[].class);
         return new ArrayList<ZoneMap>(Arrays.asList(zoneMaps));
     }

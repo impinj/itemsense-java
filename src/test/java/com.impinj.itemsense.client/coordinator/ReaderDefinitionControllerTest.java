@@ -17,6 +17,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -59,7 +60,7 @@ public class ReaderDefinitionControllerTest {
     @Test
     public void GetReaderDefinitionsTest(){
         ReaderDefinition testReaderDefinition = new ReaderDefinition( "test-xarray", "xarray-test.local" , "TestFacility", null, null, new Placement(1, 2,5, 0,180,90, "1"), ReaderType.XARRAY);
-        ArrayList<ReaderDefinition> testDefinitions = new ArrayList<>();
+        List<ReaderDefinition> testDefinitions = new ArrayList<>();
         testDefinitions.add(testReaderDefinition);
 
         stubFor(get(urlEqualTo("/configuration/v1/readerDefinitions/show")).willReturn(aResponse()
@@ -67,7 +68,7 @@ public class ReaderDefinitionControllerTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(gson.toJson(testDefinitions))));
 
-        ArrayList<ReaderDefinition> configurations = readerDefinitionController.getReaderDefinitions();
+        List<ReaderDefinition> configurations = readerDefinitionController.getReaderDefinitions();
 
         Assert.assertEquals(configurations.size(), 1);
         Assert.assertThat(configurations, instanceOf(ArrayList.class));

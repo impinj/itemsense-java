@@ -6,6 +6,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by jcombopi on 1/25/16.
@@ -31,7 +32,7 @@ public class FacilityController {
         return this.restApiHelper.get("/configuration/v1/facilities/show", target);
     }
 
-    public ArrayList<Facility> getAllFacilities() {
+    public List<Facility> getAllFacilities() {
         Facility[] facilities = getAllFacilitiesAsResponse().readEntity(Facility[].class);
         return new ArrayList<Facility>(Arrays.asList(facilities));
     }

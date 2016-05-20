@@ -14,6 +14,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -66,7 +67,7 @@ public class ReaderConfigurationControllerTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(gson.toJson(testConfigurations))));
 
-        ArrayList<ReaderConfiguration> configurations = readerConfigurationController.getReaderConfigurations();
+        List<ReaderConfiguration> configurations = readerConfigurationController.getReaderConfigurations();
 
         Assert.assertEquals(configurations.size(), 1);
         Assert.assertThat(configurations, instanceOf(ArrayList.class));

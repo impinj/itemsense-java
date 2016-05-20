@@ -12,6 +12,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -61,7 +62,7 @@ public class FacilityControllerTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(gson.toJson(testFacilities))));
 
-        ArrayList<Facility> facilities = facilityController.getAllFacilities();
+        List<Facility> facilities = facilityController.getAllFacilities();
 
         Assert.assertEquals(facilities.size(), 1);
         Assert.assertThat(facilities, instanceOf(ArrayList.class));
