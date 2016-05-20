@@ -1,26 +1,34 @@
 package com.impinj.itemsense.client.data.itemhistory;
 
-import com.google.gson.Gson;
-import com.impinj.itemsense.client.helpers.RestApiHelper;
 import com.impinj.itemsense.client.data.EpcFormat;
 import com.impinj.itemsense.client.data.PresenceConfidence;
+import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
-import java.util.*;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Created by jcombopi on 1/26/16.
  */
 public class ItemHistoryController {
 
-    private Gson gson;
     private WebTarget target;
     private RestApiHelper<ItemHistoryResponse> restApiHelper;
 
-    public ItemHistoryController(final Gson gson, WebTarget target) {
-        this.gson = gson;
+    public ItemHistoryController(WebTarget target) {
         this.target = target;
         this.restApiHelper = new RestApiHelper<ItemHistoryResponse>(ItemHistoryResponse.class);
+    }
+
+    public Response getItemHistoryAsResponse(HashMap<String, Object> queryParams){
+        return this.restApiHelper.get(queryParams, "/data/v1/items/show/history", target);
+    }
+
+    public ItemHistoryResponse getItemHistory(HashMap<String, Object> queryParams){
+        return getItemHistoryAsResponse(queryParams).readEntity(ItemHistoryResponse.class);
     }
 
     public ItemHistoryResponse getItemHistory(EpcFormat epcFormat, String epcPrefix, String fromZone, String toZone, String fromFacility, String toFacility, PresenceConfidence presenceConfidence, String facility,
@@ -60,10 +68,6 @@ public class ItemHistoryController {
 
         return this.getItemHistory(queryParams);
 
-    }
-
-    public ItemHistoryResponse getItemHistory(HashMap<String, Object> queryParams){
-        return this.restApiHelper.get(queryParams, "/data/v1/items/show/history", target, gson);
     }
 
     public ItemHistoryResponse getItemHistory() {

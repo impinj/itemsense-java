@@ -12,9 +12,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 /**
@@ -57,7 +57,7 @@ public class JobControllerTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(jobResponseStrings)));
 
-        ArrayList<JobResponse> jobs = jobController.getJobs();
+        List<JobResponse> jobs = jobController.getJobs();
         Assert.assertEquals(jobs.size(), 1);
         Assert.assertThat(jobs, instanceOf(ArrayList.class));
         Assert.assertThat(jobs.get(0), instanceOf(JobResponse.class));

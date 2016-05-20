@@ -1,22 +1,19 @@
 package com.impinj.itemsense.client.coordinator;
 
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.coordinator.currentZoneMap.CurrentZoneMap;
 import com.impinj.itemsense.client.coordinator.currentZoneMap.CurrentZoneMapController;
-
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.*;
-import org.omg.CORBA.Current;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.net.URI;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
 
 
 /**

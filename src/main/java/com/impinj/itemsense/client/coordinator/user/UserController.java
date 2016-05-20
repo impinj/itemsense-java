@@ -1,34 +1,33 @@
 package com.impinj.itemsense.client.coordinator.user;
 
-import com.google.gson.Gson;
+
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by jcombopi on 1/25/16.
  */
 public class UserController {
 
-    private Gson gson;
     private WebTarget target;
     private RestApiHelper<User> restApiHelper;
 
-    public UserController(final Gson gson, WebTarget target) {
-        this.gson = gson;
+    public UserController(WebTarget target) {
         this.target = target;
         this.restApiHelper = new RestApiHelper<User>(User.class);
     }
 
     public User createUser(User user) {
-        return this.restApiHelper.post(user, "/configuration/v1/users/create", target, gson);
+        return this.createUserAsResponse(user).readEntity(User.class);
     }
 
     public User updateUser(User user) {
-        return this.restApiHelper.put(user, "/configuration/v1/users/create", target, gson);
+        return this.updateUserAsResponse(user).readEntity(User.class);
     }
 
     public Response deleteUser(String userName) {
@@ -36,10 +35,27 @@ public class UserController {
     }
 
     public User getUser(String userName) {
+        return this.getUserAsResponse(userName).readEntity(User.class);
+    }
+
+    public List<User> getUsers() {
+        User[] users = this.getUsersAsResponse().readEntity(User[].class);
+        return new ArrayList<User>(Arrays.asList(users));
+    }
+
+    public Response createUserAsResponse(User user) {
+        return this.restApiHelper.post(user, "/configuration/v1/users/create", target);
+    }
+
+    public Response updateUserAsResponse(User user) {
+        return this.restApiHelper.put(user, "/configuration/v1/users/create", target);
+    }
+
+    public Response getUserAsResponse(String userName) {
         return this.restApiHelper.get(userName, "/configuration/v1/users/show", target);
     }
 
-    public ArrayList<User> getUsers() {
-        return this.restApiHelper.getMultiple(null, "/configuration/v1/users/show", target, gson);
+    public Response getUsersAsResponse() {
+        return this.restApiHelper.get("/configuration/v1/users/show", target);
     }
 }

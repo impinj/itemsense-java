@@ -1,27 +1,35 @@
 package com.impinj.itemsense.client.data.item;
 
-import com.google.gson.Gson;
-import com.impinj.itemsense.client.helpers.RestApiHelper;
 import com.impinj.itemsense.client.data.EpcFormat;
 import com.impinj.itemsense.client.data.PresenceConfidence;
-
+import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
-import java.util.*;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Created by jcombopi on 1/26/16.
  */
 public class ItemController {
-    private Gson gson;
     private WebTarget target;
     private RestApiHelper<ItemResponse> restApiHelper;
 
-    public ItemController(final Gson gson, WebTarget target) {
-        this.gson = gson;
+    public ItemController(WebTarget target) {
         this.target = target;
         this.restApiHelper = new RestApiHelper<ItemResponse>(ItemResponse.class);
     }
+
+    public Response getItemsAsResponse(HashMap<String, Object> queryParams){
+        return this.restApiHelper.get(queryParams, "/data/v1/items/show", target);
+    }
+
+    public ItemResponse getItems(HashMap<String, Object> queryParams) {
+       return getItemsAsResponse(queryParams).readEntity(ItemResponse.class);
+    }
+
 
     public ItemResponse getItems(EpcFormat epcFormat, String epcPrefix, String zoneNames, PresenceConfidence presenceConfidence, String facility,
                                  Integer pageSize, String pageMarker) {
@@ -52,10 +60,6 @@ public class ItemController {
 
     }
 
-    public ItemResponse getItems(HashMap<String, Object> queryParams) {
-        return this.restApiHelper.get(queryParams, "/data/v1/items/show", target, gson);
-    }
-
     public ItemResponse getItems() {
         return this.getItems(null);
     }
@@ -79,6 +83,10 @@ public class ItemController {
     }
 
     public ArrayList<Item> getAllItems(EpcFormat epcFormat) {
+        HashMap<String, Object> queryParams = new HashMap<>();
+        if (epcFormat != null) {
+            queryParams.put("epcFormat", epcFormat.toString());
+        }
         return getAllItems(epcFormat, null, null, null, null, null);
     }
 

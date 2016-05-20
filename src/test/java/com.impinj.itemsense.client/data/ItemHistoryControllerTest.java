@@ -2,7 +2,6 @@ package com.impinj.itemHistorysense.client.data;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
-
 import com.impinj.itemsense.client.data.DataApiController;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistory;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistoryController;
@@ -16,7 +15,6 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 /**
