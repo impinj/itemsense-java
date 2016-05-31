@@ -1,7 +1,6 @@
 package com.impinj.itemsense.client.helpers;
 
 
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -11,7 +10,7 @@ import java.util.Map;
 /**
  * Created by jcombopi on 1/25/16.
  */
-public class RestApiHelper <T> {
+public class RestApiHelper<T> {
     private Class<T> type;
 
     public RestApiHelper(Class<T> type) {
@@ -19,7 +18,7 @@ public class RestApiHelper <T> {
     }
 
     public Response post(T request, String path, WebTarget target) {
-       return target.path(path)
+        return target.path(path)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(request));
     }
@@ -58,7 +57,6 @@ public class RestApiHelper <T> {
         return target.request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
     }
-
 
 
 }
