@@ -42,5 +42,6 @@ public class CoordinatorApiController {
         this.recipeController = new RecipeController(target);
         this.userController = new UserController(target);
         this.zoneMapController = new ZoneMapController(target);
+        this.authenticationController = new AuthenticationController(target);
     }
 }
