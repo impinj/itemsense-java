@@ -30,9 +30,9 @@
     </scm>
     <developers>
         <developer>
-            <id>jcombopi</id>
-            <name>Joe Combopiano</name>
-            <email>jcombopiano@impinj.com</email>
+            <id>impinj_github</id>
+            <name>Impinj Github</name>
+            <email>itemsenseux@impinj.com</email>
             <organization>impinj</organization>
             <organizationUrl>http://www.impinj.com</organizationUrl>
             <roles>
@@ -141,14 +141,30 @@
             <url>https://repo.maven.apache.org/maven2</url>
         </repository>
     </repositories>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.3</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
                 <executions>
-
                     <execution>
                         <id>sign-artifacts</id>
                         <phase>verify</phase>
@@ -205,7 +221,5 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>
 
