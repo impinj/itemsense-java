@@ -20,7 +20,6 @@ public class ZonedDateTimeSerialization extends JsonDeserializer<ZonedDateTime> 
 
     @Override
     public ZonedDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-        System.out.println("ZonedDateTimeSerialization::deserialize()");
         return ZonedDateTime.parse(jsonParser.getText());
     }
 
