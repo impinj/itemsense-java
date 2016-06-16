@@ -17,22 +17,9 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JobResponse {
-    private String id;
-    private String status;
-    private String [] readerNames;
+public class JobResponseError {
 
     @JsonDeserialize(using = ZonedDateTimeSerialization.class)
-    private ZonedDateTime creationTime;
-    @JsonDeserialize(using = ZonedDateTimeSerialization.class)
-    private ZonedDateTime lastActivityTime;
-    @JsonDeserialize(using = ZonedDateTimeSerialization.class)
-    private ZonedDateTime lastHeartbeatTime;
-
-    private String activeDuration;
-    private boolean errorOccurred;
-    private JobResponseError[] errors;
-    private Facility[] facilities;
-    private Job job;
-    //TODO:INSTANCE META DATA;
+    private ZonedDateTime time;
+    private String message;
 }
