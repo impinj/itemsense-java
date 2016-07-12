@@ -90,9 +90,4 @@ public class ReaderDefinitionControllerTest {
         Assert.assertThat(readerDefinitionResult, instanceOf(ReaderDefinition.class));
 
     }
-
-
-
-
-
 }

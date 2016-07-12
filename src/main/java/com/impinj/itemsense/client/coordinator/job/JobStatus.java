@@ -14,7 +14,10 @@ package com.impinj.itemsense.client.coordinator.job;
  * @author Daniel Burton
  */
 public enum JobStatus {
+    WAITING,
+    INITIALIZING,
+    STARTING,
     RUNNING,
-    STOPPED,
-    COMPLETE
+    STOPPING,
+    STOPPED
 }

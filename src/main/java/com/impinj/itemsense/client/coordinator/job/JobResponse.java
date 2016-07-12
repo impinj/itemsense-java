@@ -21,6 +21,7 @@ public class JobResponse {
     private String id;
     private String status;
     private String [] readerNames;
+    private String connectionType;
 
     @JsonDeserialize(using = ZonedDateTimeSerialization.class)
     private ZonedDateTime creationTime;
@@ -32,7 +33,10 @@ public class JobResponse {
     private String activeDuration;
     private boolean errorOccurred;
     private JobResponseError[] errors;
+    private int maxErrors;
+    private String stopReason;
     private Facility[] facilities;
     private Job job;
+    private int startAttempts;
     //TODO:INSTANCE META DATA;
 }

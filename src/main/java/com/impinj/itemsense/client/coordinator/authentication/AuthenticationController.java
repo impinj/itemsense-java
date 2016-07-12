@@ -1,13 +1,10 @@
 package com.impinj.itemsense.client.coordinator.authentication;
 
-import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinition;
 import com.impinj.itemsense.client.coordinator.user.User;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
