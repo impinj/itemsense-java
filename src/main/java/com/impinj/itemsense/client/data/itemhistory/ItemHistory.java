@@ -22,6 +22,8 @@ public class ItemHistory {
     private String tagId;
     private String fromZone;
     private String toZone;
+    private String fromFLoor;
+    private String toFloor;
     private String fromFacility;
     private String toFacility;
     private double fromX;
@@ -31,5 +33,4 @@ public class ItemHistory {
 
     @JsonDeserialize(using = ZonedDateTimeSerialization.class)
     private ZonedDateTime observationTime;
-
 }

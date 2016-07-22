@@ -1,5 +1,6 @@
 package com.impinj.itemsense.client.coordinator.job;
 
+import com.google.gson.Gson;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
@@ -15,13 +16,13 @@ public class JobController {
     private WebTarget target;
     private RestApiHelper<Job> restApiHelperPoster;
     private RestApiHelper<JobResponse> restApiHelperGetter;
-    private RestApiHelper<JobStats> restApiHelperStatsGetter;
+    private Gson gson;
 
     public JobController(final WebTarget target) {
         this.target = target;
         this.restApiHelperPoster = new RestApiHelper<>(Job.class);
         this.restApiHelperGetter = new RestApiHelper<>(JobResponse.class);
-        this.restApiHelperStatsGetter = new RestApiHelper<>(JobStats.class);
+        this.gson = new Gson();
     }
 
     public Response getJobsAsResponse() {
@@ -40,13 +41,9 @@ public class JobController {
         return this.restApiHelperPoster.post(null, "/control/v1/jobs/stop/" + jobId, target);
     }
 
-    public Response getJobStatsAsResponse(String jobId) {
-        return this.restApiHelperStatsGetter.get(jobId, "control/v1/jobs/stats/", target);
-    }
-
     public List<JobResponse> getJobs() {
         JobResponse[] jobResponses = getJobsAsResponse().readEntity(JobResponse[].class);
-        return new ArrayList<JobResponse>(Arrays.asList(jobResponses));
+        return new ArrayList<>(Arrays.asList(jobResponses));
     }
 
     public JobResponse getJob(String jobId) {
@@ -61,7 +58,27 @@ public class JobController {
         return stopJobAsResponse(jobId).readEntity(JobResponse.class);
     }
 
-    public JobStats getJobStats(String jobId) {
-        return getJobStatsAsResponse(jobId).readEntity(JobStats.class);
+    public boolean hasJobStarted(String jobId) {
+        Response response = getJobAsResponse(jobId);
+        if (response.getStatus() == 200) {
+            JobResponse jobResponse = response.readEntity(JobResponse.class);
+            JobStatus status = jobResponse.getJobStatusAsEnum();
+            return (status == JobStatus.RUNNING || status == JobStatus.STOPPING || status == JobStatus.STOPPED);
+        } else {
+            response.close();
+            return false;
+        }
+    }
+
+    public boolean hasJobStopped(String jobId) {
+        Response response = getJobAsResponse(jobId);
+        if (response.getStatus() == 200) {
+            JobResponse jobResponse = response.readEntity(JobResponse.class);
+            JobStatus status = jobResponse.getJobStatusAsEnum();
+            return (status == JobStatus.STOPPED);
+        } else {
+            response.close();
+            return false;
+        }
     }
 }

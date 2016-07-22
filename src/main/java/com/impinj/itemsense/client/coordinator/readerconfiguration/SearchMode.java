@@ -7,5 +7,4 @@ public enum SearchMode {
     READER_SELECTED,
     SINGLE_TARGET,
     DUAL_TARGET,
-    TAG_FOCUS,
-}
+    TAG_FOCUS}

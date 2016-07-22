@@ -1,9 +1,12 @@
 package com.impinj.itemsense.client.coordinator.recipe;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,25 +25,12 @@ public class RecipeController {
         this.restApiHelper = new RestApiHelper<Recipe>(Recipe.class);
     }
 
-    public Recipe createRecipe(Recipe recipe) {
-        return this.createRecipeAsResponse(recipe).readEntity(Recipe.class);
+    public Response getRecipeAsResponse(String recipeName) {
+        return this.restApiHelper.get(recipeName, "/configuration/v1/recipes/show", target);
     }
 
-    public Recipe updateRecipe(Recipe recipe) {
-        return this.updateRecipeAsResponse(recipe).readEntity(Recipe.class);
-    }
-
-    public Response deleteRecipe(String recipeName) {
-        return this.restApiHelper.delete(recipeName, "/configuration/v1/recipes/destroy", target);
-    }
-
-    public Recipe getRecipe(String recipeName) {
-       return this.getRecipeAsResponse(recipeName).readEntity(Recipe.class);
-    }
-
-    public List<Recipe> getRecipes() {
-        Recipe[] recipes =  this.getRecipesAsResponse().readEntity(Recipe[].class);
-        return new ArrayList<Recipe>(Arrays.asList(recipes));
+    public Response getRecipesAsResponse() {
+        return this.restApiHelper.get( "/configuration/v1/recipes/show", target);
     }
 
     public Response createRecipeAsResponse(Recipe recipe) {
@@ -48,14 +38,26 @@ public class RecipeController {
     }
 
     public Response updateRecipeAsResponse(Recipe recipe) {
-        return this.restApiHelper.put(recipe, "/configuration/v1/recipes/create", target);
+        return this.restApiHelper.put(recipe, "/configuration/v1/recipes/createOrReplace", target);
     }
 
-    public Response getRecipeAsResponse(String recipeName) {
-        return this.restApiHelper.get(recipeName, "/configuration/v1/recipes/show", target);
+    public Response deleteRecipe(String recipeName) {
+        return this.restApiHelper.delete(recipeName, "/configuration/v1/recipes/destroy", target);
     }
 
-    public Response getRecipesAsResponse() {
-        return this.restApiHelper.get( "/configuration/v1/recipes/show", target);
+    public Recipe getRecipe(String recipeName) {
+        return restApiHelper.readObjectFromString(this.getRecipeAsResponse(recipeName).readEntity(String.class));
+    }
+
+    public List<Recipe> getRecipes() {
+        return this.restApiHelper.readObjectsFromString(this.getRecipesAsResponse().readEntity(String.class));
+    }
+
+    public Recipe createRecipe(Recipe recipe) {
+        return this.restApiHelper.readObjectFromString(this.createRecipeAsResponse(recipe).readEntity(String.class));
+    }
+
+    public Recipe updateRecipe(Recipe recipe) {
+        return this.restApiHelper.readObjectFromString(this.updateRecipeAsResponse(recipe).readEntity(String.class));
     }
 }

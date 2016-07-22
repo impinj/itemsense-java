@@ -5,18 +5,16 @@ package com.impinj.itemsense.client.coordinator;
  */
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.google.gson.Gson;
 import com.impinj.itemsense.client.coordinator.authentication.AuthenticationController;
 import com.impinj.itemsense.client.coordinator.authentication.ListTokenResponse;
 import com.impinj.itemsense.client.coordinator.authentication.Token;
-import com.impinj.itemsense.client.coordinator.readerconfiguration.*;
-import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinition;
 import com.impinj.itemsense.client.coordinator.user.User;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.*;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,30 +22,30 @@ import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
-
 public class AuthenticationControllerTest {
+    Client client;
     private CoordinatorApiController coordinatorApiController;
     private AuthenticationController authenticationController;
-    private Gson gson;
     private String listTokenTestString;
     private String validateTokenTestString;
     private String getTokenTestString;
+
     @ClassRule
     public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
 
-
     @Before
     public void setUp() throws Exception {
 
-        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
+        //wireMockRule.resetRequests();
+
+        client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
 
         //http://localhost:8089 is where wiremock is running
         coordinatorApiController = new CoordinatorApiController(client, URI.create("http://localhost:8089"));
         authenticationController = coordinatorApiController.getAuthenticationController();
-        gson = new Gson();
         listTokenTestString = "[\n" +
                 " {\n" +
                 "   \"authenticationToken\": {\n" +
@@ -81,7 +79,11 @@ public class AuthenticationControllerTest {
 
     @After
     public void tearDown() throws Exception {
-
+        //wireMockRule.shutdown();
+        client.close();
+        client = null;
+        coordinatorApiController = null;
+        authenticationController = null;
     }
 
     @Test
@@ -95,38 +97,73 @@ public class AuthenticationControllerTest {
         Assert.assertNotNull(token);
         Assert.assertThat(token, instanceOf(Token.class));
     }
+
     @Test
-    public void validateTokenTest(){
-        User testUser = new User("Test_User", null, new String[]{"Admin", "Job_Runner"});
+    public void validateTokenTest() {
+        String expectedUserString = "{\"name\":\"Test_User\",\"roles\":[\"Admin\",\"Job_Runner\"]}";
         stubFor(post(urlEqualTo("/authentication/v1/validateToken")).willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
-                .withBody(gson.toJson(testUser))));
-
+                .withBody(expectedUserString)));
 
         Token token = new Token("c84c838a-9388-4896-a678-8cbae93c407a");
+        Response response = authenticationController.validateTokenAsResponse(token);
+        Assert.assertEquals(200, response.getStatus());
+        response.close();
+
         User user = authenticationController.validateToken(token);
 
         Assert.assertNotNull(user);
         Assert.assertThat(user, instanceOf(User.class));
+        Assert.assertEquals("Test_User", user.getName());
+        Assert.assertEquals(2, user.getRoles().length);
+        Assert.assertEquals("Admin", user.getRoles()[0]);
+        Assert.assertEquals("Job_Runner", user.getRoles()[1]);
     }
 
     @Test
-    public void listTokensTest(){
+    public void revokeTokenTest() {
+        stubFor(put(urlEqualTo("/authentication/v1/revokeToken")).willReturn(aResponse()
+            .withStatus(204)
+            .withHeader("Content-Type", "application/json")
+            .withBody(getTokenTestString)));
+
+        Token tokenToRevoke = new Token();
+        tokenToRevoke.setToken("c84c838a-9388-4896-a678-8cbae93c407a");
+        Response response = authenticationController.revokeTokenAsResponse(tokenToRevoke);
+        Assert.assertEquals(204, response.getStatus());
+        response.close();
+    }
+
+    @Test
+    public void revokeTokensTest() {
+        stubFor(put(urlEqualTo("/authentication/v1/revokeTokens/Admin")).willReturn(aResponse()
+            .withStatus(204)
+            .withHeader("Content-Type", "application/json")
+            .withBody("")));
+
+
+        Response response = authenticationController.revokeTokensAsResponse("Admin");
+        Assert.assertEquals(204, response.getStatus());
+        response.close();
+    }
+
+    @Test
+    public void listTokensTest() throws Exception {
         stubFor(get(urlEqualTo("/authentication/v1/listTokens/Admin")).willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(listTokenTestString)));
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(listTokenTestString)));
+
+        Response response = authenticationController.listTokensAsResponse("Admin");
+        Assert.assertEquals(200, response.getStatus());
+        response.close();
 
         List<ListTokenResponse> tokens = authenticationController.listTokens("Admin");
-
         Assert.assertNotNull(tokens);
         Assert.assertThat(tokens, instanceOf(ArrayList.class));
         Assert.assertThat(tokens.get(0), instanceOf(ListTokenResponse.class));
 
-
     }
-
-
 
 }

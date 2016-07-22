@@ -57,8 +57,9 @@ public class ReaderConfigurationControllerTest {
     }
 
     @Test
-    public void GetReaderConfigurationsTest(){
-        ReaderConfiguration testReaderConfiguration = new ReaderConfiguration("Test_Configuration", Operation.NORMAL, ReaderMode.MODE_1002, SearchMode.DUAL_TARGET, 1, 24, 30, true, true,new int[] {1,2,3,4,5}, new Filter(), new ChannelConfig(), new ReportConfig());
+    public void getReaderConfigurationsTest() {
+        ReaderConfigurationDetails details = new ReaderConfigurationDetails(ReaderMode.MODE_1002, SearchMode.DUAL_TARGET, 1, 24, true, new int[] {1,2,3,4,5}, new Filter(), new ChannelConfig(), new ReportConfig());
+        ReaderConfiguration testReaderConfiguration = new ReaderConfiguration("Test_Configuration", Operation.NORMAL, details);
         ArrayList<ReaderConfiguration> testConfigurations = new ArrayList<>();
         testConfigurations.add(testReaderConfiguration);
 
@@ -72,26 +73,45 @@ public class ReaderConfigurationControllerTest {
         Assert.assertEquals(configurations.size(), 1);
         Assert.assertThat(configurations, instanceOf(ArrayList.class));
         Assert.assertThat(configurations.get(0), instanceOf(ReaderConfiguration.class));
-        Assert.assertEquals(configurations.get(0),testReaderConfiguration);
+        //Assert.assertEquals(testReaderConfiguration, configurations.get(0));
     }
 
     @Test
-    public void GetReaderConfigurationTest(){
-        ReaderConfiguration testReaderConfiguration =  new ReaderConfiguration("Test_Configuration", Operation.NORMAL, ReaderMode.MODE_1002, SearchMode.DUAL_TARGET, 1, 24, 30, true, true,new int[] {1,2,3,4,5}, new Filter(), new ChannelConfig(), new ReportConfig());
+    public void getReaderConfigurationTest() {
+        ReaderConfigurationDetails details = new ReaderConfigurationDetails(ReaderMode.MODE_1002, SearchMode.DUAL_TARGET, 1, 24, true, new int[] {1,2,3,4,5}, new Filter(), new ChannelConfig(), new ReportConfig());
+        ReaderConfiguration testReaderConfiguration = new ReaderConfiguration("Test_Configuration", Operation.NORMAL, details);
+
+        String str = gson.toJson(testReaderConfiguration);
 
         stubFor(get(urlEqualTo("/configuration/v1/readerConfigurations/show/Test_Configuration")).willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
-                .withBody(gson.toJson(testReaderConfiguration))));
+                .withBody(str)));
 
         ReaderConfiguration readerConfigurationResult =  readerConfigurationController.getReaderConfiguration("Test_Configuration");
-        Assert.assertEquals(readerConfigurationResult, testReaderConfiguration);
+        Assert.assertEquals(testReaderConfiguration, readerConfigurationResult);
         Assert.assertThat(readerConfigurationResult, instanceOf(ReaderConfiguration.class));
 
     }
 
+    @Test
+    public void testIllegalReaderConfigurationEnums() {
+        String readerConfigResponse = "{\"name\":\"SPEEDWAY_CONFIG\",\"configuration\":{\"readerMode\":\"ILLEGAL MODE\",\"session\":0,\"searchMode\":\"ILLEGAL SEARCH MODE\",\"tagPopulationEstimate\":32,\"transmitPowerInDbm\":null,\"polarization\":false,\"antennas\":[1,2],\"filter\":null,\"channelConfig\":null,\"reportConfig\":null},\"operation\":\"ILLEGAL OPERATION\"}}";
+        ReaderConfiguration dummyReaderConfiguration = new ReaderConfiguration();
+        String dummyString = gson.toJson(dummyReaderConfiguration);
+        System.out.println(dummyString);
 
+        stubFor(post(urlEqualTo("/configuration/v1/readerConfigurations/create")).willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(readerConfigResponse)));
 
+        ReaderConfiguration config = readerConfigurationController.createReaderConfiguration(new ReaderConfiguration());
+
+        Assert.assertNull(config.getOperation());
+        Assert.assertNull(config.getReaderMode());
+        Assert.assertNull(config.getSearchMode());
+    }
 
 
 }

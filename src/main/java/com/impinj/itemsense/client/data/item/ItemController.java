@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jcombopi on 1/26/16.
@@ -19,21 +20,27 @@ public class ItemController {
 
     public ItemController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<ItemResponse>(ItemResponse.class);
+        this.restApiHelper = new RestApiHelper<>(ItemResponse.class);
     }
 
-    public Response getItemsAsResponse(HashMap<String, Object> queryParams){
+    public Response getItemsAsResponse(Map<String, Object> queryParams) {
         return this.restApiHelper.get(queryParams, "/data/v1/items/show", target);
     }
 
-    public ItemResponse getItems(HashMap<String, Object> queryParams) {
-       return getItemsAsResponse(queryParams).readEntity(ItemResponse.class);
+    public ItemResponse getItems(Map<String, Object> queryParams) {
+        return this.restApiHelper.readObjectFromString(getItemsAsResponse(queryParams).readEntity(String.class));
     }
 
-
-    public ItemResponse getItems(EpcFormat epcFormat, String epcPrefix, String zoneNames, PresenceConfidence presenceConfidence, String facility,
-                                 Integer pageSize, String pageMarker) {
-        HashMap<String, Object> queryParams = new HashMap<>();
+    public ItemResponse getItems(EpcFormat epcFormat,
+                                 String epcPrefix,
+                                 String zoneNames,
+                                 PresenceConfidence presenceConfidence,
+                                 String facility,
+                                 Integer pageSize,
+                                 String pageMarker,
+                                 String fromTime,
+                                 String toTime) {
+        Map<String, Object> queryParams = new HashMap<>();
         if (epcPrefix != null && !epcPrefix.isEmpty()) {
             queryParams.put("epcPrefix", epcPrefix);
         }
@@ -55,24 +62,45 @@ public class ItemController {
         if (pageSize != null) {
             queryParams.put("pageSize", pageSize);
         }
+        if (fromTime != null) {
+            queryParams.put("fromTime", fromTime);
+        }
+        if (toTime != null) {
+            queryParams.put("toTime", toTime);
+        }
 
         return this.getItems(queryParams);
+    }
 
+    public ItemResponse getItems(EpcFormat epcFormat,
+                                 String epcPrefix,
+                                 String zoneNames,
+                                 PresenceConfidence presenceConfidence,
+                                 String facility,
+                                 Integer pageSize,
+                                 String pageMarker) {
+        return getItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, pageSize, pageMarker, null, null);
     }
 
     public ItemResponse getItems() {
         return this.getItems(null);
     }
 
-    public ArrayList<Item> getAllItems(EpcFormat epcFormat, String epcPrefix, String zoneNames, PresenceConfidence presenceConfidence, String facility,
-                                       String pageMarker) {
+
+    public ArrayList<Item> getAllItems(EpcFormat epcFormat,
+                                       String epcPrefix,
+                                       String zoneNames,
+                                       PresenceConfidence presenceConfidence,
+                                       String facility,
+                                       String fromTime,
+                                       String toTime) {
         ItemResponse response;
         String nextPageMarker = null;
         int pageSize = 1000;
         ArrayList<Item> items = new ArrayList<Item>();
 
         do {
-            response = this.getItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, pageSize, nextPageMarker);
+            response = this.getItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, pageSize, nextPageMarker, fromTime, toTime);
             if (response.getItems() != null) {
                 Collections.addAll(items, response.getItems());
             }
@@ -82,16 +110,37 @@ public class ItemController {
         return items;
     }
 
+    // This is deprecated because pageMarker is not used.
+    // Will be removed in a future release, and its functionality moved into the method
+    // without this parameter
+    @Deprecated
+    public ArrayList<Item> getAllItems(EpcFormat epcFormat,
+                                       String epcPrefix,
+                                       String zoneNames,
+                                       PresenceConfidence presenceConfidence,
+                                       String facility,
+                                       String pageMarker) {
+        return getAllItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, null, null);
+    }
+
+    public ArrayList<Item> getAllItems(EpcFormat epcFormat,
+                                       String epcPrefix,
+                                       String zoneNames,
+                                       PresenceConfidence presenceConfidence,
+                                       String facility) {
+        return getAllItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, null, null);
+    }
+
     public ArrayList<Item> getAllItems(EpcFormat epcFormat) {
         HashMap<String, Object> queryParams = new HashMap<>();
         if (epcFormat != null) {
             queryParams.put("epcFormat", epcFormat.toString());
         }
-        return getAllItems(epcFormat, null, null, null, null, null);
+        return getAllItems(epcFormat, null, null, null, null, null, null);
     }
 
     public ArrayList<Item> getAllItems() {
-        return getAllItems(null, null, null, null, null, null);
+        return getAllItems(null, null, null, null, null, null, null);
     }
 
 

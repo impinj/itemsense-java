@@ -19,5 +19,14 @@ public enum JobStatus {
     STARTING,
     RUNNING,
     STOPPING,
-    STOPPED
+    STOPPED,
+    UNKNOWN,
+    @Deprecated FAILED,
+    @Deprecated COMPLETE,
+    @Deprecated REGISTERED,
+    @Deprecated PUBLISHING_STATE,
+    @Deprecated RUNNING_WITH_ERRORS,
+    @Deprecated STOPPED_STOPPING,
+    @Deprecated COMPLETE_STOPPING,
+    @Deprecated COMPLETE_WITH_ERRORS,
 }

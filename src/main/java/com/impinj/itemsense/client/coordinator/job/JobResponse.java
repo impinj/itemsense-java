@@ -1,5 +1,6 @@
 package com.impinj.itemsense.client.coordinator.job;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.impinj.itemsense.client.coordinator.facility.Facility;
@@ -39,4 +40,23 @@ public class JobResponse {
     private Job job;
     private int startAttempts;
     //TODO:INSTANCE META DATA;
+
+    @JsonIgnore
+    public JobStatus getJobStatusAsEnum() {
+        try {
+            return JobStatus.valueOf(status);
+        } catch (java.lang.IllegalArgumentException e) {
+            return JobStatus.UNKNOWN;
+        }
+    }
+
+    @JsonIgnore
+    public JobStopReason getJobStopReasonAsEnum() {
+        try {
+            return JobStopReason.valueOf(status);
+        } catch (java.lang.IllegalArgumentException e) {
+            return JobStopReason.UNKNOWN;
+        }
+    }
+
 }

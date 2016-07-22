@@ -20,33 +20,12 @@ public class ReaderConfigurationController {
         this.restApiHelper = new RestApiHelper<ReaderConfiguration>(ReaderConfiguration.class);
     }
 
-    public ReaderConfiguration createReaderConfiguration(ReaderConfiguration readerConfiguration) {
-        return this.createReaderConfigurationAsResponse(readerConfiguration).readEntity(ReaderConfiguration.class);
-    }
-
-    public ReaderConfiguration updateReaderConfiguration(ReaderConfiguration readerConfiguration) {
-        return updateReaderConfigurationAsResponse(readerConfiguration).readEntity(ReaderConfiguration.class);
-    }
-
-    public Response deleteReaderConfiguration(String readerConfigurationName) {
-        return this.restApiHelper.delete(readerConfigurationName, "/configuration/v1/readerConfigurations/destroy", target);
-    }
-
-    public ReaderConfiguration getReaderConfiguration(String readerConfigurationName) {
-        return getReaderConfigurationAsResponse(readerConfigurationName).readEntity(ReaderConfiguration.class);
-    }
-
-    public List<ReaderConfiguration> getReaderConfigurations() {
-        ReaderConfiguration[] readerConfigurations = this.getReaderConfigurationsAsResponse().readEntity(ReaderConfiguration[].class);
-        return new ArrayList<ReaderConfiguration>(Arrays.asList(readerConfigurations));
-    }
-
     public Response createReaderConfigurationAsResponse(ReaderConfiguration readerConfiguration) {
         return this.restApiHelper.post(readerConfiguration, "/configuration/v1/readerConfigurations/create", target);
     }
 
     public Response updateReaderConfigurationAsResponse(ReaderConfiguration readerConfiguration) {
-        return this.restApiHelper.put(readerConfiguration, "/configuration/v1/readerConfigurations/create", target);
+        return this.restApiHelper.put(readerConfiguration, "/configuration/v1/readerConfigurations/createOrReplace", target);
     }
 
     public Response getReaderConfigurationAsResponse(String readerConfigurationName) {
@@ -55,6 +34,26 @@ public class ReaderConfigurationController {
 
     public Response getReaderConfigurationsAsResponse() {
         return this.restApiHelper.get("/configuration/v1/readerConfigurations/show", target);
+    }
+
+    public Response deleteReaderConfiguration(String readerConfigurationName) {
+        return this.restApiHelper.delete(readerConfigurationName, "/configuration/v1/readerConfigurations/destroy", target);
+    }
+
+    public ReaderConfiguration getReaderConfiguration(String readerConfigurationName) {
+        return restApiHelper.readObjectFromString(this.getReaderConfigurationAsResponse(readerConfigurationName).readEntity(String.class));
+    }
+
+    public List<ReaderConfiguration> getReaderConfigurations() {
+        return this.restApiHelper.readObjectsFromString(this.getReaderConfigurationsAsResponse().readEntity(String.class));
+    }
+
+    public ReaderConfiguration createReaderConfiguration(ReaderConfiguration readerConfiguration) {
+        return this.restApiHelper.readObjectFromString(this.createReaderConfigurationAsResponse(readerConfiguration).readEntity(String.class));
+    }
+
+    public ReaderConfiguration updateReaderConfiguration(ReaderConfiguration readerConfiguration) {
+        return this.restApiHelper.readObjectFromString(this.updateReaderConfigurationAsResponse(readerConfiguration).readEntity(String.class));
     }
 
 }

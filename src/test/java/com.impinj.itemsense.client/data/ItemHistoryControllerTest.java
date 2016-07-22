@@ -3,6 +3,7 @@ package com.impinj.itemHistorysense.client.data;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.data.DataApiController;
+import com.impinj.itemsense.client.data.EpcFormat;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistory;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistoryController;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistoryResponse;
@@ -11,8 +12,12 @@ import org.junit.*;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -26,6 +31,8 @@ public class ItemHistoryControllerTest {
     private ItemHistoryController itemHistoryController;
     private Gson gson;
     private String itemHistoryResponseTestString;
+    private static final Map<String,Object> EMPTY_QUERY_PARAMS = new HashMap<>();
+    private static final int PAGE_SIZE = 1000;
 
     @ClassRule
     public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
@@ -183,7 +190,7 @@ public class ItemHistoryControllerTest {
     }
 
     @Test
-    public void GetItemHistorysTest(){
+    public void testGetItemHistory() {
 
         stubFor(get(urlEqualTo("/data/v1/items/show/history")).willReturn(aResponse()
                 .withStatus(200)
@@ -199,7 +206,114 @@ public class ItemHistoryControllerTest {
     }
 
     @Test
-    public void GetAllItemHistorysTest(){
+    public void testGetItemHistoryEmptyResponse() {
+        String emptyResponse = "{\"history\":[],\"nextPageMarker\":null,\"moreHistoryAvailable\":false}";
+
+        stubFor(get(urlEqualTo("/data/v1/items/show/history")).willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(emptyResponse)));
+
+        Response response = itemHistoryController.getItemHistoryAsResponse(EMPTY_QUERY_PARAMS);
+        Assert.assertEquals(200, response.getStatus());
+        ItemHistoryResponse itemHistoryResponse = response.readEntity(ItemHistoryResponse.class);
+        response.close();
+
+        Assert.assertEquals(0, itemHistoryResponse.getHistory().length);
+        Assert.assertEquals(null, itemHistoryResponse.getNextPageMarker());
+        Assert.assertEquals(false, itemHistoryResponse.isMoreHistoryAvailable());
+    }
+
+    @Test
+    public void testGetItemHistorySingleResponse() {
+        String singleResponse = "{\"history\":[{\"epc\":\"E280116060000205077DA2BF\",\"tagId\":\"000000000000\",\"fromZone\":\"ABSENT\",\"fromFloor\":null,\"toZone\":\"FACILITY\",\"toFloor\":null,\"fromFacility\":null,\"toFacility\":\"NEWFAC\",\"fromX\":null,\"fromY\":null,\"toX\":0.0,\"toY\":6.5,\"observationTime\":\"2016-07-20T17:41:28Z\"}],\"nextPageMarker\":\"HYqwnIZCy7VZum+imjU/4pHawLBHymFsecje7nGZ5ZY=\",\"moreHistoryAvailable\":true}";
+
+        stubFor(get(urlEqualTo("/data/v1/items/show/history")).willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(singleResponse)));
+
+        Response response = itemHistoryController.getItemHistoryAsResponse(EMPTY_QUERY_PARAMS);
+        Assert.assertEquals(200, response.getStatus());
+        ItemHistoryResponse itemHistoryResponse = response.readEntity(ItemHistoryResponse.class);
+        response.close();
+
+        Assert.assertEquals(1, itemHistoryResponse.getHistory().length);
+        Assert.assertEquals("E280116060000205077DA2BF", itemHistoryResponse.getHistory()[0].getEpc());
+        Assert.assertEquals("HYqwnIZCy7VZum+imjU/4pHawLBHymFsecje7nGZ5ZY=", itemHistoryResponse.getNextPageMarker());
+        Assert.assertEquals(true, itemHistoryResponse.isMoreHistoryAvailable());
+    }
+
+    @Test
+    public void getItemHistoryNextPage() {
+        String nextPageResult = "{\"history\":[{\"epc\":\"E280116060000205077DA2BF\",\"tagId\":\"000000000000\",\"fromZone\":\"ABSENT\",\"fromFloor\":null,\"toZone\":\"FACILITY\",\"toFloor\":null,\"fromFacility\":null,\"toFacility\":\"NEWFAC\",\"fromX\":null,\"fromY\":null,\"toX\":0.0,\"toY\":6.5,\"observationTime\":\"2016-07-20T17:41:28Z\"}],\"nextPageMarker\":\"dhHSFz1upKy81uk7hrWLJFo+JckUtACqJRCzpEXVubs=\",\"moreHistoryAvailable\":true}\n";
+
+        stubFor(get(urlEqualTo("/data/v1/items/show/history?page=2")).willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(nextPageResult)));
+
+        Map<String,Object> queryParams = new HashMap<>();
+        queryParams.put("page", 2);
+
+        ItemHistoryResponse itemHistoryResponse = itemHistoryController.getItemHistory(queryParams);
+        Assert.assertEquals("dhHSFz1upKy81uk7hrWLJFo+JckUtACqJRCzpEXVubs=", itemHistoryResponse.getNextPageMarker());
+    }
+
+    @Test
+    public void testGetAllItemHistoryWithEpcFormat() {
+        String historyWithEpcFormat = "{\"history\":[{\"epc\":\"urn:epc:raw::96.E280116060000205077DA2BF\",\"tagId\":\"000000000000\",\"fromZone\":\"ABSENT\",\"fromFloor\":null,\"toZone\":\"FACILITY\",\"toFloor\":null,\"fromFacility\":null,\"toFacility\":\"NEWFAC\",\"fromX\":null,\"fromY\":null,\"toX\":0.0,\"toY\":6.5,\"observationTime\":\"2016-07-20T17:41:28Z\"},{\"epc\":\"urn:epc:raw::96.E280116060000205077DA26F\",\"tagId\":\"000000000000\",\"fromZone\":\"ABSENT\",\"fromFloor\":null,\"toZone\":\"FACILITY\",\"toFloor\":null,\"fromFacility\":null,\"toFacility\":\"NEWFAC\",\"fromX\":null,\"fromY\":null,\"toX\":0.0,\"toY\":6.5,\"observationTime\":\"2016-07-20T17:41:28Z\"},{\"epc\":\"urn:epc:raw::96.B0D1E5000000000000000004\",\"tagId\":\"000000000000\",\"fromZone\":\"ABSENT\",\"fromFloor\":null,\"toZone\":\"FACILITY\",\"toFloor\":null,\"fromFacility\":null,\"toFacility\":\"NEWFAC\",\"fromX\":null,\"fromY\":null,\"toX\":0.0,\"toY\":6.5,\"observationTime\":\"2016-07-20T17:41:28Z\"}],\"nextPageMarker\":null,\"moreHistoryAvailable\":true}";
+
+        stubFor(get(urlEqualTo("/data/v1/items/show/history?pageSize=1000&epcFormat=RAW")).willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(historyWithEpcFormat)));
+
+        List<ItemHistory> events = itemHistoryController.getAllItemHistory(EpcFormat.RAW);
+
+        Assert.assertEquals(3, events.size());
+        Assert.assertEquals("urn:epc:raw::96.E280116060000205077DA2BF", events.get(0).getEpc());
+    }
+
+    @Test
+    public void testGetAllItemHistoryWithMultiplePages() {
+        // Page size is fixed to the maximum in this interface, so simulate a string with 1001 items in it.
+        String event = "{\"epc\":\"E280116060000205077DA2BF\",\"tagId\":\"000000000000\",\"fromZone\":\"ABSENT\",\"fromFloor\":null,\"toZone\":\"FACILITY\",\"toFloor\":null,\"fromFacility\":null,\"toFacility\":\"NEWFAC\",\"fromX\":null,\"fromY\":null,\"toX\":0.0,\"toY\":6.5,\"observationTime\":\"2016-07-20T17:41:28Z\"}";
+
+        StringBuilder responseWith1000Items = new StringBuilder("{\"history\":[");
+        for (int i = 0; i < PAGE_SIZE; i++) {
+            String replacementString = "\"tagId\":\"00000000000" + i + "\"";
+            String newEvent = event.replace("\"tagId\":\"000000000000\"", replacementString);
+            responseWith1000Items.append(newEvent);
+            responseWith1000Items.append(",");
+        }
+        responseWith1000Items.setCharAt(responseWith1000Items.length()-1, ']');
+        responseWith1000Items.append(",\"nextPageMarker\":\"UD41zBHH76BqmMdukctbvJvdE9oXQAxPyh6Jw5BjojLdR1paQrVDHN6/hja1TGaR\"}\"");
+
+        String lastResponse = "{\"history\":[{\"epc\":\"E280116060000205077DA2BF\",\"tagId\":\"000000000001000\",\"fromZone\":\"ABSENT\",\"fromFloor\":null,\"toZone\":\"FACILITY\",\"toFloor\":null,\"fromFacility\":null,\"toFacility\":\"NEWFAC\",\"fromX\":null,\"fromY\":null,\"toX\":0.0,\"toY\":6.5,\"observationTime\":\"2016-07-20T17:41:28Z\"}],\"nextPageMarker\":null, \"moreHistoryAvailable\":false}";
+
+        stubFor(get(urlEqualTo("/data/v1/items/show/history?pageSize=1000")).willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(responseWith1000Items.toString())));
+
+        stubFor(get(urlEqualTo("/data/v1/items/show/history?pageMarker=UD41zBHH76BqmMdukctbvJvdE9oXQAxPyh6Jw5BjojLdR1paQrVDHN6%2Fhja1TGaR&pageSize=1000")).willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(lastResponse)));
+
+        List<ItemHistory> items = itemHistoryController.getAllItemHistory();
+
+        Assert.assertEquals(1001, items.size());
+
+        for (int i = 0; i < 1001; i++) {
+            Assert.assertEquals("00000000000" + i, items.get(i).getTagId());
+        }
+    }
+
+
+    @Test
+    public void testGetAllItemHistoryBasic() {
         stubFor(get(urlEqualTo("/data/v1/items/show/history?pageSize=1000")).willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
@@ -210,7 +324,6 @@ public class ItemHistoryControllerTest {
         Assert.assertNotNull(itemHistorys);
         Assert.assertThat(itemHistorys, instanceOf(ArrayList.class));
         Assert.assertThat(itemHistorys.get(0), instanceOf(ItemHistory.class));
-
     }
 
 
