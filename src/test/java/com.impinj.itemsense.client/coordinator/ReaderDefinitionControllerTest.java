@@ -15,6 +15,7 @@ import org.junit.*;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class ReaderDefinitionControllerTest {
     }
 
     @Test
-    public void GetReaderDefinitionsTest(){
+    public void getReaderDefinitionsTest() {
         ReaderDefinition testReaderDefinition = new ReaderDefinition( "test-xarray", "xarray-test.local" , "TestFacility", null, null, new Placement(1, 2,5, 0,180,90, "1"), ReaderType.XARRAY);
         List<ReaderDefinition> testDefinitions = new ArrayList<>();
         testDefinitions.add(testReaderDefinition);
@@ -77,7 +78,7 @@ public class ReaderDefinitionControllerTest {
     }
 
     @Test
-    public void GetReaderDefinitionTest(){
+    public void getReaderDefinitionTest() {
         ReaderDefinition testReaderDefinition = new ReaderDefinition( "test-xarray", "xarray-test.local" , "TestFacility", null, null, new Placement(1, 2,5, 0,180,90, "1"), ReaderType.XARRAY);
 
         stubFor(get(urlEqualTo("/configuration/v1/readerDefinitions/show/Test_Reader_Definition")).willReturn(aResponse()
@@ -91,8 +92,30 @@ public class ReaderDefinitionControllerTest {
 
     }
 
+    @Test
+    public void createReaderDefinitionTest() {
 
+    }
 
+    @Test
+    public void createOrUpdateReaderDefinition() {
+        ReaderDefinition reader = new ReaderDefinition();
+        reader.setName("READER");
+        reader.setAddress("192.168.0.1");
+        reader.setFacility("FAC");
+        reader.setReaderZone("ZONE");
+        reader.setType(ReaderType.SPEEDWAY);
 
+        stubFor(put(urlEqualTo("/configuration/v1/readerDefinitions/createOrReplace")).willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(gson.toJson(reader))));
 
+        Response response = readerDefinitionController.updateReaderDefinitionAsResponse(reader);
+        Assert.assertEquals(200, response.getStatus());
+        response.close();
+
+        ReaderDefinition responseReader = readerDefinitionController.updateReaderDefinition(reader);
+        Assert.assertEquals(reader, responseReader);
+    }
 }

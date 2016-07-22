@@ -20,10 +20,6 @@ public class FacilityController {
         this.restApiHelper = new RestApiHelper<Facility>(Facility.class);
     }
 
-    public Facility getFacility(String facilityName) {
-        return this.getFacilityAsResponse(facilityName).readEntity(Facility.class);
-    }
-
     public Response getFacilityAsResponse(String facilityName) {
         return this.restApiHelper.get(facilityName, "/configuration/v1/facilities/show", target);
     }
@@ -32,28 +28,33 @@ public class FacilityController {
         return this.restApiHelper.get("/configuration/v1/facilities/show", target);
     }
 
-    public List<Facility> getAllFacilities() {
-        Facility[] facilities = getAllFacilitiesAsResponse().readEntity(Facility[].class);
-        return new ArrayList<Facility>(Arrays.asList(facilities));
-    }
-
     public Response createFacilityAsResponse(Facility facility) {
         return this.restApiHelper.post(facility, "/configuration/v1/facilities/create", target);
-    }
-
-    public Facility createFacility(Facility facility) {
-        return this.createFacilityAsResponse(facility).readEntity(Facility.class);
     }
 
     public Response updateFacilityAsResponse(Facility facility) {
         return this.restApiHelper.put(facility, "/configuration/v1/facilities/createOrReplace", target);
     }
 
+    public Response deleteFacility(String facilityName) {
+        return this.restApiHelper.delete(facilityName, "/configuration/v1/facilities/destroy", target);
+    }
+
+    public List<Facility> getAllFacilities() {
+        Facility[] facilities = getAllFacilitiesAsResponse().readEntity(Facility[].class);
+        return new ArrayList<Facility>(Arrays.asList(facilities));
+    }
+
+    public Facility getFacility(String facilityName) {
+        return this.getFacilityAsResponse(facilityName).readEntity(Facility.class);
+    }
+
+    public Facility createFacility(Facility facility) {
+        return this.createFacilityAsResponse(facility).readEntity(Facility.class);
+    }
+
     public Facility updateFacility(Facility facility) {
         return this.updateFacilityAsResponse(facility).readEntity(Facility.class);
     }
 
-    public Response deleteFacility(String facilityName) {
-        return this.restApiHelper.delete(facilityName, "/configuration/v1/facilities/destroy", target);
-    }
 }

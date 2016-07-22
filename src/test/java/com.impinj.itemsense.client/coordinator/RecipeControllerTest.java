@@ -6,15 +6,13 @@ package com.impinj.itemsense.client.coordinator;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
-import com.impinj.itemsense.client.coordinator.recipe.LocationAggregationModel;
-import com.impinj.itemsense.client.coordinator.recipe.Recipe;
-import com.impinj.itemsense.client.coordinator.recipe.RecipeController;
-import com.impinj.itemsense.client.coordinator.recipe.ZoneModel;
+import com.impinj.itemsense.client.coordinator.recipe.*;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.*;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +40,12 @@ public class RecipeControllerTest {
 
     @Before
     public void setUp() throws Exception {
-
         Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
 
         //http://localhost:8089 is where wiremock is running
         coordinatorApiController = new CoordinatorApiController(client, URI.create("http://localhost:8089"));
         recipeController = coordinatorApiController.getRecipeController();
         gson = new Gson();
-
     }
 
     @After
@@ -58,10 +54,16 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void GetRecipesTest(){
-        Recipe testRecipe = new Recipe("Test_Recipe", "Test_Reader_Configuration", null, true, true, ZoneModel.GEOGRAPHIC, null, null, null ,null, null, LocationAggregationModel.BY_CYCLES);
+    public void getRecipesTest() {
+        Recipe testRecipe = new Recipe();
+        testRecipe.setName("Test_Reader_Configuration");
+        testRecipe.setZoneModel(ZoneModel.GEOGRAPHIC);
+        testRecipe.setLocationAggregationModel(LocationAggregationModel.BY_CYCLES);
+
         ArrayList<Recipe> testDefinitions = new ArrayList<>();
-        testDefinitions.add(testRecipe);
+
+        testDefinitions.add(0, testRecipe);
+        testDefinitions.add(1, testRecipe);
 
         stubFor(get(urlEqualTo("/configuration/v1/recipes/show")).willReturn(aResponse()
                 .withStatus(200)
@@ -70,28 +72,146 @@ public class RecipeControllerTest {
 
         List<Recipe> recipes = recipeController.getRecipes();
 
-        Assert.assertEquals(recipes.size(), 1);
+        Assert.assertEquals(recipes.size(), 2);
         Assert.assertThat(recipes, instanceOf(ArrayList.class));
         Assert.assertThat(recipes.get(0), instanceOf(Recipe.class));
         Assert.assertEquals(recipes.get(0),testRecipe);
+
+        Assert.assertThat(recipes.get(1), instanceOf(Recipe.class));
+        Assert.assertEquals(recipes.get(1),testRecipe);
     }
 
     @Test
-    public void GetRecipeTest(){
-        Recipe testRecipe = new Recipe("Test_Recipe", "Test_Reader_Configuration", null, true, true, ZoneModel.GEOGRAPHIC, null, null, null ,null, null, LocationAggregationModel.BY_CYCLES);
+    public void getRecipeTest() {
+        Recipe testRecipe = new Recipe();
+        testRecipe.setName("Test_Reader_Configuration");
+        testRecipe.setZoneModel(ZoneModel.GEOGRAPHIC);
+        testRecipe.setLocationAggregationModel(LocationAggregationModel.BY_CYCLES);
+
         stubFor(get(urlEqualTo("/configuration/v1/recipes/show/Test_Recipe")).willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody(gson.toJson(testRecipe))));
 
+        Response response = recipeController.getRecipeAsResponse("Test_Recipe");
+        Assert.assertEquals(200, response.getStatus());
+
         Recipe recipeResult =  recipeController.getRecipe("Test_Recipe");
         Assert.assertEquals(recipeResult, testRecipe);
         Assert.assertThat(recipeResult, instanceOf(Recipe.class));
 
+        // Test with an unknown recipe type
+        String recipeResponse = "{\"name\":\"NEW_RECIPE\",\"type\":\"RANDOM STRING\",\"readerConfigurationName\":\"SPEEDWAY_CONFIG\",\"tagHeartbeatMinutes\":5,\"readerConfigurations\":{},\"presencePipelineEnabled\":false,\"locationReportingEnabled\":true,\"zoneModel\":\"ILLEGAL ZONE MODEL\",\"minimumMovementInMeters\":null,\"locationUpdateIntervalInSeconds\":null,\"historyWindowSizeInCycles\":null,\"computeWindowSizeInCycles\":null,\"computeWindowTimeInSeconds\":null,\"locationAggregationModel\":\"ILLEGAL LOCATION AGGREGATION MODEL\",\"agentComputeWindow\":null,\"agentUpdateInterval\":null,\"combineInventoryReads\":null,\"tagAgeInterval\":null}";
+        stubFor(get(urlEqualTo("/configuration/v1/recipes/show/NEW_RECIPE")).willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(recipeResponse)));
+
+        Recipe recipe = recipeController.getRecipe("NEW_RECIPE");
+        Assert.assertNull(recipe.getType());
+        Assert.assertNull(recipe.getZoneModel());
     }
 
+    @Test
+    public void createRecipeTest() throws Exception {
+        String recipeStr = "{\"name\":\"New_Recipe\",\"type\":\"LLRP\",\"readerConfigurationName\":\"Test_Reader_Configuration\",\"presencePipelineEnabled\":false,\"locationReportingEnabled\":false,\"zoneModel\":\"GATEWAY\"}";
+
+        Recipe testRecipe = new Recipe();
+        testRecipe.setName("New_Recipe");
+        testRecipe.setType(RecipeType.LLRP);
+        testRecipe.setReaderConfigurationName("Test_Reader_Configuration");
+        testRecipe.setZoneModel(ZoneModel.GATEWAY);
+
+        stubFor(post(urlEqualTo("/configuration/v1/recipes/create"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody(recipeStr)));
+
+        Recipe recipeResult = recipeController.createRecipe(testRecipe);
+        Assert.assertEquals(testRecipe, recipeResult);
+        Assert.assertThat(recipeResult, instanceOf(Recipe.class));
+
+        // Now we should not be able to create the same recipe again
+        stubFor(post(urlEqualTo("/configuration/v1/recipes/create"))
+            .willReturn(aResponse()
+                .withStatus(403)));
+
+        Response response = recipeController.createRecipeAsResponse(testRecipe);
+        Assert.assertEquals(403, response.getStatus());
+
+        recipeResult = recipeController.createRecipe(testRecipe);
+        Assert.assertEquals(recipeResult, null);
+    }
+
+    @Test
+    public void updateRecipeTest() throws Exception {
+        String recipeStr = "{\"name\":\"Old_Recipe\",\"readerConfigurationName\":\"Test_Reader_Configuration\",\"presencePipelineEnabled\":false,\"locationReportingEnabled\":false,\"zoneModel\":\"GEOGRAPHIC\"}\n";
+
+        Recipe testRecipe = new Recipe();
+        testRecipe.setName("Old_Recipe");
+        testRecipe.setReaderConfigurationName("Test_Reader_Configuration");
+        testRecipe.setZoneModel(ZoneModel.GEOGRAPHIC);
+
+        stubFor(put(urlEqualTo("/configuration/v1/recipes/createOrReplace"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody(recipeStr)));
+
+        Response response = recipeController.updateRecipeAsResponse(testRecipe);
+        Assert.assertEquals(200, response.getStatus());
+        response.close();
+
+        Recipe recipeResult = recipeController.updateRecipe(testRecipe);
+
+        Assert.assertThat(recipeResult, instanceOf(Recipe.class));
+        Assert.assertEquals(testRecipe, recipeResult);
 
 
+        // Repeat the test with unknown enums
+        recipeStr = "{\"name\":\"Old_Recipe\",\"type\":\"illegal value\", \"readerConfigurationName\":\"Test_Reader_Configuration\",\"presencePipelineEnabled\":false,\"locationReportingEnabled\":false,\"zoneModel\":\"illegal zone model\"}";
 
+        testRecipe.setZoneModel(null);
+        testRecipe.setType(null);
 
+        stubFor(put(urlEqualTo("/configuration/v1/recipes/createOrReplace"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody(recipeStr)));
+
+        response = recipeController.updateRecipeAsResponse(testRecipe);
+        Assert.assertEquals(200, response.getStatus());
+        response.close();
+
+        recipeResult = recipeController.updateRecipe(testRecipe);
+
+        Assert.assertThat(recipeResult, instanceOf(Recipe.class));
+        Assert.assertEquals(testRecipe, recipeResult);
+
+    }
+
+    @Test
+    public void deleteRecipeTest() throws Exception {
+        Recipe testRecipe = new Recipe();
+        testRecipe.setName("Old_Recipe");
+        testRecipe.setReaderConfigurationName("Test_Reader_Configuration");
+        testRecipe.setZoneModel(ZoneModel.GEOGRAPHIC);
+
+        stubFor(delete(urlEqualTo("/configuration/v1/recipes/destroy/Old_Recipe"))
+            .willReturn(aResponse()
+                .withStatus(204)));
+
+        Response response = recipeController.deleteRecipe("Old_Recipe");
+        Assert.assertEquals(204, response.getStatus());
+
+        stubFor(delete(urlEqualTo("/configuration/v1/recipes/destroy/Recipe_that_does_not_exist"))
+            .willReturn(aResponse()
+                .withStatus(404)));
+
+        response = recipeController.deleteRecipe("Recipe_that_does_not_exist");
+        Assert.assertEquals(404, response.getStatus());
+
+    }
 }

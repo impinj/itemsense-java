@@ -32,13 +32,11 @@ public class Item {
     @JsonProperty("zLocation")
     private double zLocation;
     private String zone;
+    private String floor;
     private String facility;
     private PresenceConfidence presenceConfidence;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @JsonDeserialize(using = ZonedDateTimeSerialization.class)
     private ZonedDateTime lastModifiedTime;
-
-
-
 }

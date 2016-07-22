@@ -2,7 +2,6 @@ package com.impinj.itemsense.client.coordinator.job;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.impinj.itemsense.client.coordinator.facility.Facility;
 import com.impinj.itemsense.client.helpers.ZonedDateTimeSerialization;
 import lombok.AllArgsConstructor;
 import lombok.Data;

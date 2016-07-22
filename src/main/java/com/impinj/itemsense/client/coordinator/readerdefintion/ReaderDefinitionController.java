@@ -22,33 +22,12 @@ public class ReaderDefinitionController {
         this.restApiHelper = new RestApiHelper<ReaderDefinition>(ReaderDefinition.class);
     }
 
-    public ReaderDefinition createReaderDefinition(ReaderDefinition readerDefinition) {
-        return this.createReaderDefinitionAsResponse(readerDefinition).readEntity(ReaderDefinition.class);
-    }
-
-    public ReaderDefinition updateReaderDefinition(ReaderDefinition readerDefinition) {
-        return this.updateReaderDefinitionAsResponse(readerDefinition).readEntity(ReaderDefinition.class);
-    }
-
-    public Response deleteReaderDefinition(String readerDefinitionName) {
-        return this.restApiHelper.delete(readerDefinitionName, "/configuration/v1/readerDefinitions/destroy", target);
-    }
-
-    public ReaderDefinition getReaderDefinition(String readerDefinitionName) {
-        return this.getReaderDefinitionAsResponse(readerDefinitionName).readEntity(ReaderDefinition.class);
-    }
-
-    public List<ReaderDefinition> getReaderDefinitions() {
-        ReaderDefinition[] readerDefinitions = this.getReaderDefinitionsAsResponse().readEntity(ReaderDefinition[].class);
-        return new ArrayList<ReaderDefinition>(Arrays.asList(readerDefinitions));
-    }
-
     public Response createReaderDefinitionAsResponse(ReaderDefinition readerDefinition) {
         return this.restApiHelper.post(readerDefinition, "/configuration/v1/readerDefinitions/create", target);
     }
 
     public Response updateReaderDefinitionAsResponse(ReaderDefinition readerDefinition) {
-        return this.restApiHelper.put(readerDefinition, "/configuration/v1/readerDefinitions/create", target);
+        return this.restApiHelper.put(readerDefinition, "/configuration/v1/readerDefinitions/createOrReplace", target);
     }
 
     public Response getReaderDefinitionAsResponse(String readerDefinitionName) {
@@ -58,6 +37,28 @@ public class ReaderDefinitionController {
     public Response getReaderDefinitionsAsResponse() {
         return this.restApiHelper.get("/configuration/v1/readerDefinitions/show", target);
     }
+
+    public Response deleteReaderDefinition(String readerDefinitionName) {
+        return this.restApiHelper.delete(readerDefinitionName, "/configuration/v1/readerDefinitions/destroy", target);
+    }
+
+    public ReaderDefinition createReaderDefinition(ReaderDefinition readerDefinition) {
+        return this.createReaderDefinitionAsResponse(readerDefinition).readEntity(ReaderDefinition.class);
+    }
+
+    public ReaderDefinition updateReaderDefinition(ReaderDefinition readerDefinition) {
+        return this.updateReaderDefinitionAsResponse(readerDefinition).readEntity(ReaderDefinition.class);
+    }
+
+    public ReaderDefinition getReaderDefinition(String readerDefinitionName) {
+        return this.getReaderDefinitionAsResponse(readerDefinitionName).readEntity(ReaderDefinition.class);
+    }
+
+    public List<ReaderDefinition> getReaderDefinitions() {
+        ReaderDefinition[] readerDefinitions = this.getReaderDefinitionsAsResponse().readEntity(ReaderDefinition[].class);
+        return new ArrayList<>(Arrays.asList(readerDefinitions));
+    }
+
 
 
 }

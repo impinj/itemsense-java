@@ -27,6 +27,5 @@ public class Job {
     private boolean reportToDatabaseEnabled;
     private boolean reportToMessageQueueEnabled;
     private boolean reportToFileEnabled;
-
 }
 

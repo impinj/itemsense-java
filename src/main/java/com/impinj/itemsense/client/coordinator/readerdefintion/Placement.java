@@ -20,5 +20,4 @@ public class Placement {
     private int pitch;
     private int roll;
     private String floor;
-
 }

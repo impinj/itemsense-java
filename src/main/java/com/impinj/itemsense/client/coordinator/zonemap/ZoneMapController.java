@@ -22,27 +22,6 @@ public class ZoneMapController {
         this.restApiHelper = new RestApiHelper<ZoneMap>(ZoneMap.class);
     }
 
-    public ZoneMap createZoneMap(ZoneMap zoneMap) {
-       return this.createZoneMapAsResponse(zoneMap).readEntity(ZoneMap.class);
-    }
-
-    public ZoneMap updateZoneMap(ZoneMap zoneMap) {
-        return this.updateZoneMapAsResponse(zoneMap).readEntity(ZoneMap.class);
-    }
-
-    public Response deleteZoneMap(String zoneMapName) {
-        return this.restApiHelper.delete(zoneMapName, "/configuration/v1/zoneMaps/destroy", target);
-    }
-
-    public ZoneMap getZoneMap(String zoneMapName) {
-        return this.getZoneMapAsResponse(zoneMapName).readEntity(ZoneMap.class);
-    }
-
-    public List<ZoneMap> getZoneMaps() {
-        ZoneMap[] zoneMaps = this.getZoneMapsAsResponse().readEntity(ZoneMap[].class);
-        return new ArrayList<ZoneMap>(Arrays.asList(zoneMaps));
-    }
-
     public Response createZoneMapAsResponse(ZoneMap zoneMap) {
         return this.restApiHelper.post(zoneMap, "/configuration/v1/zoneMaps/create", target);
     }
@@ -58,6 +37,28 @@ public class ZoneMapController {
     public Response getZoneMapsAsResponse() {
         return this.restApiHelper.get("/configuration/v1/zoneMaps/show", target);
     }
+
+    public Response deleteZoneMap(String zoneMapName) {
+        return this.restApiHelper.delete(zoneMapName, "/configuration/v1/zoneMaps/destroy", target);
+    }
+
+    public ZoneMap createZoneMap(ZoneMap zoneMap) {
+       return this.createZoneMapAsResponse(zoneMap).readEntity(ZoneMap.class);
+    }
+
+    public ZoneMap updateZoneMap(ZoneMap zoneMap) {
+        return this.updateZoneMapAsResponse(zoneMap).readEntity(ZoneMap.class);
+    }
+
+    public ZoneMap getZoneMap(String zoneMapName) {
+        return this.getZoneMapAsResponse(zoneMapName).readEntity(ZoneMap.class);
+    }
+
+    public List<ZoneMap> getZoneMaps() {
+        ZoneMap[] zoneMaps = this.getZoneMapsAsResponse().readEntity(ZoneMap[].class);
+        return new ArrayList<ZoneMap>(Arrays.asList(zoneMaps));
+    }
+
 
 
 }

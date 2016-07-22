@@ -22,27 +22,6 @@ public class UserController {
         this.restApiHelper = new RestApiHelper<User>(User.class);
     }
 
-    public User createUser(User user) {
-        return this.createUserAsResponse(user).readEntity(User.class);
-    }
-
-    public User updateUser(User user) {
-        return this.updateUserAsResponse(user).readEntity(User.class);
-    }
-
-    public Response deleteUser(String userName) {
-        return this.restApiHelper.delete(userName, "/configuration/v1/users/destroy", target);
-    }
-
-    public User getUser(String userName) {
-        return this.getUserAsResponse(userName).readEntity(User.class);
-    }
-
-    public List<User> getUsers() {
-        User[] users = this.getUsersAsResponse().readEntity(User[].class);
-        return new ArrayList<User>(Arrays.asList(users));
-    }
-
     public Response createUserAsResponse(User user) {
         return this.restApiHelper.post(user, "/configuration/v1/users/create", target);
     }
@@ -58,4 +37,26 @@ public class UserController {
     public Response getUsersAsResponse() {
         return this.restApiHelper.get("/configuration/v1/users/show", target);
     }
+
+    public Response deleteUser(String userName) {
+        return this.restApiHelper.delete(userName, "/configuration/v1/users/destroy", target);
+    }
+
+    public User createUser(User user) {
+        return this.createUserAsResponse(user).readEntity(User.class);
+    }
+
+    public User updateUser(User user) {
+        return this.updateUserAsResponse(user).readEntity(User.class);
+    }
+
+    public User getUser(String userName) {
+        return this.getUserAsResponse(userName).readEntity(User.class);
+    }
+
+    public List<User> getUsers() {
+        User[] users = this.getUsersAsResponse().readEntity(User[].class);
+        return new ArrayList<User>(Arrays.asList(users));
+    }
+
 }
