@@ -170,7 +170,7 @@ public class RecipeControllerTest {
 
 
         // Repeat the test with unknown enums
-        recipeStr = "{\"name\":\"Old_Recipe\",\"type\":\"illegal value\", \"readerConfigurationName\":\"Test_Reader_Configuration\",\"presencePipelineEnabled\":false,\"locationReportingEnabled\":false,\"zoneModel\":\"illegal zone model\"}\n";
+        recipeStr = "{\"name\":\"Old_Recipe\",\"type\":\"illegal value\", \"readerConfigurationName\":\"Test_Reader_Configuration\",\"presencePipelineEnabled\":false,\"locationReportingEnabled\":false,\"zoneModel\":\"illegal zone model\"}";
 
         testRecipe.setZoneModel(null);
         testRecipe.setType(null);

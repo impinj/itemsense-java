@@ -73,7 +73,6 @@ public class ReaderConfigurationControllerTest {
         Assert.assertEquals(configurations.size(), 1);
         Assert.assertThat(configurations, instanceOf(ArrayList.class));
         Assert.assertThat(configurations.get(0), instanceOf(ReaderConfiguration.class));
-        //Assert.assertEquals(testReaderConfiguration, configurations.get(0));
     }
 
     @Test

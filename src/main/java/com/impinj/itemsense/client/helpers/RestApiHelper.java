@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -20,6 +22,7 @@ import java.util.Map;
  */
 public class RestApiHelper<T> {
     private Class<T> type;
+    private static Logger logger = LoggerFactory.getLogger(RestApiHelper.class);
 
     public RestApiHelper(Class<T> type) {
         this.type = type;
@@ -78,11 +81,9 @@ public class RestApiHelper<T> {
         try {
             return mapper.readValue(string, type);
         } catch (IOException ioe ) {
-            System.err.println("Could not read class from string");
-            System.err.println(ioe);
+            logger.error("Could not read class from string:\n" + ioe);
             return null;
         }
-
     }
 
     public List<T> readObjectsFromString(String string) {
@@ -93,8 +94,7 @@ public class RestApiHelper<T> {
         try {
             return mapper.readValue(string, listType);
         } catch (IOException ioe ) {
-            System.err.println("Could not read class from string");
-            System.err.println(ioe);
+            logger.error("Could not read class from string:\n" + ioe);
             return null;
         }
 
