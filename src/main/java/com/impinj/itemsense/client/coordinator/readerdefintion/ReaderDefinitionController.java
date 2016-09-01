@@ -3,23 +3,19 @@ package com.impinj.itemsense.client.coordinator.readerdefintion;
 
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Response;
 
-/**
- * Created by jcombopi on 1/25/16.
- */
 public class ReaderDefinitionController {
     private WebTarget target;
     private RestApiHelper<ReaderDefinition> restApiHelper;
 
     public ReaderDefinitionController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<ReaderDefinition>(ReaderDefinition.class);
+        this.restApiHelper = new RestApiHelper<>(ReaderDefinition.class);
     }
 
     public Response createReaderDefinitionAsResponse(ReaderDefinition readerDefinition) {
@@ -55,10 +51,7 @@ public class ReaderDefinitionController {
     }
 
     public List<ReaderDefinition> getReaderDefinitions() {
-        ReaderDefinition[] readerDefinitions = this.getReaderDefinitionsAsResponse().readEntity(ReaderDefinition[].class);
-        return new ArrayList<>(Arrays.asList(readerDefinitions));
+        return this.getReaderDefinitionsAsResponse()
+            .readEntity(new GenericType<List<ReaderDefinition>>() {});
     }
-
-
-
 }

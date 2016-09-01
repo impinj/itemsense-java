@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -17,9 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by jcombopi on 1/25/16.
- */
 public class RestApiHelper<T> {
     private Class<T> type;
     private static Logger logger = LoggerFactory.getLogger(RestApiHelper.class);
@@ -32,6 +30,14 @@ public class RestApiHelper<T> {
         return target.path(path)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(request));
+    }
+
+    public Response post(String id, String path, WebTarget target) {
+        return target
+            .path(path + "/" + id)
+            .request(MediaType.APPLICATION_JSON_TYPE)
+            .header(HttpHeaders.CONTENT_LENGTH, 0)
+            .post(null);
     }
 
     public Response put(T request, String path, WebTarget target) {
