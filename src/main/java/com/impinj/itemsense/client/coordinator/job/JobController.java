@@ -1,28 +1,23 @@
 package com.impinj.itemsense.client.coordinator.job;
 
-import com.google.gson.Gson;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by jcombopi on 1/25/16.
- */
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
 public class JobController {
     private WebTarget target;
     private RestApiHelper<Job> restApiHelperPoster;
     private RestApiHelper<JobResponse> restApiHelperGetter;
-    private Gson gson;
 
     public JobController(final WebTarget target) {
         this.target = target;
         this.restApiHelperPoster = new RestApiHelper<>(Job.class);
         this.restApiHelperGetter = new RestApiHelper<>(JobResponse.class);
-        this.gson = new Gson();
     }
 
     public Response getJobsAsResponse() {
@@ -38,7 +33,7 @@ public class JobController {
     }
 
     public Response stopJobAsResponse(String jobId) {
-        return this.restApiHelperPoster.post(null, "/control/v1/jobs/stop/" + jobId, target);
+        return this.restApiHelperPoster.post(jobId, "/control/v1/jobs/stop/", target);
     }
 
     public List<JobResponse> getJobs() {

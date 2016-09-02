@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.ZonedDateTime;
 
-/**
- * Created by jcombopi on 1/29/16.
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Created by nkershaw on 7/18/16.
- */
+
 public class RecipeTest {
 
   @Test

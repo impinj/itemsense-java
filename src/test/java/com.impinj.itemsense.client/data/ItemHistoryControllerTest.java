@@ -22,9 +22,7 @@ import java.util.Map;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
-/**
- * Created by jcombopi on 2/1/16.
- */
+
 public class ItemHistoryControllerTest {
 
     private DataApiController dataApiController;

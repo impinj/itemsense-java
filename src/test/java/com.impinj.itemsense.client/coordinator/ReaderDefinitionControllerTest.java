@@ -1,8 +1,6 @@
 package com.impinj.itemsense.client.coordinator;
 
-/**
- * Created by jcombopi on 1/29/16.
- */
+
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
@@ -25,9 +23,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 
 
 
-/**
- * Created by jcombopi on 1/27/16.
- */
+
 public class ReaderDefinitionControllerTest {
 
     private CoordinatorApiController coordinatorApiController;

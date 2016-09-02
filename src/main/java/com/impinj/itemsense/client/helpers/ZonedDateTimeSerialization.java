@@ -10,9 +10,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
 
-/**
- * Created by jcombopi on 1/26/16.
- */
+
 public class ZonedDateTimeSerialization extends JsonDeserializer<ZonedDateTime> implements com.google.gson.JsonDeserializer<ZonedDateTime>, com.google.gson.JsonSerializer<ZonedDateTime> {
 
 

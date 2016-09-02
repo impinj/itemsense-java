@@ -18,9 +18,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 
-/**
- * Created by jcombopi on 1/27/16.
- */
+
 public class FacilityControllerTest {
 
     private CoordinatorApiController coordinatorApiController;

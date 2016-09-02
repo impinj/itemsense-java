@@ -5,9 +5,6 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-/**
- * Created by jcombopi on 1/26/16.
- */
 public class CurrentZoneMapController {
 
     private WebTarget target;
@@ -16,11 +13,11 @@ public class CurrentZoneMapController {
 
     public CurrentZoneMapController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<CurrentZoneMap>(CurrentZoneMap.class);
+        this.restApiHelper = new RestApiHelper<>(CurrentZoneMap.class);
     }
 
     public Response setCurrentZoneMapAsResponse(String zoneMapName){
-        return this.restApiHelper.post(null, "/configuration/v1/currentZoneMap/select/" + zoneMapName, target);
+        return this.restApiHelper.post(zoneMapName, "/configuration/v1/currentZoneMap/select/", target);
     }
 
     public CurrentZoneMap setCurrentZoneMap(String zoneMapName) {

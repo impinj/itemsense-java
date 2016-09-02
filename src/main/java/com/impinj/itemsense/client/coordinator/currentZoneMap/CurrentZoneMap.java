@@ -1,8 +1,6 @@
 package com.impinj.itemsense.client.coordinator.currentZoneMap;
 
-/**
- * Created by jcombopi on 1/25/16.
- */
+
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

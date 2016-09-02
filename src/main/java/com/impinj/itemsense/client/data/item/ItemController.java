@@ -11,9 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by jcombopi on 1/26/16.
- */
+
 public class ItemController {
     private WebTarget target;
     private RestApiHelper<ItemResponse> restApiHelper;

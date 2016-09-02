@@ -1,8 +1,6 @@
 package com.impinj.itemsense.client.coordinator;
 
-/**
- * Created by jcombopi on 5/31/16.
- */
+
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.impinj.itemsense.client.coordinator.authentication.AuthenticationController;

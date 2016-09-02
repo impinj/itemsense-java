@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by jcombopi on 1/25/16.
- */
+
 public class FacilityController {
     private RestApiHelper<Facility> restApiHelper;
     private WebTarget target;

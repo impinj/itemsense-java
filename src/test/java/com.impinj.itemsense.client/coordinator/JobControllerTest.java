@@ -15,9 +15,7 @@ import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
-/**
- * Created by jcombopi on 1/29/16.
- */
+
 public class JobControllerTest {
     private CoordinatorApiController coordinatorApiController;
     private JobController jobController;

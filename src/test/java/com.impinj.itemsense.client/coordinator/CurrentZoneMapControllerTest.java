@@ -15,13 +15,8 @@ import java.net.URI;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
-
-/**
- * Created by jcombopi on 1/29/16.
- */
 public class CurrentZoneMapControllerTest {
 
-    private CoordinatorApiController coordinatorApiController;
     private CurrentZoneMapController currentZoneMapController;
     private Gson gson;
 
@@ -35,17 +30,14 @@ public class CurrentZoneMapControllerTest {
     @Before
     public void setUp() throws Exception {
 
-        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
+        Client client = ClientBuilder.newClient()
+                .register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
 
         //http://localhost:8089 is where wiremock is running
-        coordinatorApiController = new CoordinatorApiController(client, URI.create("http://localhost:8089"));
-        currentZoneMapController = coordinatorApiController.getCurrentZoneMapController();
+        currentZoneMapController =
+                new CoordinatorApiController(client, URI.create("http://localhost:8089"))
+                        .getCurrentZoneMapController();
         gson = new Gson();
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
 
     }
 
@@ -65,7 +57,6 @@ public class CurrentZoneMapControllerTest {
 
     @Test
     public void GetCurrentZoneMapForFacility() {
-
         CurrentZoneMap seattleTest = new CurrentZoneMap("Seattle", "COMPLETE");
         stubFor(get(urlEqualTo("/configuration/v1/currentZoneMap/show/Seattle")).willReturn(aResponse()
                 .withStatus(200)
@@ -77,7 +68,6 @@ public class CurrentZoneMapControllerTest {
 
         Assert.assertThat(currentZoneMap, instanceOf(CurrentZoneMap.class));
         Assert.assertEquals(currentZoneMap, seattleTest);
-
     }
 }
 

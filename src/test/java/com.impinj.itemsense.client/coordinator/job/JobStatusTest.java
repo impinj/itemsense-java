@@ -3,9 +3,6 @@ package com.impinj.itemsense.client.coordinator.job;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Created by nkershaw on 7/15/16.
- */
 public class JobStatusTest {
 
   @Test

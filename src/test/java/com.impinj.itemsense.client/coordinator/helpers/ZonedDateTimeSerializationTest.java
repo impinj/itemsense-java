@@ -7,9 +7,7 @@ import org.junit.Test;
 import java.time.Month;
 import java.time.ZonedDateTime;
 
-/**
- * Created by nkershaw on 7/15/16.
- */
+
 public class ZonedDateTimeSerializationTest {
 
   @Test

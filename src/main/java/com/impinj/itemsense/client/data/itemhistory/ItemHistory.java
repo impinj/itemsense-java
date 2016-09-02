@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.ZonedDateTime;
 
-/**
- * Created by jcombopi on 1/26/16.
- */
+
 
 @Data
 @NoArgsConstructor
