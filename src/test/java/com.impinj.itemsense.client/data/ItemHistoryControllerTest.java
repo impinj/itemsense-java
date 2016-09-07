@@ -1,4 +1,4 @@
-package com.impinj.itemHistorysense.client.data;
+package com.impinj.itemsense.client.data;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
@@ -27,7 +27,6 @@ public class ItemHistoryControllerTest {
 
     private DataApiController dataApiController;
     private ItemHistoryController itemHistoryController;
-    private Gson gson;
     private String itemHistoryResponseTestString;
     private static final Map<String,Object> EMPTY_QUERY_PARAMS = new HashMap<>();
     private static final int PAGE_SIZE = 1000;
@@ -42,12 +41,12 @@ public class ItemHistoryControllerTest {
     @Before
     public void setUp() throws Exception {
 
-        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
+        Client client = ClientBuilder.newClient()
+                .register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
 
         //http://localhost:8089 is where wiremock is running
         dataApiController = new DataApiController(client, URI.create("http://localhost:8089"));
         itemHistoryController = dataApiController.getItemHistoryController();
-        gson = new Gson();
         itemHistoryResponseTestString ="{\n" +
                 "  \"history\": [\n" +
                 "    {\n" +

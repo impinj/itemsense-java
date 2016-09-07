@@ -1,8 +1,5 @@
 package com.impinj.itemsense.client.coordinator;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.impinj.itemsense.client.coordinator.authentication.AuthenticationController;
 import com.impinj.itemsense.client.coordinator.currentZoneMap.CurrentZoneMapController;
 import com.impinj.itemsense.client.coordinator.facility.FacilityController;
@@ -25,8 +22,7 @@ import lombok.Data;
 
 @Data
 public class CoordinatorApiController {
-
-    private static final ObjectMapperContextResolver objectMapperContextResolver
+    private final ObjectMapperContextResolver OBJECT_MAPPER_CONTEXT_RESOLVER
             = new ObjectMapperContextResolver();
 
     private AuthenticationController authenticationController;
@@ -44,7 +40,7 @@ public class CoordinatorApiController {
     private WebTarget target;
 
     public CoordinatorApiController(final Client client, final URI uri) {
-        this.target = client.register(objectMapperContextResolver).target(uri);
+        this.target = client.register(OBJECT_MAPPER_CONTEXT_RESOLVER).target(uri);
 
         this.currentZoneMapController = new CurrentZoneMapController(target);
         this.facilityController = new FacilityController(target);

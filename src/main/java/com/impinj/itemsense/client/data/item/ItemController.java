@@ -26,7 +26,7 @@ public class ItemController {
     }
 
     public ItemResponse getItems(Map<String, Object> queryParams) {
-        return this.restApiHelper.readObjectFromString(getItemsAsResponse(queryParams).readEntity(String.class));
+        return getItemsAsResponse(queryParams).readEntity(ItemResponse.class);
     }
 
     public ItemResponse getItems(EpcFormat epcFormat,

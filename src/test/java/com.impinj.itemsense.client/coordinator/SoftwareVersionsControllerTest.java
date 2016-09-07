@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import com.fatboyindustrial.gsonjavatime.Converters;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.ImageType;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.VersionIdentifier;
 import com.impinj.itemsense.client.coordinator.softwareversions.SoftwareVersionsController;
@@ -34,7 +35,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 public class SoftwareVersionsControllerTest {
     private SoftwareVersionsController softwareVersionsController;
-    private Gson gson = Converters.registerAll(new GsonBuilder()).create();
+    private Gson gson = TestUtils.getGson();
 
     @ClassRule
     public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
