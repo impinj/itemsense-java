@@ -1,6 +1,6 @@
 package com.impinj.itemsense.client.coordinator.softwareversions;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -8,8 +8,8 @@ import lombok.Data;
 public class VersionInfoView {
     VersionInfo versionInfo;
     String description;
-    Timestamp created;
-    Timestamp updated;
+    LocalDateTime created;
+    LocalDateTime updated;
     String updateComment;
     int recordVersionNumber;
 }

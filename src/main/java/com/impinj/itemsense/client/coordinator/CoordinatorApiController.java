@@ -1,5 +1,8 @@
 package com.impinj.itemsense.client.coordinator;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.impinj.itemsense.client.coordinator.authentication.AuthenticationController;
 import com.impinj.itemsense.client.coordinator.currentZoneMap.CurrentZoneMapController;
 import com.impinj.itemsense.client.coordinator.facility.FacilityController;
@@ -11,14 +14,21 @@ import com.impinj.itemsense.client.coordinator.softwareupgrades.SoftwareUpgrades
 import com.impinj.itemsense.client.coordinator.softwareversions.SoftwareVersionsController;
 import com.impinj.itemsense.client.coordinator.user.UserController;
 import com.impinj.itemsense.client.coordinator.zonemap.ZoneMapController;
-import lombok.Data;
+import com.impinj.itemsense.client.helpers.ObjectMapperContextResolver;
+
+import java.net.URI;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
-import java.net.URI;
+
+import lombok.Data;
 
 @Data
 public class CoordinatorApiController {
+
+    private static final ObjectMapperContextResolver objectMapperContextResolver
+            = new ObjectMapperContextResolver();
+
     private AuthenticationController authenticationController;
     private CurrentZoneMapController currentZoneMapController;
     private FacilityController facilityController;
@@ -34,7 +44,7 @@ public class CoordinatorApiController {
     private WebTarget target;
 
     public CoordinatorApiController(final Client client, final URI uri) {
-        this.target = client.target(uri);
+        this.target = client.register(objectMapperContextResolver).target(uri);
 
         this.currentZoneMapController = new CurrentZoneMapController(target);
         this.facilityController = new FacilityController(target);
