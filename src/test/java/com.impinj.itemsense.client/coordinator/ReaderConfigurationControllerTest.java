@@ -1,20 +1,39 @@
 package com.impinj.itemsense.client.coordinator;
 
 
+import com.google.gson.Gson;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.google.gson.Gson;
-import com.impinj.itemsense.client.coordinator.readerconfiguration.*;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.*;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.ChannelConfig;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.Filter;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.Operation;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfiguration;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigurationController;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigurationDetails;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderMode;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.ReportConfig;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.SearchMode;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 

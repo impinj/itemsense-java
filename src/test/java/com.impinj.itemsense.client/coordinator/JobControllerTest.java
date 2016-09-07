@@ -1,18 +1,34 @@
 package com.impinj.itemsense.client.coordinator;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.impinj.itemsense.client.coordinator.job.*;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.*;
+import com.impinj.itemsense.client.coordinator.job.Job;
+import com.impinj.itemsense.client.coordinator.job.JobController;
+import com.impinj.itemsense.client.coordinator.job.JobResponse;
+import com.impinj.itemsense.client.coordinator.job.JobResponseError;
+import com.impinj.itemsense.client.coordinator.job.JobStatus;
+import com.impinj.itemsense.client.coordinator.job.JobStopReason;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.Response;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 

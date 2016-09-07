@@ -4,11 +4,12 @@ import com.impinj.itemsense.client.data.item.ItemController;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistoryController;
 import com.impinj.itemsense.client.helpers.ObjectMapperContextResolver;
 
-import lombok.Data;
+import java.net.URI;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
-import java.net.URI;
+
+import lombok.Data;
 
 
 

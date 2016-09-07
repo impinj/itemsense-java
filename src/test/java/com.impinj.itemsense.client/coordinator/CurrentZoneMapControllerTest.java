@@ -1,18 +1,28 @@
 package com.impinj.itemsense.client.coordinator;
 
 
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
+
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.impinj.itemsense.client.coordinator.currentZoneMap.CurrentZoneMap;
 import com.impinj.itemsense.client.coordinator.currentZoneMap.CurrentZoneMapController;
+
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+import java.net.URI;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import java.net.URI;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 public class CurrentZoneMapControllerTest {

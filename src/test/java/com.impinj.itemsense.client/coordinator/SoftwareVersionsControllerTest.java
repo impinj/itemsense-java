@@ -1,9 +1,7 @@
 package com.impinj.itemsense.client.coordinator;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import com.fatboyindustrial.gsonjavatime.Converters;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.ImageType;

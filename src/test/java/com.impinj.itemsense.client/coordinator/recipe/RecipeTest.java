@@ -1,6 +1,7 @@
 package com.impinj.itemsense.client.coordinator.recipe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -2,11 +2,10 @@ package com.impinj.itemsense.client.coordinator.readerconfiguration;
 
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
+import java.util.List;
+
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class ReaderConfigurationController {
