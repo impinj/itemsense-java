@@ -4,13 +4,13 @@ package com.impinj.itemsense.client.coordinator;
 import com.google.gson.Gson;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.recipe.LocationAggregationModel;
 import com.impinj.itemsense.client.coordinator.recipe.Recipe;
 import com.impinj.itemsense.client.coordinator.recipe.RecipeController;
 import com.impinj.itemsense.client.coordinator.recipe.RecipeType;
 import com.impinj.itemsense.client.coordinator.recipe.ZoneModel;
 
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,12 +18,10 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -45,7 +43,7 @@ public class RecipeControllerTest {
     private Gson gson;
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
@@ -53,10 +51,9 @@ public class RecipeControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
+        Client client = TestUtils.getClient();
 
-        //http://localhost:8089 is where wiremock is running
-        coordinatorApiController = new CoordinatorApiController(client, URI.create("http://localhost:8089"));
+        coordinatorApiController = new CoordinatorApiController(client, TestUtils.MOCK_URI);
         recipeController = coordinatorApiController.getRecipeController();
         gson = new Gson();
     }

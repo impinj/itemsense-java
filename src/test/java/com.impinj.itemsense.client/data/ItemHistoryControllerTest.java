@@ -1,11 +1,11 @@
 package com.impinj.itemsense.client.data;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistory;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistoryController;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistoryResponse;
 
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,14 +13,12 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -39,7 +37,7 @@ public class ItemHistoryControllerTest {
     private static final int PAGE_SIZE = 1000;
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
@@ -48,11 +46,9 @@ public class ItemHistoryControllerTest {
     @Before
     public void setUp() throws Exception {
 
-        Client client = ClientBuilder.newClient()
-                .register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
+        Client client = TestUtils.getClient();
 
-        //http://localhost:8089 is where wiremock is running
-        dataApiController = new DataApiController(client, URI.create("http://localhost:8089"));
+        dataApiController = new DataApiController(client, TestUtils.MOCK_URI);
         itemHistoryController = dataApiController.getItemHistoryController();
         itemHistoryResponseTestString ="{\n" +
                 "  \"history\": [\n" +

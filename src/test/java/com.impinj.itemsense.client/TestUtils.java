@@ -5,10 +5,26 @@ import com.google.gson.GsonBuilder;
 
 import com.fatboyindustrial.gsonjavatime.Converters;
 
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+
+import java.net.URI;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+
 public abstract class TestUtils {
+
+    public static final int MOCK_PORT = 8089;
+    public static final URI MOCK_URI = URI.create(String.format("http://localhost:%d", MOCK_PORT));
+
     private static final Gson GSON = Converters.registerAll(new GsonBuilder()).create();
 
     public static Gson getGson() {
         return GSON;
+    }
+
+    public static Client getClient() {
+        return ClientBuilder.newClient()
+                .register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
     }
 }

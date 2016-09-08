@@ -2,25 +2,22 @@ package com.impinj.itemsense.client.coordinator;
 
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.authentication.AuthenticationController;
 import com.impinj.itemsense.client.coordinator.authentication.ListTokenResponse;
 import com.impinj.itemsense.client.coordinator.authentication.Token;
 import com.impinj.itemsense.client.coordinator.user.User;
 
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -32,7 +29,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 public class AuthenticationControllerTest {
-    Client client;
     private CoordinatorApiController coordinatorApiController;
     private AuthenticationController authenticationController;
     private String listTokenTestString;
@@ -40,20 +36,16 @@ public class AuthenticationControllerTest {
     private String getTokenTestString;
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
 
     @Before
     public void setUp() throws Exception {
+        Client client = TestUtils.getClient();
 
-        //wireMockRule.resetRequests();
-
-        client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
-
-        //http://localhost:8089 is where wiremock is running
-        coordinatorApiController = new CoordinatorApiController(client, URI.create("http://localhost:8089"));
+        coordinatorApiController = new CoordinatorApiController(client, TestUtils.MOCK_URI);
         authenticationController = coordinatorApiController.getAuthenticationController();
         listTokenTestString = "[\n" +
                 " {\n" +
@@ -84,15 +76,6 @@ public class AuthenticationControllerTest {
         getTokenTestString = "{\n" +
                 "  \"token\": \"c84c838a-9388-4896-a678-8cbae93c407a\"\n" +
                 "}";
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        //wireMockRule.shutdown();
-        client.close();
-        client = null;
-        coordinatorApiController = null;
-        authenticationController = null;
     }
 
     @Test

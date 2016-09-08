@@ -4,6 +4,7 @@ package com.impinj.itemsense.client.coordinator;
 import com.google.gson.Gson;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.zonemap.Point;
 import com.impinj.itemsense.client.coordinator.zonemap.Zone;
 import com.impinj.itemsense.client.coordinator.zonemap.ZoneMap;
@@ -17,7 +18,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class ZoneMapControllerTest {
     private Gson gson;
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
@@ -51,8 +51,7 @@ public class ZoneMapControllerTest {
 
         Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testZoneMap", "testPassword"));
 
-        //http://localhost:8089 is where wiremock is running
-        coordinatorApiController = new CoordinatorApiController(client, URI.create("http://localhost:8089"));
+        coordinatorApiController = new CoordinatorApiController(client, TestUtils.MOCK_URI);
         zoneMapController = coordinatorApiController.getZoneMapController();
         gson = new Gson();
 

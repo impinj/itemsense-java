@@ -33,6 +33,7 @@ public class SoftwareVersionsController {
     }
 
     public Response getVersionAsResponse(ImageType imageType, String softwareVersionId) {
-        return restApiHelper.get(BASE_PATH + "/show/" + imageType.toString() + "/" + softwareVersionId, target);
+        String URI = String.format("%s/show/%s/%s", BASE_PATH, imageType, softwareVersionId);
+        return restApiHelper.get(URI, target);
     }
 }
