@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 import java.util.List;
 
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
 
@@ -40,18 +41,18 @@ public class RecipeController {
     }
 
     public Recipe getRecipe(String recipeName) {
-        return restApiHelper.readObjectFromString(this.getRecipeAsResponse(recipeName).readEntity(String.class));
+        return this.getRecipeAsResponse(recipeName).readEntity(Recipe.class);
     }
 
     public List<Recipe> getRecipes() {
-        return this.restApiHelper.readObjectsFromString(this.getRecipesAsResponse().readEntity(String.class));
+        return this.getRecipesAsResponse().readEntity(new GenericType<List<Recipe>>() {});
     }
 
     public Recipe createRecipe(Recipe recipe) {
-        return this.restApiHelper.readObjectFromString(this.createRecipeAsResponse(recipe).readEntity(String.class));
+        return this.createRecipeAsResponse(recipe).readEntity(Recipe.class);
     }
 
     public Recipe updateRecipe(Recipe recipe) {
-        return this.restApiHelper.readObjectFromString(this.updateRecipeAsResponse(recipe).readEntity(String.class));
+        return this.updateRecipeAsResponse(recipe).readEntity(Recipe.class);
     }
 }

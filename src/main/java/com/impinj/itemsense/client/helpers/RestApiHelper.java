@@ -80,32 +80,6 @@ public class RestApiHelper<T> {
         return target.request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
     }
-
-    public T readObjectFromString(String string) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
-
-        try {
-            return mapper.readValue(string, type);
-        } catch (IOException ioe ) {
-            logger.error("Could not read class from string:\n" + ioe);
-            return null;
-        }
-    }
-
-    public List<T> readObjectsFromString(String string) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
-        JavaType listType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, type) ;
-
-        try {
-            return mapper.readValue(string, listType);
-        } catch (IOException ioe ) {
-            logger.error("Could not read class from string:\n" + ioe);
-            return null;
-        }
-
-    }
 }
 
 

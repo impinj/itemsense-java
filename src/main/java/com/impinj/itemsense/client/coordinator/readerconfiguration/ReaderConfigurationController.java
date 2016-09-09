@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 import java.util.List;
 
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
 
@@ -38,19 +39,19 @@ public class ReaderConfigurationController {
     }
 
     public ReaderConfiguration getReaderConfiguration(String readerConfigurationName) {
-        return restApiHelper.readObjectFromString(this.getReaderConfigurationAsResponse(readerConfigurationName).readEntity(String.class));
+        return this.getReaderConfigurationAsResponse(readerConfigurationName).readEntity(ReaderConfiguration.class);
     }
 
     public List<ReaderConfiguration> getReaderConfigurations() {
-        return this.restApiHelper.readObjectsFromString(this.getReaderConfigurationsAsResponse().readEntity(String.class));
+        return this.getReaderConfigurationsAsResponse().readEntity(new GenericType<List<ReaderConfiguration>>() {});
     }
 
     public ReaderConfiguration createReaderConfiguration(ReaderConfiguration readerConfiguration) {
-        return this.restApiHelper.readObjectFromString(this.createReaderConfigurationAsResponse(readerConfiguration).readEntity(String.class));
+        return this.createReaderConfigurationAsResponse(readerConfiguration).readEntity(ReaderConfiguration.class);
     }
 
     public ReaderConfiguration updateReaderConfiguration(ReaderConfiguration readerConfiguration) {
-        return this.restApiHelper.readObjectFromString(this.updateReaderConfigurationAsResponse(readerConfiguration).readEntity(String.class));
+        return this.updateReaderConfigurationAsResponse(readerConfiguration).readEntity(ReaderConfiguration.class);
     }
 
 }
