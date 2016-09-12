@@ -3,8 +3,6 @@ package com.impinj.itemsense.client.coordinator.authentication;
 import com.impinj.itemsense.client.coordinator.user.User;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.client.WebTarget;

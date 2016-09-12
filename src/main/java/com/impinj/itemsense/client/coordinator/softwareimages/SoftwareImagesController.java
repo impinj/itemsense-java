@@ -6,7 +6,6 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 import java.io.InputStream;
 
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 
 public class SoftwareImagesController {
     private WebTarget target;

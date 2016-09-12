@@ -2,8 +2,6 @@ package com.impinj.itemsense.client.coordinator.facility;
 
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.client.WebTarget;
