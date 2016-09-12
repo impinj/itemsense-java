@@ -10,48 +10,53 @@ import javax.ws.rs.core.Response;
 
 
 public class ReaderConfigurationController {
+    private static final String BASE_PATH = "/configuration/v1/readerConfigurations";
     private WebTarget target;
     private RestApiHelper<ReaderConfiguration> restApiHelper;
 
     public ReaderConfigurationController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<ReaderConfiguration>(ReaderConfiguration.class);
+        this.restApiHelper = new RestApiHelper<>(ReaderConfiguration.class);
     }
 
     public Response createReaderConfigurationAsResponse(ReaderConfiguration readerConfiguration) {
-        return this.restApiHelper.post(readerConfiguration, "/configuration/v1/readerConfigurations/create", target);
+        return this.restApiHelper.post(readerConfiguration, target, BASE_PATH, "create");
     }
 
     public Response updateReaderConfigurationAsResponse(ReaderConfiguration readerConfiguration) {
-        return this.restApiHelper.put(readerConfiguration, "/configuration/v1/readerConfigurations/createOrReplace", target);
+        return this.restApiHelper.put(readerConfiguration, target, BASE_PATH, "createOrReplace");
     }
 
     public Response getReaderConfigurationAsResponse(String readerConfigurationName) {
-        return this.restApiHelper.get(readerConfigurationName, "/configuration/v1/readerConfigurations/show", target);
+        return this.restApiHelper.get(target, BASE_PATH, "show", readerConfigurationName);
     }
 
     public Response getReaderConfigurationsAsResponse() {
-        return this.restApiHelper.get("/configuration/v1/readerConfigurations/show", target);
+        return this.restApiHelper.get(target, BASE_PATH, "show");
     }
 
     public Response deleteReaderConfiguration(String readerConfigurationName) {
-        return this.restApiHelper.delete(readerConfigurationName, "/configuration/v1/readerConfigurations/destroy", target);
+        return this.restApiHelper.delete(target, BASE_PATH, "destroy", readerConfigurationName);
     }
 
     public ReaderConfiguration getReaderConfiguration(String readerConfigurationName) {
-        return this.getReaderConfigurationAsResponse(readerConfigurationName).readEntity(ReaderConfiguration.class);
+        return this.getReaderConfigurationAsResponse(readerConfigurationName)
+                .readEntity(ReaderConfiguration.class);
     }
 
     public List<ReaderConfiguration> getReaderConfigurations() {
-        return this.getReaderConfigurationsAsResponse().readEntity(new GenericType<List<ReaderConfiguration>>() {});
+        return this.getReaderConfigurationsAsResponse()
+                .readEntity(new GenericType<List<ReaderConfiguration>>() {});
     }
 
     public ReaderConfiguration createReaderConfiguration(ReaderConfiguration readerConfiguration) {
-        return this.createReaderConfigurationAsResponse(readerConfiguration).readEntity(ReaderConfiguration.class);
+        return this.createReaderConfigurationAsResponse(readerConfiguration)
+                .readEntity(ReaderConfiguration.class);
     }
 
     public ReaderConfiguration updateReaderConfiguration(ReaderConfiguration readerConfiguration) {
-        return this.updateReaderConfigurationAsResponse(readerConfiguration).readEntity(ReaderConfiguration.class);
+        return this.updateReaderConfigurationAsResponse(readerConfiguration)
+                .readEntity(ReaderConfiguration.class);
     }
 
 }

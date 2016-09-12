@@ -24,7 +24,7 @@ public class ItemHistoryController {
     }
 
     public Response getItemHistoryAsResponse(Map<String, Object> queryParams) {
-        return this.restApiHelper.get(queryParams, "/data/v1/items/show/history", target);
+        return this.restApiHelper.get(queryParams, target, "/data/v1/items/show/history");
     }
 
     public ItemHistoryResponse getItemHistory(Map<String, Object> queryParams) {

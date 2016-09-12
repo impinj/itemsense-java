@@ -1,15 +1,24 @@
 package com.impinj.itemsense.client.coordinator.job;
 
+import com.google.common.collect.ImmutableSet;
+
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
 public class JobController {
+    private static final String BASE_PATH = "/control/v1/jobs";
+
+    private static final Set<JobStatus> STARTED_STATUSES =
+            ImmutableSet.of(JobStatus.RUNNING, JobStatus.STOPPING, JobStatus.STOPPED);
+
     private WebTarget target;
     private RestApiHelper<Job> restApiHelperPoster;
     private RestApiHelper<JobResponse> restApiHelperGetter;
@@ -21,24 +30,23 @@ public class JobController {
     }
 
     public Response getJobsAsResponse() {
-        return this.restApiHelperGetter.get( "/control/v1/jobs/show", target);
+        return this.restApiHelperGetter.get(target, BASE_PATH, "show");
     }
 
     public Response getJobAsResponse(String jobId) {
-        return this.restApiHelperGetter.get(jobId, "/control/v1/jobs/show", target);
+        return this.restApiHelperGetter.get(target, BASE_PATH, "show", jobId);
     }
 
     public Response startJobAsResponse(Job job) {
-        return this.restApiHelperPoster.post(job, "/control/v1/jobs/start", target);
+        return this.restApiHelperPoster.post(job, target, BASE_PATH, "start");
     }
 
     public Response stopJobAsResponse(String jobId) {
-        return this.restApiHelperPoster.post(jobId, "/control/v1/jobs/stop/", target);
+        return this.restApiHelperPoster.post(target, BASE_PATH, "stop", jobId);
     }
 
     public List<JobResponse> getJobs() {
-        JobResponse[] jobResponses = getJobsAsResponse().readEntity(JobResponse[].class);
-        return new ArrayList<>(Arrays.asList(jobResponses));
+        return getJobsAsResponse().readEntity(new GenericType<List<JobResponse>>() {});
     }
 
     public JobResponse getJob(String jobId) {
@@ -58,7 +66,7 @@ public class JobController {
         if (response.getStatus() == 200) {
             JobResponse jobResponse = response.readEntity(JobResponse.class);
             JobStatus status = jobResponse.getJobStatusAsEnum();
-            return (status == JobStatus.RUNNING || status == JobStatus.STOPPING || status == JobStatus.STOPPED);
+            return STARTED_STATUSES.contains(status);
         } else {
             response.close();
             return false;

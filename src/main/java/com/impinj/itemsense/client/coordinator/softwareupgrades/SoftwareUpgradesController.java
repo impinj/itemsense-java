@@ -24,7 +24,7 @@ public class SoftwareUpgradesController {
                 .readEntity(new GenericType<List<UpgradeRequestView>>() {});
     }
     public Response getUpgradeRequestsAsResponse() {
-        return restApiHelper.get(BASE_PATH + "/show", target);
+        return restApiHelper.get(target, BASE_PATH, "show");
     }
 
     public UpgradeStatus getUpgradeStatus(String upgradeInstanceId) {
@@ -32,7 +32,7 @@ public class SoftwareUpgradesController {
     }
     public Response getUpgradeStatusAsResponse(String upgradeInstanceId) {
         return restApiHelper.get(
-                upgradeInstanceId, BASE_PATH + "/show", target
+                target, BASE_PATH, "show", upgradeInstanceId
         );
     }
 
@@ -40,7 +40,7 @@ public class SoftwareUpgradesController {
         return startUpgradeAsResponse(upgradeRequest).readEntity(StartUpgradeResponse.class);
     }
     public Response startUpgradeAsResponse(UpgradeRequest upgradeRequest) {
-        return restApiHelper.post(upgradeRequest, BASE_PATH + "/start", target);
+        return restApiHelper.post(upgradeRequest, target, BASE_PATH, "start");
     }
 
     /**
@@ -48,7 +48,7 @@ public class SoftwareUpgradesController {
      * @param upgradeInstanceId
      */
     public void stopUpgrade(String upgradeInstanceId) {
-        restApiHelper.post(upgradeInstanceId, BASE_PATH + "/stop", target);
+        restApiHelper.post(target, BASE_PATH, "stop", upgradeInstanceId);
     }
 
 

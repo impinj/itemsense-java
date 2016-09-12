@@ -1,17 +1,12 @@
 package com.impinj.itemsense.client.helpers;
 
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -27,51 +22,46 @@ public class RestApiHelper<T> {
         this.type = type;
     }
 
-    public Response post(T request, String path, WebTarget target) {
-        return target.path(path)
+    public Response post(T entity, WebTarget target, String... pathFragments) {
+        return target.path(joinPathFragments(pathFragments))
                 .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.json(request));
+                .post(Entity.json(entity));
     }
 
-    public Response post(String id, String path, WebTarget target) {
+    public Response post(WebTarget target, String... pathFragments) {
         return target
-            .path(path + "/" + id)
+            .path(joinPathFragments(pathFragments))
             .request(MediaType.APPLICATION_JSON_TYPE)
             .header(HttpHeaders.CONTENT_LENGTH, 0)
             .post(null);
     }
 
-    public Response put(T request, String path, WebTarget target) {
-        return target.path(path)
+    public Response put(T entity, WebTarget target, String... pathFragments) {
+        return target.path(joinPathFragments(pathFragments))
                 .request(MediaType.APPLICATION_JSON_TYPE)
-                .put(Entity.json(request));
+                .put(Entity.json(entity));
     }
 
-    public Response put(String path, WebTarget target) {
-        return target.path(path)
+    public Response put(WebTarget target, String... pathFragments) {
+        return target.path(joinPathFragments(pathFragments))
             .request(MediaType.APPLICATION_JSON_TYPE)
             .put(Entity.json(""));
     }
 
-    public Response delete(String id, String path, WebTarget target) {
-        return target.path(path + "/" + id)
+    public Response delete(WebTarget target, String... pathFragments) {
+        return target.path(joinPathFragments(pathFragments))
                 .request(MediaType.APPLICATION_JSON_TYPE).delete();
 
     }
 
-    public Response get(String path, WebTarget target) {
-        return target.path(path).request(MediaType.APPLICATION_JSON)
+    public Response get(WebTarget target, String... pathFragments) {
+        return target.path(joinPathFragments(pathFragments))
+                .request(MediaType.APPLICATION_JSON)
                 .get();
     }
 
-    public Response get(String id, String path, WebTarget target) {
-        return target.path(path + "/" + id).request(MediaType.APPLICATION_JSON)
-                .get();
-    }
-
-    public Response get(Map<String, Object> queryParams, String path, WebTarget target) {
-
-        target = target.path(path);
+    public Response get(Map<String, Object> queryParams, WebTarget target, String... pathFragments) {
+        target = target.path(joinPathFragments(pathFragments));
         if (queryParams != null) {
             for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
                 target = target.queryParam(queryParam.getKey(), queryParam.getValue());
@@ -79,6 +69,10 @@ public class RestApiHelper<T> {
         }
         return target.request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
+    }
+
+    private static String joinPathFragments(String... pathFragments) {
+        return Stream.of(pathFragments).collect(Collectors.joining("/"));
     }
 }
 

@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 
 public class ItemController {
+    private static final String BASE_PATH = "/data/v1/items";
     private WebTarget target;
     private RestApiHelper<ItemResponse> restApiHelper;
 
@@ -23,7 +24,7 @@ public class ItemController {
     }
 
     public Response getItemsAsResponse(Map<String, Object> queryParams) {
-        return this.restApiHelper.get(queryParams, "/data/v1/items/show", target);
+        return this.restApiHelper.get(queryParams, target, BASE_PATH, "show");
     }
 
     public ItemResponse getItems(Map<String, Object> queryParams) {

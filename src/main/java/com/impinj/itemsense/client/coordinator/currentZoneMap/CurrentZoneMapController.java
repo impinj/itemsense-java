@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 
 public class CurrentZoneMapController {
 
+    private static final String BASE_PATH = "/configuration/v1/currentZoneMap";
     private WebTarget target;
     private RestApiHelper<CurrentZoneMap> restApiHelper;
 
@@ -17,7 +18,7 @@ public class CurrentZoneMapController {
     }
 
     public Response setCurrentZoneMapAsResponse(String zoneMapName){
-        return this.restApiHelper.post(zoneMapName, "/configuration/v1/currentZoneMap/select/", target);
+        return this.restApiHelper.post(target, BASE_PATH, "select", zoneMapName);
     }
 
     public CurrentZoneMap setCurrentZoneMap(String zoneMapName) {
@@ -25,19 +26,19 @@ public class CurrentZoneMapController {
     }
 
     public Response clearCurrentZoneMap() {
-        return this.restApiHelper.delete("", "/configuration/v1/currentZoneMap/clear", target);
+        return this.restApiHelper.delete(target, BASE_PATH, "clear");
     }
 
     public Response clearCurrentZoneMap(String facility) {
-        return this.restApiHelper.delete(facility, "/configuration/v1/currentZoneMap/clear", target);
+        return this.restApiHelper.delete(target, BASE_PATH, "clear", facility);
     }
 
     public Response getCurrentZoneMapAsResponse(String facility){
         if(facility != null && !facility.isEmpty()){
-            return this.restApiHelper.get(facility, "/configuration/v1/currentZoneMap/show", target);
+            return this.restApiHelper.get(target, BASE_PATH, "show", facility);
         }
         else{
-            return this.restApiHelper.get( "/configuration/v1/currentZoneMap/show", target);
+            return this.restApiHelper.get(target, BASE_PATH, "show");
         }
     }
 
