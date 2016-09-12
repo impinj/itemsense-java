@@ -4,10 +4,12 @@ package com.impinj.itemsense.client.helpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.HttpHeaders;
@@ -69,6 +71,22 @@ public class RestApiHelper<T> {
         }
         return target.request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
+    }
+
+    /**
+     *
+     * @param target
+     * @param pathSegments
+     * @return
+     * @throws NotFoundException if the request results in a 404.  This is different from the other
+     * helper methods in this class, due to needing to retrieve the InputStream at the request
+     * level.
+     */
+    public InputStream getOctetStream(WebTarget target, String... pathSegments)
+            throws NotFoundException {
+        return target.path(joinPathFragments(pathSegments))
+                .request(MediaType.APPLICATION_OCTET_STREAM_TYPE)
+                .get(InputStream.class);
     }
 
     private static String joinPathFragments(String... pathFragments) {

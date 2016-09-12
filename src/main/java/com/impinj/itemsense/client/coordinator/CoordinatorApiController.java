@@ -7,6 +7,7 @@ import com.impinj.itemsense.client.coordinator.job.JobController;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigurationController;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinitionController;
 import com.impinj.itemsense.client.coordinator.recipe.RecipeController;
+import com.impinj.itemsense.client.coordinator.softwareimages.SoftwareImagesController;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.SoftwareUpgradesController;
 import com.impinj.itemsense.client.coordinator.softwareversions.SoftwareVersionsController;
 import com.impinj.itemsense.client.coordinator.user.UserController;
@@ -36,6 +37,7 @@ public class CoordinatorApiController {
     private ZoneMapController zoneMapController;
     private SoftwareUpgradesController softwareUpgradesController;
     private SoftwareVersionsController softwareVersionsController;
+    private SoftwareImagesController softwareImagesController;
 
     private WebTarget target;
 
@@ -53,5 +55,6 @@ public class CoordinatorApiController {
         this.authenticationController = new AuthenticationController(target);
         this.softwareUpgradesController = new SoftwareUpgradesController(target);
         this.softwareVersionsController = new SoftwareVersionsController(target);
+        this.softwareImagesController = new SoftwareImagesController(target);
     }
 }
