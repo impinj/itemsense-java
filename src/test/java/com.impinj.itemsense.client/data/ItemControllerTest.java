@@ -1,53 +1,55 @@
 package com.impinj.itemsense.client.data;
 
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.data.item.Item;
 import com.impinj.itemsense.client.data.item.ItemController;
 import com.impinj.itemsense.client.data.item.ItemResponse;
-import com.impinj.itemsense.client.helpers.ZonedDateTimeSerialization;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.*;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.time.ZonedDateTime;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.core.Response;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
-/**
- * Created by jcombopi on 2/1/16.
- */
+
 public class ItemControllerTest {
 
     private DataApiController dataApiController;
     private ItemController itemController;
     private ItemResponse itemResponseTest;
     private static final int PAGE_SIZE=1000;
-    private Gson gson;
+    private Gson gson = TestUtils.getGson();
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
     
     @Before
     public void setUp() throws Exception {
-        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
+        Client client = TestUtils.getClient();
 
-        //http://localhost:8089 is where wiremock is running
-        dataApiController = new DataApiController(client, URI.create("http://localhost:8089"));
+        dataApiController = new DataApiController(client, TestUtils.MOCK_URI);
         itemController = dataApiController.getItemController();
-        gson = new GsonBuilder().registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeSerialization()).create();
         Item item = gson.fromJson("{\"epc\":\"30140008782B0AC000000001\",\"tagId\":\"000000000000\",\"xLocation\":-0.4,\"yLocation\":-0.3,\"zLocation\":0,\"zone\":\"Bryan_Office\",\"facility\":null,\"presenceConfidence\":\"HIGH\",\"lastModifiedTime\":\"2016-02-01T19:53:39Z\"}", Item.class);
         itemResponseTest = new ItemResponse(new Item[]{item}, null);
     }

@@ -3,15 +3,12 @@ package com.impinj.itemsense.client.coordinator.authentication;
 import com.impinj.itemsense.client.coordinator.user.User;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by jcombopi on 1/25/16.
- */
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Response;
+
 public class AuthenticationController {
     private WebTarget target;
     private RestApiHelper<Token> restApiHelper;
@@ -22,27 +19,27 @@ public class AuthenticationController {
     }
 
     public Response getTokenAsResponse() {
-        return this.restApiHelper.get("/authentication/v1/token", target);
+        return this.restApiHelper.get(target, "/authentication/v1/token");
     }
 
     public Response getTokenAsResponse(String username) {
-        return this.restApiHelper.get("/authentication/v1/token/" + username, target);
+        return this.restApiHelper.get(target, "/authentication/v1/token", username);
     }
 
     public Response listTokensAsResponse(String username) {
-        return this.restApiHelper.get(username, "/authentication/v1/listTokens", target);
+        return this.restApiHelper.get(target, "/authentication/v1/listTokens", username);
     }
 
     public Response validateTokenAsResponse(Token token) {
-        return this.restApiHelper.post(token, "/authentication/v1/validateToken", target);
+        return this.restApiHelper.post(token, target, "/authentication/v1/validateToken");
     }
 
     public Response revokeTokenAsResponse(Token token) {
-        return this.restApiHelper.put(token, "/authentication/v1/revokeToken", target);
+        return this.restApiHelper.put(token, target, "/authentication/v1/revokeToken");
     }
 
     public Response revokeTokensAsResponse(String username) {
-        return this.restApiHelper.put("/authentication/v1/revokeTokens/" + username, target);
+        return this.restApiHelper.put(target, "/authentication/v1/revokeTokens", username);
     }
 
     public Token getToken() {
@@ -54,8 +51,8 @@ public class AuthenticationController {
     }
 
     public List<ListTokenResponse> listTokens(String username) {
-        ListTokenResponse[] tokens = this.listTokensAsResponse(username).readEntity(ListTokenResponse[].class);
-        return new ArrayList<ListTokenResponse>(Arrays.asList(tokens));
+        return listTokensAsResponse(username)
+                .readEntity(new GenericType<List<ListTokenResponse>>() {});
     }
 
     public User validateToken(Token token) {

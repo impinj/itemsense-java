@@ -4,16 +4,15 @@ import com.impinj.itemsense.client.data.EpcFormat;
 import com.impinj.itemsense.client.data.PresenceConfidence;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by jcombopi on 1/26/16.
- */
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
+
 public class ItemHistoryController {
 
     private WebTarget target;
@@ -25,11 +24,11 @@ public class ItemHistoryController {
     }
 
     public Response getItemHistoryAsResponse(Map<String, Object> queryParams) {
-        return this.restApiHelper.get(queryParams, "/data/v1/items/show/history", target);
+        return this.restApiHelper.get(queryParams, target, "/data/v1/items/show/history");
     }
 
     public ItemHistoryResponse getItemHistory(Map<String, Object> queryParams) {
-        return this.restApiHelper.readObjectFromString(getItemHistoryAsResponse(queryParams).readEntity(String.class));
+        return this.getItemHistoryAsResponse(queryParams).readEntity(ItemHistoryResponse.class);
     }
 
     public ItemHistoryResponse getItemHistory(

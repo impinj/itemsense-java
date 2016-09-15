@@ -1,15 +1,13 @@
 package com.impinj.itemsense.client.coordinator.readerdefintion;
 
-/**
- * Created by jcombopi on 1/25/16.
- */
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Map;
 
 @Data
 @NoArgsConstructor

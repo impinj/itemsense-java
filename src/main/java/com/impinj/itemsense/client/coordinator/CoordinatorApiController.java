@@ -7,19 +7,25 @@ import com.impinj.itemsense.client.coordinator.job.JobController;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigurationController;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinitionController;
 import com.impinj.itemsense.client.coordinator.recipe.RecipeController;
+import com.impinj.itemsense.client.coordinator.softwareimages.SoftwareImagesController;
+import com.impinj.itemsense.client.coordinator.softwareupgrades.SoftwareUpgradesController;
+import com.impinj.itemsense.client.coordinator.softwareversions.SoftwareVersionsController;
 import com.impinj.itemsense.client.coordinator.user.UserController;
 import com.impinj.itemsense.client.coordinator.zonemap.ZoneMapController;
-import lombok.Data;
+import com.impinj.itemsense.client.helpers.ObjectMapperContextResolver;
+
+import java.net.URI;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
-import java.net.URI;
 
-/**
- * Created by jcombopi on 1/25/16.
- */
+import lombok.Data;
+
 @Data
 public class CoordinatorApiController {
+    private final ObjectMapperContextResolver OBJECT_MAPPER_CONTEXT_RESOLVER
+            = new ObjectMapperContextResolver();
+
     private AuthenticationController authenticationController;
     private CurrentZoneMapController currentZoneMapController;
     private FacilityController facilityController;
@@ -29,11 +35,15 @@ public class CoordinatorApiController {
     private RecipeController recipeController;
     private UserController userController;
     private ZoneMapController zoneMapController;
+    private SoftwareUpgradesController softwareUpgradesController;
+    private SoftwareVersionsController softwareVersionsController;
+    private SoftwareImagesController softwareImagesController;
 
     private WebTarget target;
 
     public CoordinatorApiController(final Client client, final URI uri) {
-        this.target = client.target(uri);
+        this.target = client.register(OBJECT_MAPPER_CONTEXT_RESOLVER).target(uri);
+
         this.currentZoneMapController = new CurrentZoneMapController(target);
         this.facilityController = new FacilityController(target);
         this.jobController = new JobController(target);
@@ -43,5 +53,8 @@ public class CoordinatorApiController {
         this.userController = new UserController(target);
         this.zoneMapController = new ZoneMapController(target);
         this.authenticationController = new AuthenticationController(target);
+        this.softwareUpgradesController = new SoftwareUpgradesController(target);
+        this.softwareVersionsController = new SoftwareVersionsController(target);
+        this.softwareImagesController = new SoftwareImagesController(target);
     }
 }

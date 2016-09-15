@@ -1,32 +1,38 @@
 package com.impinj.itemsense.client.coordinator;
 
-/**
- * Created by jcombopi on 1/29/16.
- */
+
+import com.google.gson.Gson;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.google.gson.Gson;
+import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.zonemap.Point;
 import com.impinj.itemsense.client.coordinator.zonemap.Zone;
 import com.impinj.itemsense.client.coordinator.zonemap.ZoneMap;
 import com.impinj.itemsense.client.coordinator.zonemap.ZoneMapController;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.*;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import java.net.URI;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 
 
-/**
- * Created by jcombopi on 1/27/16.
- */
+
 public class ZoneMapControllerTest {
 
     private CoordinatorApiController coordinatorApiController;
@@ -34,7 +40,7 @@ public class ZoneMapControllerTest {
     private Gson gson;
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
@@ -45,8 +51,7 @@ public class ZoneMapControllerTest {
 
         Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testZoneMap", "testPassword"));
 
-        //http://localhost:8089 is where wiremock is running
-        coordinatorApiController = new CoordinatorApiController(client, URI.create("http://localhost:8089"));
+        coordinatorApiController = new CoordinatorApiController(client, TestUtils.MOCK_URI);
         zoneMapController = coordinatorApiController.getZoneMapController();
         gson = new Gson();
 

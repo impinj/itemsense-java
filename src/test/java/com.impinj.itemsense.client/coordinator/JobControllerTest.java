@@ -1,30 +1,42 @@
 package com.impinj.itemsense.client.coordinator;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.impinj.itemsense.client.coordinator.job.*;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.*;
+import com.impinj.itemsense.client.TestUtils;
+import com.impinj.itemsense.client.coordinator.job.Job;
+import com.impinj.itemsense.client.coordinator.job.JobController;
+import com.impinj.itemsense.client.coordinator.job.JobResponse;
+import com.impinj.itemsense.client.coordinator.job.JobResponseError;
+import com.impinj.itemsense.client.coordinator.job.JobStatus;
+import com.impinj.itemsense.client.coordinator.job.JobStopReason;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.Response;
-import java.net.URI;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.core.Response;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
-/**
- * Created by jcombopi on 1/29/16.
- */
+
 public class JobControllerTest {
     private CoordinatorApiController coordinatorApiController;
     private JobController jobController;
     private static final int MAX_ERRORS = 4;
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
@@ -33,10 +45,9 @@ public class JobControllerTest {
     @Before
     public void setUp() throws Exception {
 
-        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
+        Client client = TestUtils.getClient();
 
-        //http://localhost:8089 is where wiremock is running
-        coordinatorApiController = new CoordinatorApiController(client, URI.create("http://localhost:8089"));
+        coordinatorApiController = new CoordinatorApiController(client, TestUtils.MOCK_URI);
         jobController = coordinatorApiController.getJobController();
     }
 

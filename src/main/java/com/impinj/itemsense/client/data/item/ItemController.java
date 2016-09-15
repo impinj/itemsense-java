@@ -4,17 +4,17 @@ import com.impinj.itemsense.client.data.EpcFormat;
 import com.impinj.itemsense.client.data.PresenceConfidence;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by jcombopi on 1/26/16.
- */
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
+
 public class ItemController {
+    private static final String BASE_PATH = "/data/v1/items";
     private WebTarget target;
     private RestApiHelper<ItemResponse> restApiHelper;
 
@@ -24,11 +24,11 @@ public class ItemController {
     }
 
     public Response getItemsAsResponse(Map<String, Object> queryParams) {
-        return this.restApiHelper.get(queryParams, "/data/v1/items/show", target);
+        return this.restApiHelper.get(queryParams, target, BASE_PATH, "show");
     }
 
     public ItemResponse getItems(Map<String, Object> queryParams) {
-        return this.restApiHelper.readObjectFromString(getItemsAsResponse(queryParams).readEntity(String.class));
+        return getItemsAsResponse(queryParams).readEntity(ItemResponse.class);
     }
 
     public ItemResponse getItems(EpcFormat epcFormat,

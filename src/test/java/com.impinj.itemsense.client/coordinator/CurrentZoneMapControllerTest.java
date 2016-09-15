@@ -1,32 +1,34 @@
 package com.impinj.itemsense.client.coordinator;
 
 
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.gson.Gson;
+
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.currentZoneMap.CurrentZoneMap;
 import com.impinj.itemsense.client.coordinator.currentZoneMap.CurrentZoneMapController;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.*;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import java.net.URI;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
-
-/**
- * Created by jcombopi on 1/29/16.
- */
 public class CurrentZoneMapControllerTest {
 
-    private CoordinatorApiController coordinatorApiController;
     private CurrentZoneMapController currentZoneMapController;
     private Gson gson;
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8089);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
 
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
@@ -35,17 +37,12 @@ public class CurrentZoneMapControllerTest {
     @Before
     public void setUp() throws Exception {
 
-        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic("testUser", "testPassword"));
+        Client client = TestUtils.getClient();
 
-        //http://localhost:8089 is where wiremock is running
-        coordinatorApiController = new CoordinatorApiController(client, URI.create("http://localhost:8089"));
-        currentZoneMapController = coordinatorApiController.getCurrentZoneMapController();
+        currentZoneMapController =
+                new CoordinatorApiController(client, TestUtils.MOCK_URI)
+                        .getCurrentZoneMapController();
         gson = new Gson();
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
 
     }
 
@@ -65,7 +62,6 @@ public class CurrentZoneMapControllerTest {
 
     @Test
     public void GetCurrentZoneMapForFacility() {
-
         CurrentZoneMap seattleTest = new CurrentZoneMap("Seattle", "COMPLETE");
         stubFor(get(urlEqualTo("/configuration/v1/currentZoneMap/show/Seattle")).willReturn(aResponse()
                 .withStatus(200)
@@ -77,7 +73,6 @@ public class CurrentZoneMapControllerTest {
 
         Assert.assertThat(currentZoneMap, instanceOf(CurrentZoneMap.class));
         Assert.assertEquals(currentZoneMap, seattleTest);
-
     }
 }
 

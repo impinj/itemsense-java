@@ -2,47 +2,45 @@ package com.impinj.itemsense.client.coordinator.facility;
 
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by jcombopi on 1/25/16.
- */
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Response;
+
+
 public class FacilityController {
+    private static final String BASE_PATH = "/configuration/v1/facilities";
     private RestApiHelper<Facility> restApiHelper;
     private WebTarget target;
 
     public FacilityController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<Facility>(Facility.class);
+        this.restApiHelper = new RestApiHelper<>(Facility.class);
     }
 
     public Response getFacilityAsResponse(String facilityName) {
-        return this.restApiHelper.get(facilityName, "/configuration/v1/facilities/show", target);
+        return this.restApiHelper.get(target, BASE_PATH, "show", facilityName);
     }
 
     public Response getAllFacilitiesAsResponse() {
-        return this.restApiHelper.get("/configuration/v1/facilities/show", target);
+        return this.restApiHelper.get(target, BASE_PATH, "show");
     }
 
     public Response createFacilityAsResponse(Facility facility) {
-        return this.restApiHelper.post(facility, "/configuration/v1/facilities/create", target);
+        return this.restApiHelper.post(facility, target, BASE_PATH, "create");
     }
 
     public Response updateFacilityAsResponse(Facility facility) {
-        return this.restApiHelper.put(facility, "/configuration/v1/facilities/createOrReplace", target);
+        return this.restApiHelper.put(facility, target, BASE_PATH, "createOrReplace");
     }
 
     public Response deleteFacility(String facilityName) {
-        return this.restApiHelper.delete(facilityName, "/configuration/v1/facilities/destroy", target);
+        return this.restApiHelper.delete(target, BASE_PATH, "destroy", facilityName);
     }
 
     public List<Facility> getAllFacilities() {
-        Facility[] facilities = getAllFacilitiesAsResponse().readEntity(Facility[].class);
-        return new ArrayList<Facility>(Arrays.asList(facilities));
+        return getAllFacilitiesAsResponse().readEntity(new GenericType<List<Facility>>() {});
     }
 
     public Facility getFacility(String facilityName) {
