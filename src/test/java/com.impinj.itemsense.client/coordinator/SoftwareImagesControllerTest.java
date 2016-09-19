@@ -12,7 +12,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import javax.ws.rs.NotFoundException;
 
@@ -24,8 +23,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 public class SoftwareImagesControllerTest {
 
     private static final byte[] TEST_BYTE_ARRAY = {'a', 'b', 'c', '1', '5', '0', 'g'};
-    private SoftwareImagesController softwareImagesController;
 
+    private SoftwareImagesController softwareImagesController;
 
     @ClassRule
     public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);

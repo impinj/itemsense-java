@@ -6,6 +6,7 @@ import com.impinj.itemsense.client.coordinator.facility.FacilityController;
 import com.impinj.itemsense.client.coordinator.job.JobController;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigurationController;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinitionController;
+import com.impinj.itemsense.client.coordinator.readerhealth.HealthController;
 import com.impinj.itemsense.client.coordinator.recipe.RecipeController;
 import com.impinj.itemsense.client.coordinator.softwareimages.SoftwareImagesController;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.SoftwareUpgradesController;
@@ -38,6 +39,7 @@ public class CoordinatorApiController {
     private SoftwareUpgradesController softwareUpgradesController;
     private SoftwareVersionsController softwareVersionsController;
     private SoftwareImagesController softwareImagesController;
+    private HealthController healthController;
 
     private WebTarget target;
 
@@ -56,5 +58,6 @@ public class CoordinatorApiController {
         this.softwareUpgradesController = new SoftwareUpgradesController(target);
         this.softwareVersionsController = new SoftwareVersionsController(target);
         this.softwareImagesController = new SoftwareImagesController(target);
+        this.healthController = new HealthController(target);
     }
 }

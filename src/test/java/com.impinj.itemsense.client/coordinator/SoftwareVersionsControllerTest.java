@@ -10,10 +10,6 @@ import com.impinj.itemsense.client.coordinator.softwareversions.SoftwareVersions
 import com.impinj.itemsense.client.coordinator.softwareversions.VersionInfo;
 import com.impinj.itemsense.client.coordinator.softwareversions.VersionInfoView;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matchers;
-import org.hamcrest.core.Is;
-import org.hamcrest.core.IsCollectionContaining;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
