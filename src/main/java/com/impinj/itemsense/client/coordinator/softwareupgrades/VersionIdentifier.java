@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class VersionIdentifier {
-    private String version;
+    private String name;
     private ImageType imageType;
 }

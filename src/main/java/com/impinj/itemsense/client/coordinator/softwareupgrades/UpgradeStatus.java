@@ -9,7 +9,7 @@ public class UpgradeStatus {
     private String id;
     private VersionIdentifier target;
     private UpgradeState status;
-    private DeviceClassHierarchy readerGroupingType;
+    private TargetType readerGroupingType;
     private List<String> groupingUnitIds;
     private UpgradeStatusDetails details;
     private long elapsedTimeSeconds;
