@@ -20,8 +20,6 @@ import com.impinj.itemsense.client.coordinator.softwareupgrades.UpgradeState;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.UpgradeStatus;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.VersionIdentifier;
 
-import org.hamcrest.Matchers;
-import org.hamcrest.core.IsCollectionContaining;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -68,7 +66,7 @@ public class SoftwareUpgradeControllerTest {
 
         VersionIdentifier versionIdentifier = new VersionIdentifier();
         versionIdentifier.setVersion("test_version");
-        versionIdentifier.setImageType(ImageType.cap_itemsense);
+        versionIdentifier.setImageType(ImageType.CAP_ITEMSENSE);
         TEST_UPGRADE_REQUEST.setTarget(versionIdentifier);
 
         UpgradePolicy upgradePolicy = new UpgradePolicy();
@@ -98,7 +96,7 @@ public class SoftwareUpgradeControllerTest {
 
         VersionIdentifier previousVersion = new VersionIdentifier();
         previousVersion.setVersion("test_old_version");
-        previousVersion.setImageType(ImageType.cap_itemsense);
+        previousVersion.setImageType(ImageType.CAP_ITEMSENSE);
         deviceStatus.setPreviousVersion(previousVersion);
 
         deviceStatus.setStatus(UpgradeState.IN_PROGRESS);

@@ -10,6 +10,6 @@
 package com.impinj.itemsense.client.coordinator.softwareupgrades;
 
 public enum ImageType {
-    firmware_speedway,
-    cap_itemsense
+    FIRMWARE_SPEEDWAY,
+    CAP_ITEMSENSE
 }
