@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
-import com.impinj.itemsense.client.coordinator.softwareupgrades.DeviceClassHierarchy;
+import com.impinj.itemsense.client.coordinator.softwareupgrades.TargetType;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.DeviceStatus;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.ImageType;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.SoftwareUpgradesController;
@@ -15,6 +15,7 @@ import com.impinj.itemsense.client.coordinator.softwareupgrades.StartUpgradeResp
 import com.impinj.itemsense.client.coordinator.softwareupgrades.UpgradeFailureAction;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.UpgradePolicy;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.UpgradeRequest;
+import com.impinj.itemsense.client.coordinator.softwareupgrades.UpgradeRequestTarget;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.UpgradeRequestView;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.UpgradeState;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.UpgradeStatus;
@@ -60,14 +61,14 @@ public class SoftwareUpgradeControllerTest {
         TEST_UPGRADE_REQUEST_VIEW.setId("test_id");
 
         TEST_UPGRADE_REQUEST = new UpgradeRequest();
-        TEST_UPGRADE_REQUEST.setReaderGroupingType(DeviceClassHierarchy.Facility);
         ImmutableSet<String> groupingUnitIds = ImmutableSet.of("test_facility1");
-        TEST_UPGRADE_REQUEST.setGroupingUnitIds(groupingUnitIds);
+        TEST_UPGRADE_REQUEST.setTarget(new UpgradeRequestTarget(TargetType.FACILITY, groupingUnitIds));
 
         VersionIdentifier versionIdentifier = new VersionIdentifier();
-        versionIdentifier.setVersion("test_version");
+
+        versionIdentifier.setName("test_version");
         versionIdentifier.setImageType(ImageType.CAP_ITEMSENSE);
-        TEST_UPGRADE_REQUEST.setTarget(versionIdentifier);
+        TEST_UPGRADE_REQUEST.setVersion(versionIdentifier);
 
         UpgradePolicy upgradePolicy = new UpgradePolicy();
         upgradePolicy.setRatioMaxOutstanding(0.1);
@@ -84,10 +85,9 @@ public class SoftwareUpgradeControllerTest {
         TEST_UPGRADE_STATUS = new UpgradeStatus();
 
         TEST_UPGRADE_STATUS.setId("test_id2");
-        TEST_UPGRADE_STATUS.setTarget(versionIdentifier);
+        TEST_UPGRADE_STATUS.setVersion(versionIdentifier);
         TEST_UPGRADE_STATUS.setStatus(UpgradeState.IN_PROGRESS);
-        TEST_UPGRADE_STATUS.setReaderGroupingType(DeviceClassHierarchy.Facility);
-        TEST_UPGRADE_STATUS.setGroupingUnitIds(groupingUnitIds.asList());
+        TEST_UPGRADE_STATUS.setTarget(new UpgradeRequestTarget(TargetType.FACILITY, groupingUnitIds));
 
         UpgradeStatus.UpgradeStatusDetails upgradeStatusDetails = new UpgradeStatus.UpgradeStatusDetails();
 
@@ -95,7 +95,8 @@ public class SoftwareUpgradeControllerTest {
         deviceStatus.setName("test_readerId_1");
 
         VersionIdentifier previousVersion = new VersionIdentifier();
-        previousVersion.setVersion("test_old_version");
+
+        previousVersion.setName("test_old_version");
         previousVersion.setImageType(ImageType.CAP_ITEMSENSE);
         deviceStatus.setPreviousVersion(previousVersion);
 
