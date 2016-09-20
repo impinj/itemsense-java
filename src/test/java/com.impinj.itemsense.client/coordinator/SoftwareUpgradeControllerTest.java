@@ -84,10 +84,9 @@ public class SoftwareUpgradeControllerTest {
         TEST_UPGRADE_STATUS = new UpgradeStatus();
 
         TEST_UPGRADE_STATUS.setId("test_id2");
-        TEST_UPGRADE_STATUS.setTarget(versionIdentifier);
+        TEST_UPGRADE_STATUS.setVersion(versionIdentifier);
         TEST_UPGRADE_STATUS.setStatus(UpgradeState.IN_PROGRESS);
-        TEST_UPGRADE_STATUS.setReaderGroupingType(TargetType.FACILITY);
-        TEST_UPGRADE_STATUS.setGroupingUnitIds(groupingUnitIds.asList());
+        TEST_UPGRADE_STATUS.setTarget(new UpgradeRequestTarget(TargetType.FACILITY, groupingUnitIds));
 
         UpgradeStatus.UpgradeStatusDetails upgradeStatusDetails = new UpgradeStatus.UpgradeStatusDetails();
 

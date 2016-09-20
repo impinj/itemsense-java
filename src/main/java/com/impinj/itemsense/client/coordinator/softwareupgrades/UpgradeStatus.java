@@ -7,10 +7,9 @@ import lombok.Data;
 @Data
 public class UpgradeStatus {
     private String id;
-    private VersionIdentifier target;
+    private VersionIdentifier version;
     private UpgradeState status;
-    private TargetType readerGroupingType;
-    private List<String> groupingUnitIds;
+    private UpgradeRequestTarget target;
     private UpgradeStatusDetails details;
     private long elapsedTimeSeconds;
     private String lastUpdatedTime;
