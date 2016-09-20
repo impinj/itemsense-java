@@ -12,7 +12,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import javax.ws.rs.NotFoundException;
 
@@ -42,7 +41,7 @@ public class SoftwareImagesControllerTest {
 
     @Test
     public void getSoftwareImage() throws Exception {
-        stubFor(get(urlEqualTo("/configuration/v1/images/cap_itemsense/testImageName")).willReturn(
+        stubFor(get(urlEqualTo("/configuration/v1/images/CAP_ITEMSENSE/testImageName")).willReturn(
                 aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/octet-stream")
@@ -51,7 +50,7 @@ public class SoftwareImagesControllerTest {
 
         byte[] testResponseArray = new byte[TEST_BYTE_ARRAY.length];
         try (InputStream testImageStream = softwareImagesController.downloadSoftwareImage(
-                ImageType.cap_itemsense, "testImageName"
+                ImageType.CAP_ITEMSENSE, "testImageName"
         )) {
             // Deliberately naive usage of the inputstream, to verify at the lowest level
 
@@ -69,10 +68,10 @@ public class SoftwareImagesControllerTest {
 
     @Test(expected = NotFoundException.class)
     public void getNonexistentSoftwareImage() throws Exception {
-        stubFor(get(urlEqualTo("/configuration/v1/images/cap_itemsense/notTestImageName"))
+        stubFor(get(urlEqualTo("/configuration/v1/images/CAP_ITEMSENSE/notTestImageName"))
                         .willReturn(aResponse().withStatus(404))
         );
 
-        softwareImagesController.downloadSoftwareImage(ImageType.cap_itemsense, "notTestImageName");
+        softwareImagesController.downloadSoftwareImage(ImageType.CAP_ITEMSENSE, "notTestImageName");
     }
 }

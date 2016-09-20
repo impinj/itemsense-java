@@ -65,8 +65,9 @@ public class SoftwareUpgradeControllerTest {
         TEST_UPGRADE_REQUEST.setTarget(new UpgradeRequestTarget(TargetType.FACILITY, groupingUnitIds));
 
         VersionIdentifier versionIdentifier = new VersionIdentifier();
+
         versionIdentifier.setName("test_version");
-        versionIdentifier.setImageType(ImageType.cap_itemsense);
+        versionIdentifier.setImageType(ImageType.CAP_ITEMSENSE);
         TEST_UPGRADE_REQUEST.setVersion(versionIdentifier);
 
         UpgradePolicy upgradePolicy = new UpgradePolicy();
@@ -94,8 +95,9 @@ public class SoftwareUpgradeControllerTest {
         deviceStatus.setName("test_readerId_1");
 
         VersionIdentifier previousVersion = new VersionIdentifier();
+
         previousVersion.setName("test_old_version");
-        previousVersion.setImageType(ImageType.cap_itemsense);
+        previousVersion.setImageType(ImageType.CAP_ITEMSENSE);
         deviceStatus.setPreviousVersion(previousVersion);
 
         deviceStatus.setStatus(UpgradeState.IN_PROGRESS);

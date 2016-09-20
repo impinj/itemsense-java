@@ -10,10 +10,6 @@ import com.impinj.itemsense.client.coordinator.softwareversions.SoftwareVersions
 import com.impinj.itemsense.client.coordinator.softwareversions.VersionInfo;
 import com.impinj.itemsense.client.coordinator.softwareversions.VersionInfoView;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matchers;
-import org.hamcrest.core.Is;
-import org.hamcrest.core.IsCollectionContaining;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -52,7 +48,7 @@ public class SoftwareVersionsControllerTest {
 
         VersionIdentifier versionIdentifier = new VersionIdentifier();
         versionIdentifier.setName("test_version");
-        versionIdentifier.setImageType(ImageType.cap_itemsense);
+        versionIdentifier.setImageType(ImageType.CAP_ITEMSENSE);
 
         versionInfo.setVersionIdentifier(versionIdentifier);
         versionInfo.setImageName("test_image_name");
@@ -79,13 +75,13 @@ public class SoftwareVersionsControllerTest {
 
     @Test
     public void getCapVersions() {
-        stubFor(get(urlEqualTo("/configuration/v1/softwareVersions/list/cap_itemsense")).willReturn(
+        stubFor(get(urlEqualTo("/configuration/v1/softwareVersions/list/CAP_ITEMSENSE")).willReturn(
                 aResponse().withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(gson.toJson(Collections.singletonList(CAP_VERSION)))
         ));
 
-        List<VersionInfoView> versions = softwareVersionsController.getVersions(ImageType.cap_itemsense);
+        List<VersionInfoView> versions = softwareVersionsController.getVersions(ImageType.CAP_ITEMSENSE);
 
         Assert.assertThat(versions, hasSize(1));
         Assert.assertThat(versions, contains(CAP_VERSION));
@@ -93,20 +89,20 @@ public class SoftwareVersionsControllerTest {
 
     @Test
     public void getCapVersionsNoneExist() {
-        stubFor(get(urlEqualTo("/configuration/v1/softwareVersions/list/cap_itemsense")).willReturn(
+        stubFor(get(urlEqualTo("/configuration/v1/softwareVersions/list/CAP_ITEMSENSE")).willReturn(
             aResponse().withStatus(200)
                     .withHeader("Content-Type", "application/json")
                     .withBody(gson.toJson(Collections.emptyList()))
         ));
 
-        List<VersionInfoView> versions = softwareVersionsController.getVersions(ImageType.cap_itemsense);
+        List<VersionInfoView> versions = softwareVersionsController.getVersions(ImageType.CAP_ITEMSENSE);
 
         Assert.assertThat(versions, is(empty()));
     }
 
     @Test
     public void getCapVersion() {
-        stubFor(get(urlEqualTo("/configuration/v1/softwareVersions/show/cap_itemsense/test_version"))
+        stubFor(get(urlEqualTo("/configuration/v1/softwareVersions/show/CAP_ITEMSENSE/test_version"))
                         .willReturn(aResponse().withStatus(200)
                                             .withHeader("Content-Type", "application/json")
                                             .withBody(gson.toJson(CAP_VERSION))
@@ -114,17 +110,17 @@ public class SoftwareVersionsControllerTest {
         );
 
         VersionInfoView actualResponse =
-                softwareVersionsController.getVersion(ImageType.cap_itemsense, "test_version");
+                softwareVersionsController.getVersion(ImageType.CAP_ITEMSENSE, "test_version");
         Assert.assertEquals(CAP_VERSION, actualResponse);
     }
 
     @Test
     public void getNonExistentCapVersion() {
-        stubFor(get(urlEqualTo("/configuration/v1/softwareVersions/show/cap_itemsense/not_test_version"))
+        stubFor(get(urlEqualTo("/configuration/v1/softwareVersions/show/CAP_ITEMSENSE/not_test_version"))
                         .willReturn(aResponse().withStatus(404))
         );
 
-        VersionInfoView actualResponse = softwareVersionsController.getVersion(ImageType.cap_itemsense, "not_test_version");
+        VersionInfoView actualResponse = softwareVersionsController.getVersion(ImageType.CAP_ITEMSENSE, "not_test_version");
         Assert.assertNull(actualResponse);
     }
 }
