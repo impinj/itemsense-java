@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class UpgradeRequest {
     UpgradeRequestTarget target;
-    VersionIdentifier version;
+    VersionIdentifier versionIdentifier;
     UpgradePolicy policy;
 }
