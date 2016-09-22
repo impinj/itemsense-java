@@ -47,7 +47,7 @@ public class SoftwareVersionsControllerTest {
         VersionInfo versionInfo = new VersionInfo();
 
         VersionIdentifier versionIdentifier = new VersionIdentifier();
-        versionIdentifier.setName("test_version");
+        versionIdentifier.setVersion("test_version");
         versionIdentifier.setImageType(ImageType.CAP_ITEMSENSE);
 
         versionInfo.setVersionIdentifier(versionIdentifier);

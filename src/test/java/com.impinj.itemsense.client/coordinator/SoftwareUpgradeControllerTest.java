@@ -66,9 +66,9 @@ public class SoftwareUpgradeControllerTest {
 
         VersionIdentifier versionIdentifier = new VersionIdentifier();
 
-        versionIdentifier.setName("test_version");
+        versionIdentifier.setVersion("test_version");
         versionIdentifier.setImageType(ImageType.CAP_ITEMSENSE);
-        TEST_UPGRADE_REQUEST.setVersion(versionIdentifier);
+        TEST_UPGRADE_REQUEST.setVersionIdentifier(versionIdentifier);
 
         UpgradePolicy upgradePolicy = new UpgradePolicy();
         upgradePolicy.setRatioMaxOutstanding(0.1);
@@ -96,7 +96,7 @@ public class SoftwareUpgradeControllerTest {
 
         VersionIdentifier previousVersion = new VersionIdentifier();
 
-        previousVersion.setName("test_old_version");
+        previousVersion.setVersion("test_old_version");
         previousVersion.setImageType(ImageType.CAP_ITEMSENSE);
         deviceStatus.setPreviousVersion(previousVersion);
 
