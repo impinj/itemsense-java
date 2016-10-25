@@ -4,6 +4,7 @@ package com.impinj.itemsense.client.coordinator.recipe;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.time.Duration;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -28,5 +29,6 @@ public class Recipe {
     private Integer computeWindowSizeInCycles;
     private Integer computeWindowTimeInSeconds;
     private LocationAggregationModel locationAggregationModel;
+    private Duration tagExpiryDuration;
 }
 
