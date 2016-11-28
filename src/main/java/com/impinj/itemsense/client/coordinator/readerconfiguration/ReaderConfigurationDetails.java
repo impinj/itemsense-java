@@ -1,6 +1,7 @@
 package com.impinj.itemsense.client.coordinator.readerconfiguration;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,17 +9,10 @@ import lombok.NoArgsConstructor;
 
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ReaderConfigurationDetails {
-  private ReaderMode readerMode;
-  private SearchMode searchMode;
-  private int session;
-  private int tagPopulationEstimate;
-  private boolean polarization;
-  private int[] antennas;
-  private Filter filter;
-  private ChannelConfig channelConfig;
-  private ReportConfig reportConfig;
+@JsonSubTypes({
+        @JsonSubTypes.Type(value=LocationReaderConfigDetails.class, name="LOCATION"),
+        @JsonSubTypes.Type(value=InventoryReaderConfigDetails.class, name="INVENTORY"),
+        @JsonSubTypes.Type(value=DoNothingReaderConfigDetails.class, name="DO_NOTHING")
+})
+public abstract class ReaderConfigurationDetails {
 }

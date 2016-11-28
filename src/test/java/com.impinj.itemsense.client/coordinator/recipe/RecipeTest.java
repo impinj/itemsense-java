@@ -12,18 +12,14 @@ public class RecipeTest {
   public void testRecipeDeserialization() throws Exception {
     ObjectMapper mapper = new ObjectMapper();
 
-    Recipe recipe = new Recipe();
+    LocationRecipe recipe = new LocationRecipe();
     recipe.setName("RECIPE");
-    recipe.setType(RecipeType.LLRP);
-    recipe.setZoneModel(ZoneModel.GATEWAY);
-    recipe.setLocationAggregationModel(LocationAggregationModel.BY_TIME);
+    recipe.setType(RecipeType.LOCATION);
 
     String string = mapper.writeValueAsString(recipe);
 
     Recipe recipeDeserialized = mapper.readValue(string, Recipe.class);
     Assert.assertEquals("RECIPE", recipeDeserialized.getName());
-    Assert.assertEquals(RecipeType.LLRP, recipeDeserialized.getType());
-    Assert.assertEquals(ZoneModel.GATEWAY, recipeDeserialized.getZoneModel());
-    Assert.assertEquals(LocationAggregationModel.BY_TIME, recipeDeserialized.getLocationAggregationModel());
+    Assert.assertEquals(RecipeType.LOCATION, recipeDeserialized.getType());
   }
 }
