@@ -13,6 +13,7 @@ public class ObjectMapperContextResolver implements ContextResolver<ObjectMapper
     public ObjectMapperContextResolver() {
         mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
     }

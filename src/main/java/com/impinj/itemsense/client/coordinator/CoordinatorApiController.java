@@ -8,6 +8,7 @@ import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigu
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinitionController;
 import com.impinj.itemsense.client.coordinator.readerhealth.HealthController;
 import com.impinj.itemsense.client.coordinator.recipe.RecipeController;
+import com.impinj.itemsense.client.coordinator.settings.snmp.SnmpController;
 import com.impinj.itemsense.client.coordinator.softwareimages.SoftwareImagesController;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.SoftwareUpgradesController;
 import com.impinj.itemsense.client.coordinator.softwareversions.SoftwareVersionsController;
@@ -36,6 +37,7 @@ public class CoordinatorApiController {
     private RecipeController recipeController;
     private UserController userController;
     private ZoneMapController zoneMapController;
+    private SnmpController snmpController;
     private SoftwareUpgradesController softwareUpgradesController;
     private SoftwareVersionsController softwareVersionsController;
     private SoftwareImagesController softwareImagesController;
@@ -55,6 +57,7 @@ public class CoordinatorApiController {
         this.userController = new UserController(target);
         this.zoneMapController = new ZoneMapController(target);
         this.authenticationController = new AuthenticationController(target);
+        this.snmpController = new SnmpController(target);
         this.softwareUpgradesController = new SoftwareUpgradesController(target);
         this.softwareVersionsController = new SoftwareVersionsController(target);
         this.softwareImagesController = new SoftwareImagesController(target);

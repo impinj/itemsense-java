@@ -3,17 +3,16 @@ package com.impinj.itemsense.client.coordinator;
 
 import com.google.gson.Gson;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.impinj.itemsense.client.TestUtils;
-import com.impinj.itemsense.client.coordinator.readerconfiguration.ChannelConfig;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.Filter;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.InventoryReaderConfigDetails;
+import com.impinj.itemsense.client.coordinator.readerconfiguration.LocationReaderConfigDetails;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.Operation;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfiguration;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigurationController;
-import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigurationDetails;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderMode;
-import com.impinj.itemsense.client.coordinator.readerconfiguration.ReportConfig;
-import com.impinj.itemsense.client.coordinator.readerconfiguration.SearchMode;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -22,6 +21,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,15 +29,9 @@ import javax.ws.rs.client.Client;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
-
-
-
-
-
 
 public class ReaderConfigurationControllerTest {
 
@@ -70,8 +64,12 @@ public class ReaderConfigurationControllerTest {
 
     @Test
     public void getReaderConfigurationsTest() {
-        ReaderConfigurationDetails details = new ReaderConfigurationDetails(ReaderMode.MODE_1002, SearchMode.DUAL_TARGET, 1, 24, true, new int[] {1,2,3,4,5}, new Filter(), new ChannelConfig(), new ReportConfig());
-        ReaderConfiguration testReaderConfiguration = new ReaderConfiguration("Test_Configuration", Operation.NORMAL, details);
+        InventoryReaderConfigDetails details = new InventoryReaderConfigDetails();
+        details.setReaderMode(ReaderMode.MODE_1002);
+        details.setSession(1);
+
+        ReaderConfiguration testReaderConfiguration = new ReaderConfiguration("Test_Configuration", Operation.INVENTORY, details);
+
         ArrayList<ReaderConfiguration> testConfigurations = new ArrayList<>();
         testConfigurations.add(testReaderConfiguration);
 
@@ -88,9 +86,12 @@ public class ReaderConfigurationControllerTest {
     }
 
     @Test
-    public void getReaderConfigurationTest() {
-        ReaderConfigurationDetails details = new ReaderConfigurationDetails(ReaderMode.MODE_1002, SearchMode.DUAL_TARGET, 1, 24, true, new int[] {1,2,3,4,5}, new Filter(), new ChannelConfig(), new ReportConfig());
-        ReaderConfiguration testReaderConfiguration = new ReaderConfiguration("Test_Configuration", Operation.NORMAL, details);
+    public void getReaderConfigurationTest() throws IOException {
+        LocationReaderConfigDetails details = new LocationReaderConfigDetails();
+        details.setReaderMode(ReaderMode.MODE_1002);
+        details.setSession(1);
+        details.setFilter(new Filter());
+        ReaderConfiguration testReaderConfiguration = new ReaderConfiguration("Test_Configuration", Operation.LOCATION, details);
 
         String str = gson.toJson(testReaderConfiguration);
 
@@ -102,27 +103,7 @@ public class ReaderConfigurationControllerTest {
         ReaderConfiguration readerConfigurationResult =  readerConfigurationController.getReaderConfiguration("Test_Configuration");
         Assert.assertEquals(testReaderConfiguration, readerConfigurationResult);
         Assert.assertThat(readerConfigurationResult, instanceOf(ReaderConfiguration.class));
+        Assert.assertThat(readerConfigurationResult.getConfiguration(), instanceOf(LocationReaderConfigDetails.class));
 
     }
-
-    @Test
-    public void testIllegalReaderConfigurationEnums() {
-        String readerConfigResponse = "{\"name\":\"SPEEDWAY_CONFIG\",\"configuration\":{\"readerMode\":\"ILLEGAL MODE\",\"session\":0,\"searchMode\":\"ILLEGAL SEARCH MODE\",\"tagPopulationEstimate\":32,\"transmitPowerInDbm\":null,\"polarization\":false,\"antennas\":[1,2],\"filter\":null,\"channelConfig\":null,\"reportConfig\":null},\"operation\":\"ILLEGAL OPERATION\"}}";
-        ReaderConfiguration dummyReaderConfiguration = new ReaderConfiguration();
-        String dummyString = gson.toJson(dummyReaderConfiguration);
-        System.out.println(dummyString);
-
-        stubFor(post(urlEqualTo("/configuration/v1/readerConfigurations/create")).willReturn(aResponse()
-            .withStatus(200)
-            .withHeader("Content-Type", "application/json")
-            .withBody(readerConfigResponse)));
-
-        ReaderConfiguration config = readerConfigurationController.createReaderConfiguration(new ReaderConfiguration());
-
-        Assert.assertNull(config.getOperation());
-        Assert.assertNull(config.getReaderMode());
-        Assert.assertNull(config.getSearchMode());
-    }
-
-
 }

@@ -2,6 +2,7 @@ package com.impinj.itemsense.client.coordinator.readerconfiguration;
 
 
 public enum Operation {
-    NORMAL,
+    LOCATION,
+    INVENTORY,
     DO_NOTHING
 }
