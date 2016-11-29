@@ -18,6 +18,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class RecipeControllerTest {
 
         coordinatorApiController = new CoordinatorApiController(client, TestUtils.MOCK_URI);
         recipeController = coordinatorApiController.getRecipeController();
-        gson = new Gson();
+        gson = TestUtils.getGson();
     }
 
     @After
@@ -69,6 +70,7 @@ public class RecipeControllerTest {
         testRecipe.setName("Test_Reader_Configuration");
         testRecipe.setZoneModel(ZoneModel.GEOGRAPHIC);
         testRecipe.setLocationAggregationModel(LocationAggregationModel.BY_CYCLES);
+        testRecipe.setTagExpiryDuration(Duration.ofSeconds(10));
 
         ArrayList<Recipe> testDefinitions = new ArrayList<>();
 
@@ -97,6 +99,7 @@ public class RecipeControllerTest {
         testRecipe.setName("Test_Reader_Configuration");
         testRecipe.setZoneModel(ZoneModel.GEOGRAPHIC);
         testRecipe.setLocationAggregationModel(LocationAggregationModel.BY_CYCLES);
+        testRecipe.setTagExpiryDuration(Duration.ofSeconds(10));
 
         stubFor(get(urlEqualTo("/configuration/v1/recipes/show/Test_Recipe")).willReturn(aResponse()
                 .withStatus(200)
@@ -124,13 +127,14 @@ public class RecipeControllerTest {
 
     @Test
     public void createRecipeTest() throws Exception {
-        String recipeStr = "{\"name\":\"New_Recipe\",\"type\":\"LLRP\",\"readerConfigurationName\":\"Test_Reader_Configuration\",\"presencePipelineEnabled\":false,\"locationReportingEnabled\":false,\"zoneModel\":\"GATEWAY\"}";
+        String recipeStr = "{\"name\":\"New_Recipe\",\"type\":\"LLRP\",\"readerConfigurationName\":\"Test_Reader_Configuration\",\"presencePipelineEnabled\":false,\"locationReportingEnabled\":false,\"zoneModel\":\"GATEWAY\",\"tagExpiryDuration\":\"PT10S\"}";
 
         Recipe testRecipe = new Recipe();
         testRecipe.setName("New_Recipe");
         testRecipe.setType(RecipeType.LLRP);
         testRecipe.setReaderConfigurationName("Test_Reader_Configuration");
         testRecipe.setZoneModel(ZoneModel.GATEWAY);
+        testRecipe.setTagExpiryDuration(Duration.ofSeconds(10));
 
         stubFor(post(urlEqualTo("/configuration/v1/recipes/create"))
             .willReturn(aResponse()
