@@ -17,6 +17,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class RecipeControllerTest {
 
         coordinatorApiController = new CoordinatorApiController(client, TestUtils.MOCK_URI);
         recipeController = coordinatorApiController.getRecipeController();
-        gson = new Gson();
+        gson = TestUtils.getGson();
     }
 
     @After
@@ -68,6 +69,7 @@ public class RecipeControllerTest {
         testRecipe.setName("Test_Reader_Configuration");
         testRecipe.setComputeWindow(15);
         testRecipe.setReportingInterval(5);
+        testRecipe.setTagExpiryDuration(Duration.ofSeconds(10));
 
         ArrayList<Recipe> testDefinitions = new ArrayList<>();
 
@@ -96,6 +98,7 @@ public class RecipeControllerTest {
         testRecipe.setName("Test_Recipe");
         testRecipe.setReportingInterval(10);
         testRecipe.setComputeWindow(30);
+        testRecipe.setTagExpiryDuration(Duration.ofSeconds(10));
 
         stubFor(get(urlEqualTo("/configuration/v1/recipes/show/Test_Recipe")).willReturn(aResponse()
                 .withStatus(200)
