@@ -48,10 +48,10 @@ public class ItemSenseApiFactory {
 1. <a href="#itemsenseConfig">ItemSense Configuration</a>
 2. <a href="#users">Users</a>
 3. <a href="#zoneMaps">Zone Maps </a>
-4. <a href= "#currentZoneMap"> Current Zone Map </a>
+4. <a href= "#currentZoneMap">Current Zone Map </a>
 5. <a href= "#readerDefinitions" >Reader Definitions </a>
-6. <a href ="#readerConfigurations"> Reader Configurations </a>
-7. <a href ="#recipes"> Recipes </a>
+6. <a href ="#readerConfigurations">Reader Configurations </a>
+7. <a href ="#recipes">Recipes </a>
 8. <a href= "#jobs" >Jobs </a>
 9. <a href= "#items">Items </a>
 
