@@ -26,7 +26,7 @@ public class ItemSenseApiFactory {
 
     }
 
-    //Creates a controller for the data endpoints of ItemSense
+    // Creates a controller for the data endpoints of ItemSense
     public static DataApiController getDataApiController(ItemSenseConfiguration itemSenseConfiguration){
 
         Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic(itemSenseConfiguration.getUserName(), itemSenseConfiguration.getPassword()));
@@ -34,7 +34,7 @@ public class ItemSenseApiFactory {
         return dataApiController;
     }
 
-    ///Creates a controller for the data endpoints
+    // Creates a controller for the data endpoints
     public static CoordinatorApiController getCoordinatorApiController(ItemSenseConfiguration itemSenseConfiguration){
 
         Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic(itemSenseConfiguration.getUserName(), itemSenseConfiguration.getPassword()));
@@ -48,11 +48,12 @@ public class ItemSenseApiFactory {
 1. <a href="#itemsenseConfig">ItemSense Configuration</a>
 2. <a href="#users">Users</a>
 3. <a href="#zoneMaps">Zone Maps </a>
-4. <a href= "#currentZoneMap"> Current Zone Map </a>
+4. <a href= "#currentZoneMap">Current Zone Map </a>
 5. <a href= "#readerDefinitions" >Reader Definitions </a>
-6. <a href ="#readerConfigurations"> Reader Configurations </a>
-7. <a href= "#jobs" >Jobs </a>
-8. <a href= "#items">Items </a>
+6. <a href ="#readerConfigurations">Reader Configurations </a>
+7. <a href ="#recipes">Recipes </a>
+8. <a href= "#jobs" >Jobs </a>
+9. <a href= "#items">Items </a>
 
 
 
@@ -114,9 +115,9 @@ coordinator.getUserController().getUsers() // returns all of the users for an it
 
 coordinator.getUserController().createUser(user) // creates a user
 
-coordinator.getUserController().updateUser(user) //updates a user
+coordinator.getUserController().updateUser(user) // updates a user
 
-coordinator.getUserController().deleteUser(user) //deletes a user
+coordinator.getUserController().deleteUser(user) // deletes a user
 
 ```
 ### Facilities
@@ -132,9 +133,9 @@ coordinator.getFacilityController().getFacilities() // returns all of the facili
 
 coordinator.getFacilityController().createFacility(facility) // creates a facility
 
-coordinator.getFacilityController().updateFacility(facility) //updates a faciity
+coordinator.getFacilityController().updateFacility(facility) // updates a faciity
 
-coordinator.getFacilityController().deleteFacility(facilityName) //deletes a faciity
+coordinator.getFacilityController().deleteFacility(facilityName) // deletes a faciity
 ```
 
 
@@ -151,9 +152,9 @@ coordinator.getZoneMapController().getZoneMaps() // returns all of the zone maps
 
 coordinator.getZoneMapController().createZoneMap(zoneMap) // creates a zone map
 
-coordinator.getZoneMapController().updateZoneMap(zoneMap) //updates a zone map
+coordinator.getZoneMapController().updateZoneMap(zoneMap) // updates a zone map
 
-coordinator.getZoneMapController().deleteZoneMap(zoneMapName) //deletes a zone map
+coordinator.getZoneMapController().deleteZoneMap(zoneMapName) // deletes a zone map
 ```
 
 ### Current Zone Map
@@ -173,7 +174,7 @@ coordinator.getCurrentZoneMapController().clearCurrentZoneMap(facilityName) // c
 
 <div id="readerDefintions" />
 
-For information about zone maps, visit http://developer.impinj.com/itemsense/docs/api/#reader-definitions
+For information about reader definitions, visit http://developer.impinj.com/itemsense/docs/api/#reader-definitions
 
 ```java
 coordinator.getReaderDefinitionController().getReaderDefinition(readerDefinitionName) // returns a reader definition object based on the name
@@ -182,16 +183,16 @@ itemsense.getReaderDefinitionController().getReaderDefinitions() // returns all 
 
 itemsense.getReaderDefinitionController().createReaderDefinition(readerDefinition) // creates a reader definition
 
-itemsense.getReaderDefinitionController().updaterReaderDefinition(readerDefinition) //updates a reader definition
+itemsense.getReaderDefinitionController().updaterReaderDefinition(readerDefinition) // updates a reader definition
 
-itemsense.getReaderDefinitionController().deleteReaderDefinition(readerDefinitionName) //deletes a reader definition based on the name
+itemsense.getReaderDefinitionController().deleteReaderDefinition(readerDefinitionName) // deletes a reader definition based on the name
 ```
 
 ### Reader Configurations
 
 <div id="readerConfigurations" />
 
-For information about zone maps, visit http://developer.impinj.com/itemsense/docs/api/#reader-configurations
+For information about reader configurations, visit http://developer.impinj.com/itemsense/docs/api/#reader-configurations
 
 ```java
 coordinator.getReaderConfigurationController().getReaderConfiguration(readerConfigurationName) // returns a reader configuration object based on the name
@@ -200,9 +201,27 @@ coordinator.getReaderConfigurationController().getReaderConfigurations() // retu
 
 coordinator.getReaderConfigurationController().createReaderConfiguration(readerConfiguration) // creates a reader configuration
 
-coordinator.getReaderConfigurationController().updateReaderConfiguration(readerConfiguration) //updates a reader configuration
+coordinator.getReaderConfigurationController().updateReaderConfiguration(readerConfiguration) // updates a reader configuration
 
-coordinator.getReaderConfigurationController().deleteReaderConfiguration(readerConfigurationName) //deletes a reader configuration based on the name
+coordinator.getReaderConfigurationController().deleteReaderConfiguration(readerConfigurationName) // deletes a reader configuration based on the name
+```
+
+### Recipes
+
+<div id="recipes" />
+
+For information about recipes, visit http://developer.impinj.com/itemsense/docs/api/#recipes
+
+```java
+coordinator.getRecipeController().getRecipe(recipeName) // returns a recipe object based on the name
+
+coordinator.getRecipeController().getRecipes() // returns all of the recipes for an itemsense instance
+
+coordinator.getRecipeController().createRecipe(recipe) // creates a recipe
+
+coordinator.getRecipeController().updateRecipe(recipe) // updates a recipe
+
+coordinator.getRecipeController().deleteRecipe(recipeName) // deletes a recipe based on the name
 ```
 
 
@@ -219,7 +238,7 @@ coordinator.getJobController().getJobs() // returns all of the jobs for an items
 
 coordinator.getJobController().startJob(job) // starts a job
 
-coordinator.getJobController().stopJob(jobId) //stops a job based on the id
+coordinator.getJobController().stopJob(jobId) // stops a job based on the id
 
 ```
 
