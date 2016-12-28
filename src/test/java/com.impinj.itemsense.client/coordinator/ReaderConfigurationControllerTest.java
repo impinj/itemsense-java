@@ -1,6 +1,7 @@
 package com.impinj.itemsense.client.coordinator;
 
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,6 +91,8 @@ public class ReaderConfigurationControllerTest {
         LocationReaderConfigDetails details = new LocationReaderConfigDetails();
         details.setReaderMode(ReaderMode.MODE_1002);
         details.setSession(1);
+        details.setTransmitPowerInDbm(12.25);
+        details.setDisabledAntennas(ImmutableList.of(1,2,3,4,5));
         details.setFilter(new Filter());
         ReaderConfiguration testReaderConfiguration = new ReaderConfiguration("Test_Configuration", Operation.LOCATION, details);
 
@@ -104,6 +107,5 @@ public class ReaderConfigurationControllerTest {
         Assert.assertEquals(testReaderConfiguration, readerConfigurationResult);
         Assert.assertThat(readerConfigurationResult, instanceOf(ReaderConfiguration.class));
         Assert.assertThat(readerConfigurationResult.getConfiguration(), instanceOf(LocationReaderConfigDetails.class));
-
     }
 }
