@@ -32,6 +32,7 @@ public class Item {
     private String zone;
     private String floor;
     private String facility;
+    @Deprecated
     private PresenceConfidence presenceConfidence;
 
     private ZonedDateTime lastModifiedTime;
