@@ -29,6 +29,7 @@ public abstract class Recipe {
     private String name;
     private RecipeType type;
     private String readerConfigurationName;
+    private Integer tagHeartbeatMinutes;
     private Duration tagExpiryDuration;
     private Map<String, String> readerConfigurations = new LinkedHashMap<>();
 }
