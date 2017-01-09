@@ -1,5 +1,5 @@
 # itemsense-java
-> itemsense-java is an API wrapper library for Impinj's ItemSense. This wrapper will be kept up to date with the latest ItemSense features.
+> itemsense-java is an API wrapper library for Impinj's ItemSense.
 
 ## Install
 itemsense-java is available as a dependency on Maven Central [here.](http://mvnrepository.com/artifact/com.impinj/itemsense-client)
@@ -8,7 +8,7 @@ itemsense-java is available as a dependency on Maven Central [here.](http://mvnr
 <dependency>
 	<groupId>com.impinj</groupId>
 	<artifactId>itemsense-client</artifactId>
-	<version>2.1.4</version>
+	<version>3.0.0</version>
 </dependency>
 ```
 
@@ -18,42 +18,81 @@ Once this dependency is included in your project, you can instantiate the two ba
 Check out this sample of a class that instantiates both controllers:
 
 ```java
-// Factory Created in order to facilitate multiple ItemSense API  endpoints
-public class ItemSenseApiFactory {
 
+import com.impinj.itemsense.client.coordinator.CoordinatorApiController;
+import com.impinj.itemsense.client.data.DataApiController;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import java.net.URI;
 
-    private ItemSenseApiFactory(){
+public class ItemSenseConfiguration {
+    String username = ...;
+    String password = ...;
+    String url = "http://.../itemsense/";
 
+    public ItemSenseConfiguration() {
     }
 
-    // Creates a controller for the data endpoints of ItemSense
-    public static DataApiController getDataApiController(ItemSenseConfiguration itemSenseConfiguration){
+    public ItemSenseConfiguration(String username, String password, String url) {
+        this.username = username;
+        this.password = password;
+        this.url = url;
+    }
+
+    public String getUserName() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getBaseUrl() {
+        return url;
+    }
+}
+
+public class ItemSenseApiFactory {
+
+    private ItemSenseApiFactory() {
+    }
+
+    // Create a controller for the coordinator endpoints
+    public static CoordinatorApiController getCoordinatorApiController(ItemSenseConfiguration itemSenseConfiguration) {
+
+        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic(itemSenseConfiguration.getUserName(), itemSenseConfiguration.getPassword()));
+        CoordinatorApiController coordinatorApiController = new CoordinatorApiController( client, URI.create(itemSenseConfiguration.getBaseUrl()));
+        return coordinatorApiController;
+    }
+
+    // Creates a controller for the data endpoints
+    public static DataApiController getDataApiController(ItemSenseConfiguration itemSenseConfiguration) {
 
         Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic(itemSenseConfiguration.getUserName(), itemSenseConfiguration.getPassword()));
         DataApiController dataApiController = new DataApiController( client, URI.create(itemSenseConfiguration.getBaseUrl()));
         return dataApiController;
     }
 
-    // Creates a controller for the data endpoints
-    public static CoordinatorApiController getCoordinatorApiController(ItemSenseConfiguration itemSenseConfiguration){
-
-        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic(itemSenseConfiguration.getUserName(), itemSenseConfiguration.getPassword()));
-        CoordinatorApiController coordinatorApiController = new CoordinatorApiController( client, URI.create(itemSenseConfiguration.getBaseUrl()));
-        return coordinatorApiController;
-    }
 }
 ```
 
 ### Table of Contents
 1. <a href="#itemsenseConfig">ItemSense Configuration</a>
-2. <a href="#users">Users</a>
-3. <a href="#zoneMaps">Zone Maps </a>
-4. <a href= "#currentZoneMap">Current Zone Map </a>
-5. <a href= "#readerDefinitions" >Reader Definitions </a>
-6. <a href ="#readerConfigurations">Reader Configurations </a>
-7. <a href ="#recipes">Recipes </a>
-8. <a href= "#jobs" >Jobs </a>
-9. <a href= "#items">Items </a>
+1. <a href="#authentication">Authentication</a>
+1. <a href="#users">Users</a>
+1. <a href= "#configuration">Global Configuration </a>
+1. <a href= "#softwareVersions">Software Versions </a>
+1. <a href= "#softwareUpgrades">Software Upgrades </a>
+1. <a href="#zoneMaps">Zone Maps </a>
+1. <a href= "#currentZoneMap">Current Zone Map </a>
+1. <a href= "#readerDefinitions" >Reader Definitions </a>
+1. <a href ="#readerConfigurations">Reader Configurations </a>
+1. <a href ="#readerHealth">Reader Health </a>
+1. <a href ="#recipes">Recipes </a>
+1. <a href= "#jobs" >Jobs </a>
+1. <a href= "#items">Items </a>
+
 
 
 
@@ -100,6 +139,25 @@ public class ItemSenseApiFactory {
 </table>
 
 
+### Authentication
+<div id="authentication" />
+
+For more information about authentication, visit http://developer.impinj.com/itemsense/docs/api/#authentication
+
+```java
+public Token getToken() 
+
+public Token getToken(String username)
+
+public List<ListTokenResponse> listTokens(String username)
+
+public User validateToken(Token token)
+
+public void revokeToken(Token token) 
+
+public void revokeTokens(String username)
+
+```
 
 ### Users
 
@@ -109,7 +167,7 @@ For information about users, visit http://developer.impinj.com/itemsense/docs/ap
 
 ```java
 
-coordinator.getUserController().getUser((username) // returns a user object based on username
+coordinator.getUserController().getUser(username) // returns a user object based on username
 
 coordinator.getUserController().getUsers() // returns all of the users for an itemsense instance
 
@@ -120,6 +178,47 @@ coordinator.getUserController().updateUser(user) // updates a user
 coordinator.getUserController().deleteUser(user) // deletes a user
 
 ```
+
+
+### Global Configuration 
+
+<div id="configuration" />
+
+#### SNMP Configuration
+```java
+public SnmpConfiguration getSnmpConfiguration()
+
+public void deleteSnmpConfiguration()
+
+public SnmpConfiguration updateSnmpConfiguration(SnmpConfiguration snmpConfiguration)
+```
+
+
+### Software Versions
+
+<div id="softwareVersions" />
+
+```java
+public List<VersionInfoView> getVersions(ImageType imageType)
+
+public VersionInfoView getVersion(ImageType imageType, String softwareVersionId)
+```
+
+### Software Upgrades
+
+<div id="softwareUpgrades "/>
+
+```Java
+public List<UpgradeRequestView> getUpgradeRequests()
+
+public UpgradeStatus getUpgradeStatus(String upgradeInstanceId)
+
+public StartUpgradeResponse startUpgrade(UpgradeRequest upgradeRequest)
+
+public void stopUpgrade(String upgradeInstanceId)
+```
+
+
 ### Facilities
 
 <div id="facilities" />
@@ -206,6 +305,12 @@ coordinator.getReaderConfigurationController().updateReaderConfiguration(readerC
 coordinator.getReaderConfigurationController().deleteReaderConfiguration(readerConfigurationName) // deletes a reader configuration based on the name
 ```
 
+### Reader Health
+
+<div id="readerHealth" />
+
+public ReaderStatus getReaderStatus(String readerName)
+
 ### Recipes
 
 <div id="recipes" />
@@ -242,6 +347,7 @@ coordinator.getJobController().stopJob(jobId) // stops a job based on the id
 
 ```
 
+
 ### Items
 
 <div id="items" />
@@ -255,3 +361,10 @@ data.getItemHistoryController.getHistory(queryParams) // Retrieves item history 
 ```
 
 
+## Compatibility Matrix
+
+|ItemSense server version|itemsense-client version|Serialization libraries
+|------------------------|------------------------|-----------------------|
+|2016r6|3.0.0|Jackson 2.8.2|
+|2016r4|2.2|Jackson 2.5.1|
+|2016r3 and previous|2.1.4 and previous|Jackson 2.5.1|

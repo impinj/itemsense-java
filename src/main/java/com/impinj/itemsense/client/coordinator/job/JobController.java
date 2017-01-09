@@ -18,29 +18,27 @@ public class JobController {
             ImmutableSet.of(JobStatus.RUNNING, JobStatus.STOPPING, JobStatus.STOPPED);
 
     private WebTarget target;
-    private RestApiHelper<Job> restApiHelperPoster;
-    private RestApiHelper<JobResponse> restApiHelperGetter;
+    private RestApiHelper<Job> restApiHelper;
 
     public JobController(final WebTarget target) {
         this.target = target;
-        this.restApiHelperPoster = new RestApiHelper<>(Job.class);
-        this.restApiHelperGetter = new RestApiHelper<>(JobResponse.class);
+        this.restApiHelper = new RestApiHelper<>(Job.class);
     }
 
     public Response getJobsAsResponse() {
-        return this.restApiHelperGetter.get(target, BASE_PATH, "show");
+        return this.restApiHelper.get(target, BASE_PATH, "show");
     }
 
     public Response getJobAsResponse(String jobId) {
-        return this.restApiHelperGetter.get(target, BASE_PATH, "show", jobId);
+        return this.restApiHelper.get(target, BASE_PATH, "show", jobId);
     }
 
     public Response startJobAsResponse(Job job) {
-        return this.restApiHelperPoster.post(job, target, BASE_PATH, "start");
+        return this.restApiHelper.post(job, target, BASE_PATH, "start");
     }
 
     public Response stopJobAsResponse(String jobId) {
-        return this.restApiHelperPoster.post(target, BASE_PATH, "stop", jobId);
+        return this.restApiHelper.post(target, BASE_PATH, "stop", jobId);
     }
 
     public List<JobResponse> getJobs() {

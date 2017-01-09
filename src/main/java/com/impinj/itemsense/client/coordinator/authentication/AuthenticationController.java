@@ -23,7 +23,7 @@ public class AuthenticationController {
     }
 
     public Response getTokenAsResponse(String username) {
-        return this.restApiHelper.get(target, "/authentication/v1/token", username);
+        return this.restApiHelper.put(target, "/authentication/v1/token", username);
     }
 
     public Response listTokensAsResponse(String username) {

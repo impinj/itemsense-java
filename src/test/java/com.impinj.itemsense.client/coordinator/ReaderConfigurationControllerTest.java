@@ -15,6 +15,9 @@ import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigu
 import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigurationController;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderMode;
 
+import com.impinj.itemsense.client.coordinator.readerconfiguration.SearchMode;
+import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinition;
+import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,9 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.core.Response;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -61,6 +67,35 @@ public class ReaderConfigurationControllerTest {
     @After
     public void tearDown() throws Exception {
 
+    }
+
+    @Test
+    public void createOrUpdateReaderConfigurationTest() {
+        InventoryReaderConfigDetails details = new InventoryReaderConfigDetails();
+        details.setReaderMode(ReaderMode.MODE_1002);
+        details.setSession(2);
+        details.setSearchMode(SearchMode.SINGLE_TARGET);
+
+        ReaderConfiguration configuration = new ReaderConfiguration();
+        configuration.setName("SPEEDWAY_CONFIG");
+        configuration.setOperation(Operation.INVENTORY);
+        configuration.setConfiguration(details);
+
+        String requestBody = gson.toJson(configuration);
+
+        stubFor(put(urlEqualTo("/configuration/v1/readerConfigurations/createOrReplace"))
+            .withRequestBody(equalToJson(requestBody, true, true))
+            .willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(gson.toJson(configuration))));
+
+        Response response = readerConfigurationController.updateReaderConfigurationAsResponse(configuration);
+        Assert.assertEquals(200, response.getStatus());
+        response.close();
+
+        ReaderConfiguration responseConfig = readerConfigurationController.updateReaderConfiguration(configuration);
+        Assert.assertEquals(configuration, responseConfig);
     }
 
     @Test

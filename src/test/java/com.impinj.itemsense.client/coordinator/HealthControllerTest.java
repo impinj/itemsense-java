@@ -36,7 +36,7 @@ public class HealthControllerTest {
 
     private static final List<ReaderStatus> TEST_READER_STATUSES = ImmutableList.of(
             ReaderStatus.builder()
-                    .readerId("testReader1")
+                    .readerName("testReader1")
                     .state(ReaderState.IDLE)
                     .lastCheckin(ZonedDateTime.now(ZoneId.of("UTC")).minusMinutes(1))
                     .lastReboot(null)
@@ -49,7 +49,7 @@ public class HealthControllerTest {
                     .build(),
 
             ReaderStatus.builder()
-                    .readerId("testReader2")
+                    .readerName("testReader2")
                     .state(ReaderState.RUNNING_JOB)
                     .lastCheckin(ZonedDateTime.now(ZoneId.of("UTC")).minusMinutes(2))
                     .lastReboot(ZonedDateTime.now(ZoneId.of("UTC")).minusDays(1))

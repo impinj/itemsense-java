@@ -16,7 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class ReaderStatus {
 
-    private String readerId;
+    private String readerName;
 
     private ReaderState state;
 

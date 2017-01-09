@@ -1,9 +1,5 @@
 package com.impinj.itemsense.client.helpers;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.InputStream;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,7 +14,6 @@ import javax.ws.rs.core.Response;
 
 public class RestApiHelper<T> {
     private Class<T> type;
-    private static Logger logger = LoggerFactory.getLogger(RestApiHelper.class);
 
     public RestApiHelper(Class<T> type) {
         this.type = type;

@@ -24,6 +24,7 @@ public class SoftwareVersionsController {
         return getVersionsAsResponse(imageType)
                 .readEntity(new GenericType<List<VersionInfoView>>() {});
     }
+
     public Response getVersionsAsResponse(ImageType imageType) {
         Response response = restApiHelper.get(target, BASE_PATH, "list", imageType.name());
         return response;
