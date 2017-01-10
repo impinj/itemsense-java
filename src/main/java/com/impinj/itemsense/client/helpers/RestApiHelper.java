@@ -13,11 +13,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public class RestApiHelper<T> {
-    private Class<T> type;
-
-    public RestApiHelper(Class<T> type) {
-        this.type = type;
-    }
 
     public Response post(T entity, WebTarget target, String... pathFragments) {
         return target.path(joinPathFragments(pathFragments))

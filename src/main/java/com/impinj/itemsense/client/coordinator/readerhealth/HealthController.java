@@ -16,7 +16,7 @@ public class HealthController {
 
     public HealthController(WebTarget target) {
         this.target = target;
-        restApiHelper = new RestApiHelper<>(HealthEventQuery.class);
+        restApiHelper = new RestApiHelper<HealthEventQuery>();
     }
 
     public Response getAllReaderStatusesAsResponse() {

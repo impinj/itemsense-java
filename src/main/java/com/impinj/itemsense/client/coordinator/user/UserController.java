@@ -18,7 +18,7 @@ public class UserController {
 
     public UserController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(User.class);
+        this.restApiHelper = new RestApiHelper<User>();
     }
 
     public Response createUserAsResponse(User user) {

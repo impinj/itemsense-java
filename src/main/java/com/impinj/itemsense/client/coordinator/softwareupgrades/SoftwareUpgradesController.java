@@ -16,7 +16,7 @@ public class SoftwareUpgradesController {
 
     public SoftwareUpgradesController(WebTarget target) {
         this.target = target;
-        restApiHelper = new RestApiHelper<>(UpgradeRequest.class);
+        restApiHelper = new RestApiHelper<UpgradeRequest>();
     }
 
     public List<UpgradeRequestView> getUpgradeRequests() {

@@ -20,7 +20,7 @@ public class ItemHistoryController {
 
     public ItemHistoryController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(ItemHistoryResponse.class);
+        this.restApiHelper = new RestApiHelper<ItemHistoryResponse>();
     }
 
     public Response getItemHistoryAsResponse(Map<String, Object> queryParams) {

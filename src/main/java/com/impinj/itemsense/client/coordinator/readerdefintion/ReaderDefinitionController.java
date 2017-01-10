@@ -16,7 +16,7 @@ public class ReaderDefinitionController {
 
     public ReaderDefinitionController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(ReaderDefinition.class);
+        this.restApiHelper = new RestApiHelper<ReaderDefinition>();
     }
 
     public Response createReaderDefinitionAsResponse(ReaderDefinition readerDefinition) {

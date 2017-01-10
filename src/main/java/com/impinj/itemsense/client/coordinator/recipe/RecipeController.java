@@ -18,7 +18,7 @@ public class RecipeController {
 
     public RecipeController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(Recipe.class);
+        this.restApiHelper = new RestApiHelper<Recipe>();
     }
 
     public Response getRecipeAsResponse(String recipeName) {

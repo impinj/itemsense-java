@@ -20,7 +20,7 @@ public class ItemController {
 
     public ItemController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(ItemResponse.class);
+        this.restApiHelper = new RestApiHelper<ItemResponse>();
     }
 
     public Response getItemsAsResponse(Map<String, Object> queryParams) {

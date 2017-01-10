@@ -22,7 +22,7 @@ public class SnmpController {
 
     public SnmpController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(SnmpConfiguration.class);
+        this.restApiHelper = new RestApiHelper<SnmpConfiguration>();
     }
 
     public Response updateSnmpConfigurationAsResponse(SnmpConfiguration snmpConfiguration) {

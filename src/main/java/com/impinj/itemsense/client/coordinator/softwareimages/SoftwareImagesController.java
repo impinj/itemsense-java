@@ -15,7 +15,7 @@ public class SoftwareImagesController {
 
     public SoftwareImagesController(WebTarget target) {
         this.target = target;
-        restApiHelper = new RestApiHelper<>(Void.class);
+        restApiHelper = new RestApiHelper<Void>();
     }
 
     public InputStream downloadSoftwareImage(ImageType imageType, String imageName) {

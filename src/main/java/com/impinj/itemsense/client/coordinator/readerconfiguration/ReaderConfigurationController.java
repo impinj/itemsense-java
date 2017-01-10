@@ -16,7 +16,7 @@ public class ReaderConfigurationController {
 
     public ReaderConfigurationController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(ReaderConfiguration.class);
+        this.restApiHelper = new RestApiHelper<ReaderConfiguration>();
     }
 
     public Response createReaderConfigurationAsResponse(ReaderConfiguration readerConfiguration) {

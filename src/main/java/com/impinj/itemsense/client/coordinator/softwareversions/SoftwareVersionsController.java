@@ -17,7 +17,7 @@ public class SoftwareVersionsController {
 
     public SoftwareVersionsController(WebTarget target) {
         this.target = target;
-        restApiHelper = new RestApiHelper<>(Void.class);
+        restApiHelper = new RestApiHelper<Void>();
     }
 
     public List<VersionInfoView> getVersions(ImageType imageType) {

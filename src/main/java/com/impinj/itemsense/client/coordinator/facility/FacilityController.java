@@ -16,7 +16,7 @@ public class FacilityController {
 
     public FacilityController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(Facility.class);
+        this.restApiHelper = new RestApiHelper<Facility>();
     }
 
     public Response getFacilityAsResponse(String facilityName) {

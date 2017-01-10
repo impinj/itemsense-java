@@ -14,7 +14,7 @@ public class CurrentZoneMapController {
 
     public CurrentZoneMapController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(CurrentZoneMap.class);
+        this.restApiHelper = new RestApiHelper<CurrentZoneMap>();
     }
 
     public Response setCurrentZoneMapAsResponse(String zoneMapName){

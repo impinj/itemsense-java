@@ -22,7 +22,7 @@ public class JobController {
 
     public JobController(final WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(Job.class);
+        this.restApiHelper = new RestApiHelper<Job>();
     }
 
     public Response getJobsAsResponse() {

@@ -15,7 +15,7 @@ public class AuthenticationController {
 
     public AuthenticationController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(Token.class);
+        this.restApiHelper = new RestApiHelper<Token>();
     }
 
     public Response getTokenAsResponse() {

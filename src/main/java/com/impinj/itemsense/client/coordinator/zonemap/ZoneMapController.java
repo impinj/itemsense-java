@@ -18,7 +18,7 @@ public class ZoneMapController {
 
     public ZoneMapController( WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(ZoneMap.class);
+        this.restApiHelper = new RestApiHelper<ZoneMap>();
     }
 
     public Response createZoneMapAsResponse(ZoneMap zoneMap) {
