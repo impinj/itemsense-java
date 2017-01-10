@@ -35,4 +35,56 @@ public class RecipeTest {
     Assert.assertEquals(RecipeType.LOCATION, recipeDeserialized.getType());
     Assert.assertEquals(tagExpiry, recipeDeserialized.getTagExpiryDuration());
   }
+
+  @Test
+  public void testHeartbeatMinutesSerialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
+    Duration tagExpiry = Duration.ofSeconds(10);
+
+    LocationRecipe recipe = new LocationRecipe();
+    recipe.setName("RECIPE");
+
+    recipe.setType(RecipeType.LOCATION);
+    recipe.setTagExpiryDuration(tagExpiry);
+    recipe.setTagHeartbeatMinutes(3);
+
+    String string = mapper.writeValueAsString(recipe);
+
+    Recipe recipeDeserialized = mapper.readValue(string, Recipe.class);
+    Assert.assertEquals("RECIPE", recipeDeserialized.getName());
+    Assert.assertEquals(RecipeType.LOCATION, recipeDeserialized.getType());
+    Assert.assertEquals(tagExpiry, recipeDeserialized.getTagExpiryDuration());
+    Assert.assertEquals(recipe.getTagHeartbeatMinutes(), recipeDeserialized.getTagHeartbeatMinutes());
+    Assert.assertNull(recipeDeserialized.getTagHeartbeatDuration());
+  }
+
+  @Test
+  public void testHeartbeatDurationSerialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
+    Duration tagExpiry = Duration.ofSeconds(10);
+
+    LocationRecipe recipe = new LocationRecipe();
+    recipe.setName("RECIPE");
+
+    recipe.setType(RecipeType.LOCATION);
+    recipe.setTagExpiryDuration(tagExpiry);
+    recipe.setTagHeartbeatDuration(Duration.ofSeconds(30));
+
+    String string = mapper.writeValueAsString(recipe);
+
+    Recipe recipeDeserialized = mapper.readValue(string, Recipe.class);
+    Assert.assertEquals("RECIPE", recipeDeserialized.getName());
+    Assert.assertEquals(RecipeType.LOCATION, recipeDeserialized.getType());
+    Assert.assertEquals(tagExpiry, recipeDeserialized.getTagExpiryDuration());
+    Assert.assertEquals(recipe.getTagHeartbeatDuration(), recipeDeserialized.getTagHeartbeatDuration());
+    Assert.assertNull(recipeDeserialized.getTagHeartbeatMinutes());
+  }
 }
