@@ -29,7 +29,13 @@ public abstract class Recipe {
     private String name;
     private RecipeType type;
     private String readerConfigurationName;
+    
+    /**
+     * @deprecated - use {@link #tagHeartbeatDuration} instead
+     */
+    @Deprecated
     private Integer tagHeartbeatMinutes;
+    private Duration tagHeartbeatDuration;
     private Duration tagExpiryDuration;
     private Map<String, String> readerConfigurations = new LinkedHashMap<>();
 }
