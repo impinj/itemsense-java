@@ -10,13 +10,11 @@ import javax.ws.rs.core.Response;
 
 public class SoftwareUpgradesController {
     private WebTarget target;
-    private RestApiHelper<UpgradeRequest> restApiHelper;
 
     private static final String BASE_PATH = "/control/v1/upgrades";
 
     public SoftwareUpgradesController(WebTarget target) {
         this.target = target;
-        restApiHelper = new RestApiHelper<UpgradeRequest>();
     }
 
     public List<UpgradeRequestView> getUpgradeRequests() {
@@ -24,14 +22,14 @@ public class SoftwareUpgradesController {
                 .readEntity(new GenericType<List<UpgradeRequestView>>() {});
     }
     public Response getUpgradeRequestsAsResponse() {
-        return restApiHelper.get(target, BASE_PATH, "show");
+        return RestApiHelper.get(target, BASE_PATH, "show");
     }
 
     public UpgradeStatus getUpgradeStatus(String upgradeInstanceId) {
         return getUpgradeStatusAsResponse(upgradeInstanceId).readEntity(UpgradeStatus.class);
     }
     public Response getUpgradeStatusAsResponse(String upgradeInstanceId) {
-        return restApiHelper.get(
+        return RestApiHelper.get(
                 target, BASE_PATH, "show", upgradeInstanceId
         );
     }
@@ -40,7 +38,7 @@ public class SoftwareUpgradesController {
         return startUpgradeAsResponse(upgradeRequest).readEntity(StartUpgradeResponse.class);
     }
     public Response startUpgradeAsResponse(UpgradeRequest upgradeRequest) {
-        return restApiHelper.post(upgradeRequest, target, BASE_PATH, "start");
+        return RestApiHelper.post(upgradeRequest, target, BASE_PATH, "start");
     }
 
     /**
@@ -48,7 +46,7 @@ public class SoftwareUpgradesController {
      * @param upgradeInstanceId
      */
     public void stopUpgrade(String upgradeInstanceId) {
-        restApiHelper.post(target, BASE_PATH, "stop", upgradeInstanceId);
+        RestApiHelper.post(target, BASE_PATH, "stop", upgradeInstanceId);
     }
 
 

@@ -11,35 +11,33 @@ import javax.ws.rs.core.Response;
 
 public class AuthenticationController {
     private WebTarget target;
-    private RestApiHelper<Token> restApiHelper;
 
     public AuthenticationController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<Token>();
     }
 
     public Response getTokenAsResponse() {
-        return this.restApiHelper.get(target, "/authentication/v1/token");
+        return RestApiHelper.get(target, "/authentication/v1/token");
     }
 
     public Response getTokenAsResponse(String username) {
-        return this.restApiHelper.put(target, "/authentication/v1/token", username);
+        return RestApiHelper.put(target, "/authentication/v1/token", username);
     }
 
     public Response listTokensAsResponse(String username) {
-        return this.restApiHelper.get(target, "/authentication/v1/listTokens", username);
+        return RestApiHelper.get(target, "/authentication/v1/listTokens", username);
     }
 
     public Response validateTokenAsResponse(Token token) {
-        return this.restApiHelper.post(token, target, "/authentication/v1/validateToken");
+        return RestApiHelper.post(token, target, "/authentication/v1/validateToken");
     }
 
     public Response revokeTokenAsResponse(Token token) {
-        return this.restApiHelper.put(token, target, "/authentication/v1/revokeToken");
+        return RestApiHelper.put(token, target, "/authentication/v1/revokeToken");
     }
 
     public Response revokeTokensAsResponse(String username) {
-        return this.restApiHelper.put(target, "/authentication/v1/revokeTokens", username);
+        return RestApiHelper.put(target, "/authentication/v1/revokeTokens", username);
     }
 
     public Token getToken() {

@@ -12,31 +12,29 @@ import javax.ws.rs.core.Response;
 public class ReaderDefinitionController {
     private static final String BASE_PATH = "/configuration/v1/readerDefinitions";
     private WebTarget target;
-    private RestApiHelper<ReaderDefinition> restApiHelper;
 
     public ReaderDefinitionController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<ReaderDefinition>();
     }
 
     public Response createReaderDefinitionAsResponse(ReaderDefinition readerDefinition) {
-        return this.restApiHelper.post(readerDefinition, target, BASE_PATH, "create");
+        return RestApiHelper.post(readerDefinition, target, BASE_PATH, "create");
     }
 
     public Response updateReaderDefinitionAsResponse(ReaderDefinition readerDefinition) {
-        return this.restApiHelper.put(readerDefinition, target, BASE_PATH, "createOrReplace");
+        return RestApiHelper.put(readerDefinition, target, BASE_PATH, "createOrReplace");
     }
 
     public Response getReaderDefinitionAsResponse(String readerDefinitionName) {
-        return this.restApiHelper.get(target, BASE_PATH, "show", readerDefinitionName);
+        return RestApiHelper.get(target, BASE_PATH, "show", readerDefinitionName);
     }
 
     public Response getReaderDefinitionsAsResponse() {
-        return this.restApiHelper.get(target, BASE_PATH, "show");
+        return RestApiHelper.get(target, BASE_PATH, "show");
     }
 
     public Response deleteReaderDefinition(String readerDefinitionName) {
-        return this.restApiHelper.delete(target, BASE_PATH, "destroy", readerDefinitionName);
+        return RestApiHelper.delete(target, BASE_PATH, "destroy", readerDefinitionName);
     }
 
     public ReaderDefinition createReaderDefinition(ReaderDefinition readerDefinition) {

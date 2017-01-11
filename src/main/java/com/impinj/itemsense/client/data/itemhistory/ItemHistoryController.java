@@ -16,15 +16,13 @@ import javax.ws.rs.core.Response;
 public class ItemHistoryController {
 
     private WebTarget target;
-    private RestApiHelper<ItemHistoryResponse> restApiHelper;
 
     public ItemHistoryController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<ItemHistoryResponse>();
     }
 
     public Response getItemHistoryAsResponse(Map<String, Object> queryParams) {
-        return this.restApiHelper.get(queryParams, target, "/data/v1/items/show/history");
+        return RestApiHelper.get(queryParams, target, "/data/v1/items/show/history");
     }
 
     public ItemHistoryResponse getItemHistory(Map<String, Object> queryParams) {
