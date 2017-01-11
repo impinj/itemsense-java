@@ -14,31 +14,29 @@ public class RecipeController {
 
     private static final String BASE_PATH = "/configuration/v1/recipes";
     private WebTarget target;
-    private RestApiHelper<Recipe> restApiHelper;
 
     public RecipeController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(Recipe.class);
     }
 
     public Response getRecipeAsResponse(String recipeName) {
-        return this.restApiHelper.get(target, BASE_PATH, "show", recipeName);
+        return RestApiHelper.get(target, BASE_PATH, "show", recipeName);
     }
 
     public Response getRecipesAsResponse() {
-        return this.restApiHelper.get(target, BASE_PATH, "show");
+        return RestApiHelper.get(target, BASE_PATH, "show");
     }
 
     public Response createRecipeAsResponse(Recipe recipe) {
-        return this.restApiHelper.post(recipe, target, BASE_PATH, "create");
+        return RestApiHelper.post(recipe, target, BASE_PATH, "create");
     }
 
     public Response updateRecipeAsResponse(Recipe recipe) {
-        return this.restApiHelper.put(recipe, target, BASE_PATH, "createOrReplace");
+        return RestApiHelper.put(recipe, target, BASE_PATH, "createOrReplace");
     }
 
     public Response deleteRecipe(String recipeName) {
-        return this.restApiHelper.delete(target, BASE_PATH, "destroy", recipeName);
+        return RestApiHelper.delete(target, BASE_PATH, "destroy", recipeName);
     }
 
     public Recipe getRecipe(String recipeName) {

@@ -91,6 +91,18 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    public void getTokenForUserTest() {
+        stubFor(put(urlEqualTo("/authentication/v1/token/Admin")).willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(getTokenTestString)));
+
+        Token token = authenticationController.getToken("Admin");
+        Assert.assertNotNull(token);
+        Assert.assertThat(token, instanceOf(Token.class));
+    }
+
+    @Test
     public void validateTokenTest() {
         String expectedUserString = "{\"name\":\"Test_User\",\"roles\":[\"Admin\",\"Job_Runner\"]}";
         stubFor(post(urlEqualTo("/authentication/v1/validateToken")).willReturn(aResponse()

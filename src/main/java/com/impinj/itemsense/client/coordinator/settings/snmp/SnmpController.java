@@ -18,23 +18,21 @@ import javax.ws.rs.core.Response;
 public class SnmpController {
     private static final String BASE_PATH = "/configuration/v1/settings/SNMP";
     private WebTarget target;
-    private RestApiHelper<SnmpConfiguration> restApiHelper;
 
     public SnmpController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(SnmpConfiguration.class);
     }
 
     public Response updateSnmpConfigurationAsResponse(SnmpConfiguration snmpConfiguration) {
-        return this.restApiHelper.put(snmpConfiguration, target, BASE_PATH);
+        return RestApiHelper.put(snmpConfiguration, target, BASE_PATH);
     }
 
     public Response getSnmpConfigurationAsResponse() {
-        return this.restApiHelper.get(target, BASE_PATH);
+        return RestApiHelper.get(target, BASE_PATH);
     }
 
     public Response deleteSnmpConfigurationAsResponse() {
-        return this.restApiHelper.delete(target, BASE_PATH);
+        return RestApiHelper.delete(target, BASE_PATH);
     }
 
     public SnmpConfiguration getSnmpConfiguration() {

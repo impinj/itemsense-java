@@ -1,9 +1,5 @@
 package com.impinj.itemsense.client.helpers;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.InputStream;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,21 +12,15 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public class RestApiHelper<T> {
-    private Class<T> type;
-    private static Logger logger = LoggerFactory.getLogger(RestApiHelper.class);
+public class RestApiHelper {
 
-    public RestApiHelper(Class<T> type) {
-        this.type = type;
-    }
-
-    public Response post(T entity, WebTarget target, String... pathFragments) {
+    public static Response post(Object entity, WebTarget target, String... pathFragments) {
         return target.path(joinPathFragments(pathFragments))
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(entity));
     }
 
-    public Response post(WebTarget target, String... pathFragments) {
+    public static Response post(WebTarget target, String... pathFragments) {
         return target
             .path(joinPathFragments(pathFragments))
             .request(MediaType.APPLICATION_JSON_TYPE)
@@ -38,31 +28,31 @@ public class RestApiHelper<T> {
             .post(null);
     }
 
-    public Response put(T entity, WebTarget target, String... pathFragments) {
+    public static Response put(Object entity, WebTarget target, String... pathFragments) {
         return target.path(joinPathFragments(pathFragments))
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .put(Entity.json(entity));
     }
 
-    public Response put(WebTarget target, String... pathFragments) {
+    public static Response put(WebTarget target, String... pathFragments) {
         return target.path(joinPathFragments(pathFragments))
             .request(MediaType.APPLICATION_JSON_TYPE)
             .put(Entity.json(""));
     }
 
-    public Response delete(WebTarget target, String... pathFragments) {
+    public static Response delete(WebTarget target, String... pathFragments) {
         return target.path(joinPathFragments(pathFragments))
                 .request(MediaType.APPLICATION_JSON_TYPE).delete();
 
     }
 
-    public Response get(WebTarget target, String... pathFragments) {
+    public static Response get(WebTarget target, String... pathFragments) {
         return target.path(joinPathFragments(pathFragments))
                 .request(MediaType.APPLICATION_JSON)
                 .get();
     }
 
-    public Response get(Map<String, Object> queryParams, WebTarget target, String... pathFragments) {
+    public static Response get(Map<String, Object> queryParams, WebTarget target, String... pathFragments) {
         target = target.path(joinPathFragments(pathFragments));
         if (queryParams != null) {
             for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
@@ -82,7 +72,7 @@ public class RestApiHelper<T> {
      * helper methods in this class, due to needing to retrieve the InputStream at the request
      * level.
      */
-    public InputStream getOctetStream(WebTarget target, String... pathSegments)
+    public static InputStream getOctetStream(WebTarget target, String... pathSegments)
             throws NotFoundException {
         return target.path(joinPathFragments(pathSegments))
                 .request(MediaType.APPLICATION_OCTET_STREAM_TYPE)

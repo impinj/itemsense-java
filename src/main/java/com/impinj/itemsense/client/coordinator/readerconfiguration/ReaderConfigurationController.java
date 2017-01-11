@@ -12,31 +12,31 @@ import javax.ws.rs.core.Response;
 public class ReaderConfigurationController {
     private static final String BASE_PATH = "/configuration/v1/readerConfigurations";
     private WebTarget target;
-    private RestApiHelper<ReaderConfiguration> restApiHelper;
+    private RestApiHelper restApiHelper;
 
     public ReaderConfigurationController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(ReaderConfiguration.class);
+        this.restApiHelper = new RestApiHelper();
     }
 
     public Response createReaderConfigurationAsResponse(ReaderConfiguration readerConfiguration) {
-        return this.restApiHelper.post(readerConfiguration, target, BASE_PATH, "create");
+        return RestApiHelper.post(readerConfiguration, target, BASE_PATH, "create");
     }
 
     public Response updateReaderConfigurationAsResponse(ReaderConfiguration readerConfiguration) {
-        return this.restApiHelper.put(readerConfiguration, target, BASE_PATH, "createOrReplace");
+        return RestApiHelper.put(readerConfiguration, target, BASE_PATH, "createOrReplace");
     }
 
     public Response getReaderConfigurationAsResponse(String readerConfigurationName) {
-        return this.restApiHelper.get(target, BASE_PATH, "show", readerConfigurationName);
+        return RestApiHelper.get(target, BASE_PATH, "show", readerConfigurationName);
     }
 
     public Response getReaderConfigurationsAsResponse() {
-        return this.restApiHelper.get(target, BASE_PATH, "show");
+        return RestApiHelper.get(target, BASE_PATH, "show");
     }
 
     public Response deleteReaderConfiguration(String readerConfigurationName) {
-        return this.restApiHelper.delete(target, BASE_PATH, "destroy", readerConfigurationName);
+        return RestApiHelper.delete(target, BASE_PATH, "destroy", readerConfigurationName);
     }
 
     public ReaderConfiguration getReaderConfiguration(String readerConfigurationName) {

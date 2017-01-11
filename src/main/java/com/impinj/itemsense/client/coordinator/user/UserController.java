@@ -14,31 +14,29 @@ public class UserController {
 
     private static final String BASE_PATH = "/configuration/v1/users";
     private WebTarget target;
-    private RestApiHelper<User> restApiHelper;
 
     public UserController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(User.class);
     }
 
     public Response createUserAsResponse(User user) {
-        return this.restApiHelper.post(user, target, BASE_PATH, "create");
+        return RestApiHelper.post(user, target, BASE_PATH, "create");
     }
 
     public Response updateUserAsResponse(User user) {
-        return this.restApiHelper.put(user, target, BASE_PATH, "create");
+        return RestApiHelper.put(user, target, BASE_PATH, "create");
     }
 
     public Response getUserAsResponse(String userName) {
-        return this.restApiHelper.get(target, BASE_PATH, "show", userName);
+        return RestApiHelper.get(target, BASE_PATH, "show", userName);
     }
 
     public Response getUsersAsResponse() {
-        return this.restApiHelper.get(target, BASE_PATH, "show");
+        return RestApiHelper.get(target, BASE_PATH, "show");
     }
 
     public Response deleteUser(String userName) {
-        return this.restApiHelper.delete(target, BASE_PATH, "destroy", userName);
+        return RestApiHelper.delete(target, BASE_PATH, "destroy", userName);
     }
 
     public User createUser(User user) {

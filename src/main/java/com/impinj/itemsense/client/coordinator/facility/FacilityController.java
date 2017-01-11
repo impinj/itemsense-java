@@ -11,32 +11,30 @@ import javax.ws.rs.core.Response;
 
 public class FacilityController {
     private static final String BASE_PATH = "/configuration/v1/facilities";
-    private RestApiHelper<Facility> restApiHelper;
     private WebTarget target;
 
     public FacilityController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(Facility.class);
     }
 
     public Response getFacilityAsResponse(String facilityName) {
-        return this.restApiHelper.get(target, BASE_PATH, "show", facilityName);
+        return RestApiHelper.get(target, BASE_PATH, "show", facilityName);
     }
 
     public Response getAllFacilitiesAsResponse() {
-        return this.restApiHelper.get(target, BASE_PATH, "show");
+        return RestApiHelper.get(target, BASE_PATH, "show");
     }
 
     public Response createFacilityAsResponse(Facility facility) {
-        return this.restApiHelper.post(facility, target, BASE_PATH, "create");
+        return RestApiHelper.post(facility, target, BASE_PATH, "create");
     }
 
     public Response updateFacilityAsResponse(Facility facility) {
-        return this.restApiHelper.put(facility, target, BASE_PATH, "createOrReplace");
+        return RestApiHelper.put(facility, target, BASE_PATH, "createOrReplace");
     }
 
     public Response deleteFacility(String facilityName) {
-        return this.restApiHelper.delete(target, BASE_PATH, "destroy", facilityName);
+        return RestApiHelper.delete(target, BASE_PATH, "destroy", facilityName);
     }
 
     public List<Facility> getAllFacilities() {

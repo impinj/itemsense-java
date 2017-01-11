@@ -10,17 +10,15 @@ import javax.ws.rs.core.Response;
 
 public class HealthController {
     private WebTarget target;
-    private RestApiHelper<HealthEventQuery> restApiHelper;
 
     private static final String BASE_PATH = "health/v1";
 
     public HealthController(WebTarget target) {
         this.target = target;
-        restApiHelper = new RestApiHelper<>(HealthEventQuery.class);
     }
 
     public Response getAllReaderStatusesAsResponse() {
-        return restApiHelper.get(target, BASE_PATH, "readers");
+        return RestApiHelper.get(target, BASE_PATH, "readers");
     }
     public List<ReaderStatus> getAllReaderStatuses() {
         return getAllReaderStatusesAsResponse()
@@ -28,7 +26,7 @@ public class HealthController {
     }
 
     public Response getReaderStatusAsResponse(String readerName) {
-        return restApiHelper.get(target, BASE_PATH, "readers", readerName);
+        return RestApiHelper.get(target, BASE_PATH, "readers", readerName);
     }
 
     public ReaderStatus getReaderStatus(String readerName) {
@@ -36,6 +34,6 @@ public class HealthController {
     }
 
     public Response queryHealthEventsAsResponse(HealthEventQuery query) {
-        return restApiHelper.post(query, target, "events");
+        return RestApiHelper.post(query, target, "events");
     }
 }

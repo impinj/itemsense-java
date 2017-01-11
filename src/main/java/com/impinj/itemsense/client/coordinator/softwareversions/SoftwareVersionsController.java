@@ -11,21 +11,22 @@ import javax.ws.rs.core.Response;
 
 public class SoftwareVersionsController {
     private WebTarget target;
-    private RestApiHelper<Void> restApiHelper;
+    private RestApiHelper restApiHelper;
 
     private static final String BASE_PATH = "configuration/v1/softwareVersions";
 
     public SoftwareVersionsController(WebTarget target) {
         this.target = target;
-        restApiHelper = new RestApiHelper<>(Void.class);
+        restApiHelper = new RestApiHelper();
     }
 
     public List<VersionInfoView> getVersions(ImageType imageType) {
         return getVersionsAsResponse(imageType)
                 .readEntity(new GenericType<List<VersionInfoView>>() {});
     }
+
     public Response getVersionsAsResponse(ImageType imageType) {
-        Response response = restApiHelper.get(target, BASE_PATH, "list", imageType.name());
+        Response response = RestApiHelper.get(target, BASE_PATH, "list", imageType.name());
         return response;
     }
 
@@ -34,6 +35,6 @@ public class SoftwareVersionsController {
     }
 
     public Response getVersionAsResponse(ImageType imageType, String softwareVersionId) {
-        return restApiHelper.get(target, BASE_PATH, "show", imageType.toString(), softwareVersionId);
+        return RestApiHelper.get(target, BASE_PATH, "show", imageType.toString(), softwareVersionId);
     }
 }
