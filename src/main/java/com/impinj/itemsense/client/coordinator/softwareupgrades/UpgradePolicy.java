@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class UpgradePolicy {
 
-    private double ratioMaxOutstanding;
+    private int batchSize;
     private double ratioMaxFailures;
     private int staggerDelaySeconds;
     private UpgradeFailureAction failureAction;

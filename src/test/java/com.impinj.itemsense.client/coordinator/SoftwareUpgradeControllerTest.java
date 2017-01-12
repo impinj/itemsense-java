@@ -71,7 +71,7 @@ public class SoftwareUpgradeControllerTest {
         TEST_UPGRADE_REQUEST.setVersionIdentifier(versionIdentifier);
 
         UpgradePolicy upgradePolicy = new UpgradePolicy();
-        upgradePolicy.setRatioMaxOutstanding(0.1);
+        upgradePolicy.setBatchSize(10);
         upgradePolicy.setRatioMaxFailures(0.1);
         upgradePolicy.setStaggerDelaySeconds(1);
         upgradePolicy.setFailureAction(UpgradeFailureAction.Stop);
