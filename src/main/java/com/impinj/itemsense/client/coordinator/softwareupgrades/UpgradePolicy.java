@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 public class UpgradePolicy {
 
-    private int maxParallelReaders;
+    private Integer maxParallelReaders;
     private Set<ReaderType> allowedReaderTypes;
 }

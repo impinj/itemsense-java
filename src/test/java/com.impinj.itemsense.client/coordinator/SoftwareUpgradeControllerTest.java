@@ -134,6 +134,24 @@ public class SoftwareUpgradeControllerTest {
     }
 
     @Test
+    public void emptyValuesNull() {
+        UpgradeRequest request = new UpgradeRequest();
+        request.setPolicy(new UpgradePolicy());
+        request.setTarget(new UpgradeRequestTarget(TargetType.FACILITY, ImmutableSet.of("DEFAULT")));
+        request.setVersionIdentifier(new VersionIdentifier());
+        request.getVersionIdentifier().setImageType(ImageType.CAP_ITEMSENSE);
+        request.getVersionIdentifier().setVersion("test_Version");
+
+        stubFor(get(urlEqualTo("/control/v1/upgrades/show")).willReturn(
+                aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(gson.toJson(Collections.singletonList(request)))
+        ));
+
+        Assert.assertThat(request.getPolicy().getMaxParallelReaders(), is((Integer) null));
+    }
+
+    @Test
     public void getAllUpgradeRequestsNoneExist() {
         stubFor(get(urlEqualTo("/control/v1/upgrades/show")).willReturn(
                 aResponse().withStatus(200)
