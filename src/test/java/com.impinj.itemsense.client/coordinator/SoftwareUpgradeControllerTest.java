@@ -71,10 +71,7 @@ public class SoftwareUpgradeControllerTest {
         TEST_UPGRADE_REQUEST.setVersionIdentifier(versionIdentifier);
 
         UpgradePolicy upgradePolicy = new UpgradePolicy();
-        upgradePolicy.setBatchSize(10);
-        upgradePolicy.setRatioMaxFailures(0.1);
-        upgradePolicy.setStaggerDelaySeconds(1);
-        upgradePolicy.setFailureAction(UpgradeFailureAction.Stop);
+        upgradePolicy.setMaxParallelReaders(10);
         upgradePolicy.setAllowedReaderTypes(ImmutableSet.of(ReaderType.XPORTAL));
         TEST_UPGRADE_REQUEST.setPolicy(upgradePolicy);
 
