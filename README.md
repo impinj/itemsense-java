@@ -365,6 +365,6 @@ data.getItemHistoryController.getHistory(queryParams) // Retrieves item history 
 
 |ItemSense server version|itemsense-client version|Serialization libraries
 |------------------------|------------------------|-----------------------|
-|2016r6|3.0.0|Jackson 2.8.2|
+|2016r6|4.0.0|Jackson 2.8.2|
 |2016r4|2.2|Jackson 2.5.1|
 |2016r3 and previous|2.1.4 and previous|Jackson 2.5.1|

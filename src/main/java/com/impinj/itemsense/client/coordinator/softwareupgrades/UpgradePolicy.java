@@ -9,9 +9,6 @@ import lombok.Data;
 @Data
 public class UpgradePolicy {
 
-    private double ratioMaxOutstanding;
-    private double ratioMaxFailures;
-    private int staggerDelaySeconds;
-    private UpgradeFailureAction failureAction;
+    private Integer maxParallelReaders;
     private Set<ReaderType> allowedReaderTypes;
 }

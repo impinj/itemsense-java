@@ -71,10 +71,7 @@ public class SoftwareUpgradeControllerTest {
         TEST_UPGRADE_REQUEST.setVersionIdentifier(versionIdentifier);
 
         UpgradePolicy upgradePolicy = new UpgradePolicy();
-        upgradePolicy.setRatioMaxOutstanding(0.1);
-        upgradePolicy.setRatioMaxFailures(0.1);
-        upgradePolicy.setStaggerDelaySeconds(1);
-        upgradePolicy.setFailureAction(UpgradeFailureAction.Stop);
+        upgradePolicy.setMaxParallelReaders(10);
         upgradePolicy.setAllowedReaderTypes(ImmutableSet.of(ReaderType.XPORTAL));
         TEST_UPGRADE_REQUEST.setPolicy(upgradePolicy);
 
@@ -134,6 +131,24 @@ public class SoftwareUpgradeControllerTest {
         List<UpgradeRequestView> upgradeRequests = softwareUpgradesController.getUpgradeRequests();
         Assert.assertThat(upgradeRequests, hasSize(1));
         Assert.assertThat(upgradeRequests, contains(TEST_UPGRADE_REQUEST_VIEW));
+    }
+
+    @Test
+    public void emptyValuesNull() {
+        UpgradeRequest request = new UpgradeRequest();
+        request.setPolicy(new UpgradePolicy());
+        request.setTarget(new UpgradeRequestTarget(TargetType.FACILITY, ImmutableSet.of("DEFAULT")));
+        request.setVersionIdentifier(new VersionIdentifier());
+        request.getVersionIdentifier().setImageType(ImageType.CAP_ITEMSENSE);
+        request.getVersionIdentifier().setVersion("test_Version");
+
+        stubFor(get(urlEqualTo("/control/v1/upgrades/show")).willReturn(
+                aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(gson.toJson(Collections.singletonList(request)))
+        ));
+
+        Assert.assertThat(request.getPolicy().getMaxParallelReaders(), is((Integer) null));
     }
 
     @Test
