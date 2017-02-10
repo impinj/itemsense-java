@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class ItemHistory {
     private String epc;
     private String tagId;
+    private String jobId;
     private String fromZone;
     private String toZone;
     private String fromFLoor;

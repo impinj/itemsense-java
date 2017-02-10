@@ -31,6 +31,7 @@ public class ItemController {
 
     public ItemResponse getItems(EpcFormat epcFormat,
                                  String epcPrefix,
+                                 String jobId,
                                  String zoneNames,
                                  PresenceConfidence presenceConfidence,
                                  String facility,
@@ -41,6 +42,9 @@ public class ItemController {
         Map<String, Object> queryParams = new HashMap<>();
         if (epcPrefix != null && !epcPrefix.isEmpty()) {
             queryParams.put("epcPrefix", epcPrefix);
+        }
+        if (jobId != null && !jobId.isEmpty()) {
+            queryParams.put("jobId", jobId);
         }
         if (zoneNames != null && !zoneNames.isEmpty()) {
             queryParams.put("zoneNames", zoneNames);
@@ -72,12 +76,13 @@ public class ItemController {
 
     public ItemResponse getItems(EpcFormat epcFormat,
                                  String epcPrefix,
+                                 String jobId,
                                  String zoneNames,
                                  PresenceConfidence presenceConfidence,
                                  String facility,
                                  Integer pageSize,
                                  String pageMarker) {
-        return getItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, pageSize, pageMarker, null, null);
+        return getItems(epcFormat, jobId, epcPrefix, zoneNames, presenceConfidence, facility, pageSize, pageMarker, null, null);
     }
 
     public ItemResponse getItems() {
@@ -87,6 +92,7 @@ public class ItemController {
 
     public ArrayList<Item> getAllItems(EpcFormat epcFormat,
                                        String epcPrefix,
+                                       String jobId,
                                        String zoneNames,
                                        PresenceConfidence presenceConfidence,
                                        String facility,
@@ -98,7 +104,7 @@ public class ItemController {
         ArrayList<Item> items = new ArrayList<Item>();
 
         do {
-            response = this.getItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, pageSize, nextPageMarker, fromTime, toTime);
+            response = this.getItems(epcFormat, epcPrefix, jobId, zoneNames, presenceConfidence, facility, pageSize, nextPageMarker, fromTime, toTime);
             if (response.getItems() != null) {
                 Collections.addAll(items, response.getItems());
             }
@@ -114,19 +120,21 @@ public class ItemController {
     @Deprecated
     public ArrayList<Item> getAllItems(EpcFormat epcFormat,
                                        String epcPrefix,
+                                       String jobId,
                                        String zoneNames,
                                        PresenceConfidence presenceConfidence,
                                        String facility,
                                        String pageMarker) {
-        return getAllItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, null, null);
+        return getAllItems(epcFormat, epcPrefix, jobId, zoneNames, presenceConfidence, facility, null, null);
     }
 
     public ArrayList<Item> getAllItems(EpcFormat epcFormat,
                                        String epcPrefix,
+                                       String jobId,
                                        String zoneNames,
                                        PresenceConfidence presenceConfidence,
                                        String facility) {
-        return getAllItems(epcFormat, epcPrefix, zoneNames, presenceConfidence, facility, null, null);
+        return getAllItems(epcFormat, epcPrefix, jobId, zoneNames, presenceConfidence, facility, null, null);
     }
 
     public ArrayList<Item> getAllItems(EpcFormat epcFormat) {
