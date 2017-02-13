@@ -32,6 +32,7 @@ public class ItemHistoryController {
     public ItemHistoryResponse getItemHistory(
         EpcFormat epcFormat,
         String epcPrefix,
+        String jobId,
         String fromZone,
         String toZone,
         String fromFacility,
@@ -50,6 +51,9 @@ public class ItemHistoryController {
         }
         if (epcPrefix != null && !epcPrefix.isEmpty()) {
             queryParams.put("epcPrefix", epcPrefix);
+        }
+        if (jobId != null && !jobId.isEmpty()) {
+            queryParams.put("jobId", jobId);
         }
         if (fromZone != null && !fromZone.isEmpty()) {
             queryParams.put("fromZone", fromZone);
@@ -92,6 +96,7 @@ public class ItemHistoryController {
     @Deprecated
     public ItemHistoryResponse getItemHistory(EpcFormat epcFormat,
                                               String epcPrefix,
+                                              String jobId,
                                               String fromZone,
                                               String toZone,
                                               String fromFacility,
@@ -100,7 +105,7 @@ public class ItemHistoryController {
                                               String facility,
                                               Integer pageSize, String pageMarker) {
 
-        return getItemHistory(epcFormat, epcPrefix, fromZone, toZone, fromFacility, toFacility, null, null, null, null, pageSize, pageMarker, null);
+        return getItemHistory(epcFormat, epcPrefix, jobId, fromZone, toZone, fromFacility, toFacility, null, null, null, null, pageSize, pageMarker, null);
     }
 
     public ItemHistoryResponse getItemHistory() {
@@ -109,6 +114,7 @@ public class ItemHistoryController {
 
     public ArrayList<ItemHistory> getAllItemHistory(EpcFormat epcFormat,
                                                     String epcPrefix,
+                                                    String jobId,
                                                     String fromZone,
                                                     String toZone,
                                                     String fromFacility,
@@ -123,7 +129,7 @@ public class ItemHistoryController {
         ArrayList<ItemHistory> items = new ArrayList<>();
 
         do {
-            response = this.getItemHistory(epcFormat, epcPrefix, fromZone, toZone, fromFacility, toFacility, fromTime, toTime, zoneTransitionsOnly, minDistanceMoved, pageSize, nextPageMarker, null);
+            response = this.getItemHistory(epcFormat, epcPrefix, jobId, fromZone, toZone, fromFacility, toFacility, fromTime, toTime, zoneTransitionsOnly, minDistanceMoved, pageSize, nextPageMarker, null);
             if (response.getHistory() != null) {
                 Collections.addAll(items, response.getHistory());
             }
@@ -139,6 +145,7 @@ public class ItemHistoryController {
     @Deprecated
     public ArrayList<ItemHistory> getAllItemHistory(EpcFormat epcFormat,
                                                     String epcPrefix,
+                                                    String jobId,
                                                     String fromZone,
                                                     String toZone,
                                                     String fromFacility,
@@ -153,7 +160,7 @@ public class ItemHistoryController {
         ArrayList<ItemHistory> items = new ArrayList<>();
 
         do {
-            response = this.getItemHistory(epcFormat, epcPrefix, fromZone, toZone, fromFacility, toFacility, presenceConfidence, facility, pageSize, nextPageMarker);
+            response = this.getItemHistory(epcFormat, epcPrefix, jobId, fromZone, toZone, fromFacility, toFacility, presenceConfidence, facility, pageSize, nextPageMarker);
             if (response.getHistory() != null) {
                 Collections.addAll(items, response.getHistory());
             }

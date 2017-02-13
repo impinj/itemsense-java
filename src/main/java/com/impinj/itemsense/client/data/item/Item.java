@@ -19,6 +19,7 @@ public class Item {
 
     private String epc;
     private String tagId;
+    private String jobId;
 
     //Since these are single lettered, variables Jackson is getting confused by the getter/setters created by lombok such as 'getXLocation'
     // Jackson is then trying to render these as xlocaton, ylocation, etc. Therefore the json property annotation is required for these fields.
