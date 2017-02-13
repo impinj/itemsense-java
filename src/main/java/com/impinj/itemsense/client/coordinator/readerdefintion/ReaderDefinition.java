@@ -4,6 +4,7 @@ package com.impinj.itemsense.client.coordinator.readerdefintion;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Map;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +22,6 @@ public class ReaderDefinition {
     private Map<Integer, String> antennaZones;
     private Placement placement;
     private ReaderType type;
-
+    private Set<String> groups;
 }
 
