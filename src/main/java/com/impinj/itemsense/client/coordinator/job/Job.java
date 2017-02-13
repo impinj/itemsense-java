@@ -10,6 +10,8 @@ package com.impinj.itemsense.client.coordinator.job;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,5 +30,6 @@ public class Job {
     private boolean reportToDatabaseEnabled;
     private boolean reportToMessageQueueEnabled;
     private boolean reportToFileEnabled;
+    private Set<String> readerGroups;
 }
 
