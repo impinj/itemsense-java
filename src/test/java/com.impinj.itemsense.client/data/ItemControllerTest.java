@@ -151,7 +151,7 @@ public class ItemControllerTest {
         Item[] items = itemResponse.getItems();
         Assert.assertEquals(3, items.length);
 
-        itemResponse = itemController.getItems(EpcFormat.PURE_ID, "30", "FACILITY", PresenceConfidence.HIGH, "NEWFAC", 3, null, "2016-07-20T17:00:00Z", "2016-07-20T18:01:00Z");
+        itemResponse = itemController.getItems(EpcFormat.PURE_ID, "30", null, "FACILITY", PresenceConfidence.HIGH, "NEWFAC", 3, null, "2016-07-20T17:00:00Z", "2016-07-20T18:01:00Z");
         items = itemResponse.getItems();
         Assert.assertEquals(3, items.length);
     }
@@ -318,7 +318,7 @@ public class ItemControllerTest {
             .withHeader("Content-Type", "application/json")
             .withBody(threeItemResponse)));
 
-        List<Item> items = itemController.getAllItems(EpcFormat.TAG, "96", "ZONE1,ZONE2", PresenceConfidence.HIGH, "NEWFAC");
+        List<Item> items = itemController.getAllItems(EpcFormat.TAG, "96", null, "ZONE1,ZONE2", PresenceConfidence.HIGH, "NEWFAC");
         Assert.assertEquals(3, items.size());
 
 

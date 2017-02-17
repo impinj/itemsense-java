@@ -1,6 +1,7 @@
 package com.impinj.itemsense.client.coordinator;
 
 
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
@@ -10,6 +11,7 @@ import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinition;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinitionController;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
 
+import java.util.Set;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -64,7 +66,7 @@ public class ReaderDefinitionControllerTest {
 
     @Test
     public void getReaderDefinitionsTest() {
-        ReaderDefinition testReaderDefinition = new ReaderDefinition( "test-xarray", "xarray-test.local" , "TestFacility", null, null, new Placement(1, 2,5, 0,180,90, "1"), ReaderType.XARRAY);
+        ReaderDefinition testReaderDefinition = new ReaderDefinition( "test-xarray", "xarray-test.local" , "TestFacility", null, null, new Placement(1, 2,5, 0,180,90, "1"), ReaderType.XARRAY, null);
         List<ReaderDefinition> testDefinitions = new ArrayList<>();
         testDefinitions.add(testReaderDefinition);
 
@@ -83,7 +85,7 @@ public class ReaderDefinitionControllerTest {
 
     @Test
     public void getReaderDefinitionTest() {
-        ReaderDefinition testReaderDefinition = new ReaderDefinition( "test-xarray", "xarray-test.local" , "TestFacility", null, null, new Placement(1, 2,5, 0,180,90, "1"), ReaderType.XARRAY);
+        ReaderDefinition testReaderDefinition = new ReaderDefinition( "test-xarray", "xarray-test.local" , "TestFacility", null, null, new Placement(1, 2,5, 0,180,90, "1"), ReaderType.XARRAY, null);
 
         stubFor(get(urlEqualTo("/configuration/v1/readerDefinitions/show/Test_Reader_Definition")).willReturn(aResponse()
                 .withStatus(200)
@@ -99,6 +101,18 @@ public class ReaderDefinitionControllerTest {
     @Test
     public void createReaderDefinitionTest() {
 
+    }
+
+    @Test
+    public void getReaderGroupsTest() {
+        stubFor(get(urlEqualTo("/configuration/v1/readerDefinitions/groups")).willReturn(aResponse()
+                                                                                                      .withStatus(200)
+                                                                                                      .withHeader("Content-Type", "application/json")
+                                                                                                      .withBody("[\"AA\",\"BB\",\"CC\"]")));
+        Set<String> actual = readerDefinitionController.getReaderGroups();
+
+        Set<String> expected = ImmutableSet.of("AA", "BB", "CC");
+        Assert.assertEquals("Did not receive expected groups", expected, actual);
     }
 
     @Test
