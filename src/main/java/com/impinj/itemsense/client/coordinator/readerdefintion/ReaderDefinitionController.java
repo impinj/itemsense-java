@@ -5,6 +5,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 
 import java.util.List;
 
+import java.util.Set;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
@@ -15,6 +16,15 @@ public class ReaderDefinitionController {
 
     public ReaderDefinitionController(WebTarget target) {
         this.target = target;
+    }
+
+    public Response getReaderGroupsAsResponse() {
+        return RestApiHelper.get(target, BASE_PATH, "groups");
+    }
+
+    public Set<String> getReaderGroups() {
+        return this.getReaderGroupsAsResponse()
+            .readEntity(new GenericType<Set<String>>() {});
     }
 
     public Response createReaderDefinitionAsResponse(ReaderDefinition readerDefinition) {
