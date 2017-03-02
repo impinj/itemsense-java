@@ -252,6 +252,8 @@ For information about items, visit http://developer.impinj.com/itemsense/docs/ap
 data.getItemController.get(queryParams) // Retrieves items from ItemSense. Takes in a map of query Params, but also has multiple overloads
 
 data.getItemHistoryController.getHistory(queryParams) // Retrieves item history records from ItemSense. Takes in a map of query Params, but also has multiple overloads
+
+data.getItemDoorTransitionController.getDoorTransition(queryParams) //Retrieve item door transition records from ItemSense.  Takes in a map of query Params, but also has multiple overloads
 ```
 
 

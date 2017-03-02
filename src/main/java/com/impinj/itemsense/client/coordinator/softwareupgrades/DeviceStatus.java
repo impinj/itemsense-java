@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 public class DeviceStatus {
-    private String name; // readerId
+    private String name; // readerName
     private VersionIdentifier previousVersion;
     private UpgradeState status;
     private long elapsedTimeSeconds;
