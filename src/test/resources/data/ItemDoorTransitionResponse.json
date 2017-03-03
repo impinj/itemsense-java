@@ -1,0 +1,33 @@
+{
+  "transitions": [
+    {
+      "doorTransitionId": 1,
+      "epc": "E28011606000020497CA6547",
+      "jobId": "051e2ee0-b681-4f62-aff3-5f4d36d60603",
+      "doorId": 1,
+      "destination": "OUT",
+      "confidence": 1,
+      "creationTime": "2017-03-01T22:46:59Z"
+    },
+    {
+      "doorTransitionId": 2,
+      "epc": "E28011606000020497CABB57",
+      "jobId": "051e2ee0-b681-4f62-aff3-5f4d36d60603",
+      "doorId": 1,
+      "destination": "OUT",
+      "confidence": 1,
+      "creationTime": "2017-03-01T22:48:10Z"
+    },
+    {
+      "doorTransitionId": 3,
+      "epc": "E28011606000020497CA6537",
+      "jobId": "051e2ee0-b681-4f62-aff3-5f4d36d60603",
+      "doorId": 2,
+      "destination": "IN",
+      "confidence": 1,
+      "creationTime": "2017-03-01T22:48:15Z"
+    }
+  ],
+  "nextPageMarker": null,
+  "moreTransitionsAvailable": false
+}
