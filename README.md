@@ -367,6 +367,7 @@ data.getItemDoorTransitionController.getDoorTransition(queryParams) //Retrieve i
 
 |ItemSense server version|itemsense-client version|Serialization libraries
 |------------------------|------------------------|-----------------------|
+|2017r1|5.0.0|Jackson 2.8.2|
 |2016r6|4.0.0|Jackson 2.8.2|
 |2016r4|2.2|Jackson 2.5.1|
 |2016r3 and previous|2.1.4 and previous|Jackson 2.5.1|
