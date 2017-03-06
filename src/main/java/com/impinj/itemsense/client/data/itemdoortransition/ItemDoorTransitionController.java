@@ -13,15 +13,13 @@ import javax.ws.rs.core.Response;
 public class ItemDoorTransitionController {
 
     private WebTarget target;
-    private RestApiHelper<ItemDoorTransitionResponse> restApiHelper;
 
     public ItemDoorTransitionController(WebTarget target) {
         this.target = target;
-        this.restApiHelper = new RestApiHelper<>(ItemDoorTransitionResponse.class);
     }
 
     public Response getItemDoorTransitionsAsResponse(Map<String, Object> queryParams) {
-        return this.restApiHelper.get(queryParams, target, "/data/v1/items/show/transitions");
+        return RestApiHelper.get(queryParams, target, "/data/v1/items/show/transitions");
     }
 
     public ItemDoorTransitionResponse getItemDoorTransitions(Map<String, Object> queryParams) {
