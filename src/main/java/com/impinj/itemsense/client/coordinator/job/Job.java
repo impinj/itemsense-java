@@ -25,8 +25,6 @@ public class Job {
     private String facility;
     private String startDelay;
     private int durationSeconds;
-    private boolean playbackLoggingEnabled;
-    private boolean presenceLoggingEnabled;
     private boolean reportToDatabaseEnabled;
     private boolean reportToMessageQueueEnabled;
     private boolean reportToFileEnabled;
