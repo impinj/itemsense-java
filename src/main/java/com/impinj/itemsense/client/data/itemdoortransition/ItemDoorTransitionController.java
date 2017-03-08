@@ -29,6 +29,8 @@ public class ItemDoorTransitionController {
     public ItemDoorTransitionResponse getItemDoorTransitions(
         EpcFormat epcFormat,
         String epcPrefix,
+        Integer doorId,
+        String doorName,
         String destination,
         String fromTime,
         String toTime,
@@ -36,12 +38,22 @@ public class ItemDoorTransitionController {
         String pageMarker,
         String alwaysIncludePageMarker
     ) {
+        if (doorId != null && doorName != null && !doorName.isEmpty()) {
+            throw new IllegalArgumentException("Only one of door ID or door name may be used");
+        }
+
         HashMap<String, Object> queryParams = new HashMap<>();
         if (epcFormat != null) {
             queryParams.put("epcFormat", epcFormat.toString());
         }
         if (epcPrefix != null && !epcPrefix.isEmpty()) {
             queryParams.put("epcPrefix", epcPrefix);
+        }
+        if (doorId != null) {
+            queryParams.put("doorId", doorId);
+        }
+        if (doorName != null && !doorName.isEmpty()) {
+            queryParams.put("doorName", doorName);
         }
         if (destination != null && !destination.isEmpty()) {
             queryParams.put("destination", destination);
@@ -68,6 +80,8 @@ public class ItemDoorTransitionController {
     public ArrayList<ItemDoorTransition> getAllItemDoorTransitions(EpcFormat epcFormat,
                                                     String epcPrefix,
                                                     String destination,
+                                                    Integer doorId,
+                                                    String doorName,
                                                     String fromTime,
                                                     String toTime) {
         ItemDoorTransitionResponse response;
@@ -76,7 +90,7 @@ public class ItemDoorTransitionController {
         ArrayList<ItemDoorTransition> items = new ArrayList<>();
 
         do {
-            response = this.getItemDoorTransitions(epcFormat, epcPrefix, destination, fromTime, toTime, pageSize, nextPageMarker, null);
+            response = this.getItemDoorTransitions(epcFormat, epcPrefix, doorId, doorName, destination, fromTime, toTime, pageSize, nextPageMarker, null);
             if (response.getTransitions() != null) {
                 Collections.addAll(items, response.getTransitions());
             }
@@ -88,10 +102,10 @@ public class ItemDoorTransitionController {
     }
 
     public ArrayList<ItemDoorTransition> getAllItemDoorTransitions(EpcFormat epcFormat) {
-        return getAllItemDoorTransitions(epcFormat, null, null, null, null);
+        return getAllItemDoorTransitions(epcFormat, null, null, null, null, null, null);
     }
 
     public ArrayList<ItemDoorTransition> getAllItemDoorTransitions() {
-        return getAllItemDoorTransitions(null, null, null, null, null);
+        return getAllItemDoorTransitions(null, null, null, null, null, null, null);
     }
 }
