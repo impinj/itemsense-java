@@ -3,179 +3,219 @@ package com.impinj.itemsense.client.data.itemhistory;
 import com.impinj.itemsense.client.data.EpcFormat;
 import com.impinj.itemsense.client.data.PresenceConfidence;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 
 public class ItemHistoryController {
 
-    private WebTarget target;
+  private WebTarget target;
 
-    public ItemHistoryController(WebTarget target) {
-        this.target = target;
+  public ItemHistoryController(WebTarget target) {
+    this.target = target;
+  }
+
+  public Response getItemHistoryAsResponse(Map<String, Object> queryParams) {
+    return RestApiHelper.get(queryParams, target, "/data/v1/items/show/history");
+  }
+
+  public ItemHistoryResponse getItemHistory(Map<String, Object> queryParams) {
+    return this.getItemHistoryAsResponse(queryParams).readEntity(ItemHistoryResponse.class);
+  }
+
+  public ItemHistoryResponse getItemHistory(
+      EpcFormat epcFormat,
+      String epcPrefix,
+      String jobId,
+      String fromZone,
+      String toZone,
+      String fromFacility,
+      String toFacility,
+      String fromTime,
+      String toTime,
+      String zoneTransitionsOnly,
+      String minDistanceMoved,
+      Integer pageSize,
+      String pageMarker,
+      String alwaysIncludePageMarker
+  ) {
+    HashMap<String, Object> queryParams = new HashMap<>();
+    if (epcFormat != null) {
+      queryParams.put("epcFormat", epcFormat.toString());
+    }
+    if (epcPrefix != null && !epcPrefix.isEmpty()) {
+      queryParams.put("epcPrefix", epcPrefix);
+    }
+    if (jobId != null && !jobId.isEmpty()) {
+      queryParams.put("jobId", jobId);
+    }
+    if (fromZone != null && !fromZone.isEmpty()) {
+      queryParams.put("fromZone", fromZone);
+    }
+    if (toZone != null && !toZone.isEmpty()) {
+      queryParams.put("toZone", toZone);
+    }
+    if (fromFacility != null && !fromFacility.isEmpty()) {
+      queryParams.put("fromFacility", fromFacility);
+    }
+    if (toFacility != null && !toFacility.isEmpty()) {
+      queryParams.put("toFacility", toFacility);
+    }
+    if (fromTime != null && !fromTime.isEmpty()) {
+      queryParams.put("fromTime", fromTime);
+    }
+    if (toTime != null && !toTime.isEmpty()) {
+      queryParams.put("toTime", fromTime);
+    }
+    if (zoneTransitionsOnly != null && !zoneTransitionsOnly.isEmpty()) {
+      queryParams.put("zoneTransitionsOnly", zoneTransitionsOnly);
+    }
+    if (minDistanceMoved != null && !minDistanceMoved.isEmpty()) {
+      queryParams.put("minDistanceMoved", minDistanceMoved);
+    }
+    if (pageMarker != null && !pageMarker.isEmpty()) {
+      queryParams.put("pageMarker", pageMarker);
+    }
+    if (pageSize != null) {
+      queryParams.put("pageSize", pageSize);
+    }
+    if (alwaysIncludePageMarker != null && !alwaysIncludePageMarker.isEmpty()) {
+      queryParams.put("alwaysIncludePageMarker", alwaysIncludePageMarker);
     }
 
-    public Response getItemHistoryAsResponse(Map<String, Object> queryParams) {
-        return RestApiHelper.get(queryParams, target, "/data/v1/items/show/history");
-    }
+    return this.getItemHistory(queryParams);
+  }
 
-    public ItemHistoryResponse getItemHistory(Map<String, Object> queryParams) {
-        return this.getItemHistoryAsResponse(queryParams).readEntity(ItemHistoryResponse.class);
-    }
+  // This is deprecated because the parameters do not correspond to the itemsense parameters
+  @Deprecated
+  public ItemHistoryResponse getItemHistory(
+      EpcFormat epcFormat,
+      String epcPrefix,
+      String jobId,
+      String fromZone,
+      String toZone,
+      String fromFacility,
+      String toFacility,
+      PresenceConfidence presenceConfidence,
+      String facility,
+      Integer pageSize, String pageMarker) {
 
-    public ItemHistoryResponse getItemHistory(
-        EpcFormat epcFormat,
-        String epcPrefix,
-        String jobId,
-        String fromZone,
-        String toZone,
-        String fromFacility,
-        String toFacility,
-        String fromTime,
-        String toTime,
-        String zoneTransitionsOnly,
-        String minDistanceMoved,
-        Integer pageSize,
-        String pageMarker,
-        String alwaysIncludePageMarker
-    ) {
-        HashMap<String, Object> queryParams = new HashMap<>();
-        if (epcFormat != null) {
-            queryParams.put("epcFormat", epcFormat.toString());
-        }
-        if (epcPrefix != null && !epcPrefix.isEmpty()) {
-            queryParams.put("epcPrefix", epcPrefix);
-        }
-        if (jobId != null && !jobId.isEmpty()) {
-            queryParams.put("jobId", jobId);
-        }
-        if (fromZone != null && !fromZone.isEmpty()) {
-            queryParams.put("fromZone", fromZone);
-        }
-        if (toZone != null && !toZone.isEmpty()) {
-            queryParams.put("toZone", toZone);
-        }
-        if (fromFacility != null && !fromFacility.isEmpty()) {
-            queryParams.put("fromFacility", fromFacility);
-        }
-        if (toFacility != null && !toFacility.isEmpty()) {
-            queryParams.put("toFacility", toFacility);
-        }
-        if (fromTime != null && !fromTime.isEmpty()) {
-            queryParams.put("fromTime", fromTime);
-        }
-        if (toTime != null && !toTime.isEmpty()) {
-            queryParams.put("toTime", fromTime);
-        }
-        if (zoneTransitionsOnly != null && !zoneTransitionsOnly.isEmpty()) {
-            queryParams.put("zoneTransitionsOnly", zoneTransitionsOnly);
-        }
-        if (minDistanceMoved != null && !minDistanceMoved.isEmpty()) {
-            queryParams.put("minDistanceMoved", minDistanceMoved);
-        }
-        if (pageMarker != null && !pageMarker.isEmpty()) {
-            queryParams.put("pageMarker", pageMarker);
-        }
-        if (pageSize != null) {
-            queryParams.put("pageSize", pageSize);
-        }
-        if (alwaysIncludePageMarker != null && !alwaysIncludePageMarker.isEmpty()) {
-            queryParams.put("alwaysIncludePageMarker", alwaysIncludePageMarker);
-        }
+    return getItemHistory(
+        epcFormat,
+        epcPrefix,
+        jobId,
+        fromZone,
+        toZone,
+        fromFacility,
+        toFacility,
+        null,
+        null,
+        null,
+        null,
+        pageSize,
+        pageMarker,
+        null);
+  }
 
-        return this.getItemHistory(queryParams);
-    }
+  public ItemHistoryResponse getItemHistory() {
+    return this.getItemHistory(null);
+  }
 
-    // This is deprecated because the parameters do not correspond to the itemsense parameters
-    @Deprecated
-    public ItemHistoryResponse getItemHistory(EpcFormat epcFormat,
-                                              String epcPrefix,
-                                              String jobId,
-                                              String fromZone,
-                                              String toZone,
-                                              String fromFacility,
-                                              String toFacility,
-                                              PresenceConfidence presenceConfidence,
-                                              String facility,
-                                              Integer pageSize, String pageMarker) {
+  public ArrayList<ItemHistory> getAllItemHistory(
+      EpcFormat epcFormat,
+      String epcPrefix,
+      String jobId,
+      String fromZone,
+      String toZone,
+      String fromFacility,
+      String toFacility,
+      String fromTime,
+      String toTime,
+      String zoneTransitionsOnly,
+      String minDistanceMoved) {
+    ItemHistoryResponse response;
+    String nextPageMarker = "";
+    int pageSize = 1000;
+    ArrayList<ItemHistory> items = new ArrayList<>();
 
-        return getItemHistory(epcFormat, epcPrefix, jobId, fromZone, toZone, fromFacility, toFacility, null, null, null, null, pageSize, pageMarker, null);
-    }
+    do {
+      response = this.getItemHistory(
+          epcFormat,
+          epcPrefix,
+          jobId,
+          fromZone,
+          toZone,
+          fromFacility,
+          toFacility,
+          fromTime,
+          toTime,
+          zoneTransitionsOnly,
+          minDistanceMoved,
+          pageSize,
+          nextPageMarker,
+          null);
+      if (response.getHistory() != null) {
+        Collections.addAll(items, response.getHistory());
+      }
+      nextPageMarker = response.getNextPageMarker();
 
-    public ItemHistoryResponse getItemHistory() {
-        return this.getItemHistory(null);
-    }
+    } while (nextPageMarker != null && !nextPageMarker.isEmpty());
 
-    public ArrayList<ItemHistory> getAllItemHistory(EpcFormat epcFormat,
-                                                    String epcPrefix,
-                                                    String jobId,
-                                                    String fromZone,
-                                                    String toZone,
-                                                    String fromFacility,
-                                                    String toFacility,
-                                                    String fromTime,
-                                                    String toTime,
-                                                    String zoneTransitionsOnly,
-                                                    String minDistanceMoved) {
-        ItemHistoryResponse response;
-        String nextPageMarker = "";
-        int pageSize = 1000;
-        ArrayList<ItemHistory> items = new ArrayList<>();
+    return items;
+  }
 
-        do {
-            response = this.getItemHistory(epcFormat, epcPrefix, jobId, fromZone, toZone, fromFacility, toFacility, fromTime, toTime, zoneTransitionsOnly, minDistanceMoved, pageSize, nextPageMarker, null);
-            if (response.getHistory() != null) {
-                Collections.addAll(items, response.getHistory());
-            }
-            nextPageMarker = response.getNextPageMarker();
+  // This is deprecated because the parameters do not correspond to the itemsense parameters,
+  // and page marker is redundant
+  @Deprecated
+  public ArrayList<ItemHistory> getAllItemHistory(
+      EpcFormat epcFormat,
+      String epcPrefix,
+      String jobId,
+      String fromZone,
+      String toZone,
+      String fromFacility,
+      String toFacility,
+      PresenceConfidence presenceConfidence,
+      String facility,
+      String pageMarker) {
 
-        } while (nextPageMarker != null && !nextPageMarker.isEmpty());
+    ItemHistoryResponse response;
+    String nextPageMarker = "";
+    int pageSize = 1000;
+    ArrayList<ItemHistory> items = new ArrayList<>();
 
-        return items;
-    }
+    do {
+      response = this.getItemHistory(
+          epcFormat,
+          epcPrefix,
+          jobId,
+          fromZone,
+          toZone,
+          fromFacility,
+          toFacility,
+          presenceConfidence,
+          facility,
+          pageSize,
+          nextPageMarker);
+      if (response.getHistory() != null) {
+        Collections.addAll(items, response.getHistory());
+      }
+      nextPageMarker = response.getNextPageMarker();
 
-    // This is deprecated because the parameters do not correspond to the itemsense parameters,
-    // and page marker is redundant
-    @Deprecated
-    public ArrayList<ItemHistory> getAllItemHistory(EpcFormat epcFormat,
-                                                    String epcPrefix,
-                                                    String jobId,
-                                                    String fromZone,
-                                                    String toZone,
-                                                    String fromFacility,
-                                                    String toFacility,
-                                                    PresenceConfidence presenceConfidence,
-                                                    String facility,
-                                                    String pageMarker) {
+    } while (nextPageMarker != null && !nextPageMarker.isEmpty());
 
-        ItemHistoryResponse response;
-        String nextPageMarker = "";
-        int pageSize = 1000;
-        ArrayList<ItemHistory> items = new ArrayList<>();
+    return items;
+  }
 
-        do {
-            response = this.getItemHistory(epcFormat, epcPrefix, jobId, fromZone, toZone, fromFacility, toFacility, presenceConfidence, facility, pageSize, nextPageMarker);
-            if (response.getHistory() != null) {
-                Collections.addAll(items, response.getHistory());
-            }
-            nextPageMarker = response.getNextPageMarker();
+  public ArrayList<ItemHistory> getAllItemHistory(EpcFormat epcFormat) {
+    return getAllItemHistory(epcFormat, null, null, null, null, null, null, null, null, null);
+  }
 
-        } while (nextPageMarker != null && !nextPageMarker.isEmpty());
-
-        return items;
-    }
-
-    public ArrayList<ItemHistory> getAllItemHistory(EpcFormat epcFormat) {
-        return getAllItemHistory(epcFormat, null, null, null, null, null, null, null, null, null);
-    }
-
-    public ArrayList<ItemHistory> getAllItemHistory() {
-        return getAllItemHistory(null, null, null, null, null, null, null, null, null, null);
-    }
+  public ArrayList<ItemHistory> getAllItemHistory() {
+    return getAllItemHistory(null, null, null, null, null, null, null, null, null, null);
+  }
 }

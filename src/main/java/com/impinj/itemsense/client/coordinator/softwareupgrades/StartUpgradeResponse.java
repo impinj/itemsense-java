@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class StartUpgradeResponse {
-    String upgradeInstanceId;
+
+  String upgradeInstanceId;
 }

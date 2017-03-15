@@ -1,9 +1,13 @@
 package com.impinj.itemsense.client.coordinator;
 
-import com.google.common.collect.ImmutableList;
-import com.google.gson.Gson;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
 import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.readerhealth.HealthController;
 import com.impinj.itemsense.client.coordinator.readerhealth.ReaderState;
@@ -13,101 +17,92 @@ import com.impinj.itemsense.client.coordinator.readerhealth.ReaderStatus.Hardwar
 import com.impinj.itemsense.client.coordinator.readerhealth.ReaderStatus.ThroughputStatus;
 import com.impinj.itemsense.client.coordinator.readerhealth.ReaderVersion;
 import com.impinj.itemsense.client.coordinator.readerhealth.StatusLevel;
-
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.List;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-
 public class HealthControllerTest {
 
-    private HealthController healthController;
-    private Gson gson = TestUtils.getGson();
+  private static final List<ReaderStatus> TEST_READER_STATUSES = ImmutableList.of(
+      ReaderStatus.builder()
+          .readerName("testReader1")
+          .state(ReaderState.IDLE)
+          .lastCheckin(ZonedDateTime.now(ZoneId.of("UTC")).minusMinutes(1))
+          .lastReboot(null)
+          .version(new ReaderVersion("appVersion1", "fwVersion1"))
+          .connectionStatus(new ConnectionStatus(StatusLevel.HEALTHY, "statusCode"))
+          .throughputStatus(new ThroughputStatus(StatusLevel.HEALTHY, "statusCode"))
+          .clockSyncStatus(null)
+          .hardwareStatus(new HardwareStatus(StatusLevel.WARNING, "warning", null))
+          .softwareStatus(null)
+          .build(),
 
-    private static final List<ReaderStatus> TEST_READER_STATUSES = ImmutableList.of(
-            ReaderStatus.builder()
-                    .readerName("testReader1")
-                    .state(ReaderState.IDLE)
-                    .lastCheckin(ZonedDateTime.now(ZoneId.of("UTC")).minusMinutes(1))
-                    .lastReboot(null)
-                    .version(new ReaderVersion("appVersion1", "fwVersion1"))
-                    .connectionStatus(new ConnectionStatus(StatusLevel.HEALTHY, "statusCode"))
-                    .throughputStatus(new ThroughputStatus(StatusLevel.HEALTHY, "statusCode"))
-                    .clockSyncStatus(null)
-                    .hardwareStatus(new HardwareStatus(StatusLevel.WARNING, "warning", null))
-                    .softwareStatus(null)
-                    .build(),
+      ReaderStatus.builder()
+          .readerName("testReader2")
+          .state(ReaderState.RUNNING_JOB)
+          .lastCheckin(ZonedDateTime.now(ZoneId.of("UTC")).minusMinutes(2))
+          .lastReboot(ZonedDateTime.now(ZoneId.of("UTC")).minusDays(1))
+          .version(new ReaderVersion("appVersion1", "fwVersion1"))
+          .connectionStatus(new ConnectionStatus(StatusLevel.HEALTHY, "statusCode"))
+          .throughputStatus(new ThroughputStatus(StatusLevel.HEALTHY, "statusCode"))
+          .clockSyncStatus(null)
+          .hardwareStatus(new HardwareStatus(StatusLevel.WARNING, "warning", null))
+          .softwareStatus(null)
+          .build()
+  );
+  @ClassRule
+  public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
+  @Rule
+  public WireMockClassRule instanceRule = wireMockRule;
+  private HealthController healthController;
+  private Gson gson = TestUtils.getGson();
 
-            ReaderStatus.builder()
-                    .readerName("testReader2")
-                    .state(ReaderState.RUNNING_JOB)
-                    .lastCheckin(ZonedDateTime.now(ZoneId.of("UTC")).minusMinutes(2))
-                    .lastReboot(ZonedDateTime.now(ZoneId.of("UTC")).minusDays(1))
-                    .version(new ReaderVersion("appVersion1", "fwVersion1"))
-                    .connectionStatus(new ConnectionStatus(StatusLevel.HEALTHY, "statusCode"))
-                    .throughputStatus(new ThroughputStatus(StatusLevel.HEALTHY, "statusCode"))
-                    .clockSyncStatus(null)
-                    .hardwareStatus(new HardwareStatus(StatusLevel.WARNING, "warning", null))
-                    .softwareStatus(null)
-                    .build()
-    );
+  @Before
+  public void setUp() {
+    healthController =
+        new CoordinatorApiController(TestUtils.getClient(), TestUtils.MOCK_URI)
+            .getHealthController();
+  }
 
-    @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
-    @Rule
-    public WireMockClassRule instanceRule = wireMockRule;
+  @Test
+  public void getAllReaderStatuses() {
+    stubFor(get(urlEqualTo("/health/v1/readers")).willReturn(
+        aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(gson.toJson(TEST_READER_STATUSES))
+    ));
 
-    @Before
-    public void setUp() {
-        healthController =
-                new CoordinatorApiController(TestUtils.getClient(), TestUtils.MOCK_URI)
-                        .getHealthController();
-    }
+    List<ReaderStatus> readerStatuses = healthController.getAllReaderStatuses();
+    Assert.assertEquals(TEST_READER_STATUSES, readerStatuses);
+  }
 
-    @Test
-    public void getAllReaderStatuses() {
-        stubFor(get(urlEqualTo("/health/v1/readers")).willReturn(
-                aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody(gson.toJson(TEST_READER_STATUSES))
-        ));
+  @Test
+  public void getOneReaderStatus() {
+    stubFor(get(urlEqualTo("/health/v1/readers/testReader1")).willReturn(
+        aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBody(gson.toJson(TEST_READER_STATUSES.get(0)))
+    ));
 
-        List<ReaderStatus> readerStatuses = healthController.getAllReaderStatuses();
-        Assert.assertEquals(TEST_READER_STATUSES, readerStatuses);
-    }
+    ReaderStatus readerStatus = healthController.getReaderStatus("testReader1");
+    Assert.assertEquals(TEST_READER_STATUSES.get(0), readerStatus);
+  }
 
-    @Test
-    public void getOneReaderStatus() {
-        stubFor(get(urlEqualTo("/health/v1/readers/testReader1")).willReturn(
-                aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody(gson.toJson(TEST_READER_STATUSES.get(0)))
-        ));
+  @Test
+  public void getNonExistentReaderStatus() {
+    stubFor(get(urlEqualTo("/health/v1/readers/notATestReader")).willReturn(
+        aResponse()
+            .withStatus(404)
+    ));
 
-        ReaderStatus readerStatus = healthController.getReaderStatus("testReader1");
-        Assert.assertEquals(TEST_READER_STATUSES.get(0), readerStatus);
-    }
-
-    @Test
-    public void getNonExistentReaderStatus() {
-        stubFor(get(urlEqualTo("/health/v1/readers/notATestReader")).willReturn(
-                aResponse()
-                        .withStatus(404)
-        ));
-
-        ReaderStatus readerStatus = healthController.getReaderStatus("notATestReader");
-        Assert.assertNull(readerStatus);
-    }
+    ReaderStatus readerStatus = healthController.getReaderStatus("notATestReader");
+    Assert.assertNull(readerStatus);
+  }
 }

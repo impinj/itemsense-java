@@ -4,12 +4,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.time.Duration;
+import org.junit.Assert;
+import org.junit.Test;
 
 
 public class RecipeTest {
@@ -75,7 +73,9 @@ public class RecipeTest {
     Assert.assertEquals("RECIPE", recipeDeserialized.getName());
     Assert.assertEquals(RecipeType.LOCATION, recipeDeserialized.getType());
     Assert.assertEquals(tagExpiry, recipeDeserialized.getTagExpiryDuration());
-    Assert.assertEquals(recipe.getTagHeartbeatMinutes(), recipeDeserialized.getTagHeartbeatMinutes());
+    Assert.assertEquals(
+        recipe.getTagHeartbeatMinutes(),
+        recipeDeserialized.getTagHeartbeatMinutes());
     Assert.assertNull(recipeDeserialized.getTagHeartbeatDuration());
   }
 
@@ -101,7 +101,9 @@ public class RecipeTest {
     Assert.assertEquals("RECIPE", recipeDeserialized.getName());
     Assert.assertEquals(RecipeType.LOCATION, recipeDeserialized.getType());
     Assert.assertEquals(tagExpiry, recipeDeserialized.getTagExpiryDuration());
-    Assert.assertEquals(recipe.getTagHeartbeatDuration(), recipeDeserialized.getTagHeartbeatDuration());
+    Assert.assertEquals(
+        recipe.getTagHeartbeatDuration(),
+        recipeDeserialized.getTagHeartbeatDuration());
     Assert.assertNull(recipeDeserialized.getTagHeartbeatMinutes());
   }
 }

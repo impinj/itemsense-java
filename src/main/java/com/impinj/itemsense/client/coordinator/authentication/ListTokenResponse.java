@@ -2,9 +2,7 @@ package com.impinj.itemsense.client.coordinator.authentication;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.time.ZonedDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,15 +14,15 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ListTokenResponse {
 
-    Token authenticationToken;
+  Token authenticationToken;
 
-    ZonedDateTime issued;
+  ZonedDateTime issued;
 
-    ZonedDateTime lastUsed;
+  ZonedDateTime lastUsed;
 
-    boolean valid;
+  boolean valid;
 
-    String userName;
+  String userName;
 
 }
 
