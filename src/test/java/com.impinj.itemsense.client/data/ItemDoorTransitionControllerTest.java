@@ -1,10 +1,3 @@
-/*
- *  IMPINJ CONFIDENTIAL AND PROPRIETARY INFORMATION FOR INTERNAL USE ONLY
- *  Use, modification and/or reproduction strictly prohibited.
- *
- *  Copyright (c) Impinj, Inc. 2017. All rights reserved.
- */
-
 package com.impinj.itemsense.client.data;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -103,7 +96,8 @@ public class ItemDoorTransitionControllerTest {
 
   @Test
   public void testGetItemDoorTransitions() {
-    stubFor(get(urlEqualTo("/data/v1/items/show/transitions?pageSize=100&epcFormat=DEFAULT&epcPrefix=E2"))
+    stubFor(get(urlEqualTo(
+        "/data/v1/items/show/transitions?pageSize=100&epcFormat=DEFAULT&epcPrefix=E2"))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")

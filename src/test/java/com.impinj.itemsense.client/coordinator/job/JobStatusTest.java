@@ -11,6 +11,8 @@ public class JobStatusTest {
     JobResponse jobResponse = new JobResponse();
     jobResponse.setStatus(str);
 
-    Assert.assertTrue("Job Status does not equal unknown", jobResponse.getJobStatusAsEnum() == JobStatus.UNKNOWN);
+    Assert.assertTrue(
+        "Job Status does not equal unknown",
+        jobResponse.getJobStatusAsEnum() == JobStatus.UNKNOWN);
   }
 }

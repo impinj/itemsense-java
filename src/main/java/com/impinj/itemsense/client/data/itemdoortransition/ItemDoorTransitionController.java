@@ -12,100 +12,112 @@ import javax.ws.rs.core.Response;
 
 public class ItemDoorTransitionController {
 
-    private WebTarget target;
+  private WebTarget target;
 
-    public ItemDoorTransitionController(WebTarget target) {
-        this.target = target;
+  public ItemDoorTransitionController(WebTarget target) {
+    this.target = target;
+  }
+
+  public Response getItemDoorTransitionsAsResponse(Map<String, Object> queryParams) {
+    return RestApiHelper.get(queryParams, target, "/data/v1/items/show/transitions");
+  }
+
+  public ItemDoorTransitionResponse getItemDoorTransitions(Map<String, Object> queryParams) {
+    return this.getItemDoorTransitionsAsResponse(queryParams)
+        .readEntity(ItemDoorTransitionResponse.class);
+  }
+
+  public ItemDoorTransitionResponse getItemDoorTransitions(
+      EpcFormat epcFormat,
+      String epcPrefix,
+      Integer doorId,
+      String doorName,
+      String destination,
+      String fromTime,
+      String toTime,
+      Integer pageSize,
+      String pageMarker,
+      String alwaysIncludePageMarker
+  ) {
+    if (doorId != null && doorName != null && !doorName.isEmpty()) {
+      throw new IllegalArgumentException("Only one of door ID or door name may be used");
     }
 
-    public Response getItemDoorTransitionsAsResponse(Map<String, Object> queryParams) {
-        return RestApiHelper.get(queryParams, target, "/data/v1/items/show/transitions");
+    HashMap<String, Object> queryParams = new HashMap<>();
+    if (epcFormat != null) {
+      queryParams.put("epcFormat", epcFormat.toString());
+    }
+    if (epcPrefix != null && !epcPrefix.isEmpty()) {
+      queryParams.put("epcPrefix", epcPrefix);
+    }
+    if (doorId != null) {
+      queryParams.put("doorId", doorId);
+    }
+    if (doorName != null && !doorName.isEmpty()) {
+      queryParams.put("doorName", doorName);
+    }
+    if (destination != null && !destination.isEmpty()) {
+      queryParams.put("destination", destination);
+    }
+    if (fromTime != null && !fromTime.isEmpty()) {
+      queryParams.put("fromTime", fromTime);
+    }
+    if (toTime != null && !toTime.isEmpty()) {
+      queryParams.put("toTime", toTime);
+    }
+    if (pageMarker != null && !pageMarker.isEmpty()) {
+      queryParams.put("pageMarker", pageMarker);
+    }
+    if (pageSize != null) {
+      queryParams.put("pageSize", pageSize);
+    }
+    if (alwaysIncludePageMarker != null && !alwaysIncludePageMarker.isEmpty()) {
+      queryParams.put("alwaysIncludePageMarker", alwaysIncludePageMarker);
     }
 
-    public ItemDoorTransitionResponse getItemDoorTransitions(Map<String, Object> queryParams) {
-        return this.getItemDoorTransitionsAsResponse(queryParams).readEntity(ItemDoorTransitionResponse.class);
-    }
+    return this.getItemDoorTransitions(queryParams);
+  }
 
-    public ItemDoorTransitionResponse getItemDoorTransitions(
-        EpcFormat epcFormat,
-        String epcPrefix,
-        Integer doorId,
-        String doorName,
-        String destination,
-        String fromTime,
-        String toTime,
-        Integer pageSize,
-        String pageMarker,
-        String alwaysIncludePageMarker
-    ) {
-        if (doorId != null && doorName != null && !doorName.isEmpty()) {
-            throw new IllegalArgumentException("Only one of door ID or door name may be used");
-        }
+  public ArrayList<ItemDoorTransition> getAllItemDoorTransitions(
+      EpcFormat epcFormat,
+      String epcPrefix,
+      String destination,
+      Integer doorId,
+      String doorName,
+      String fromTime,
+      String toTime) {
+    ItemDoorTransitionResponse response;
+    String nextPageMarker = "";
+    int pageSize = 1000;
+    ArrayList<ItemDoorTransition> items = new ArrayList<>();
 
-        HashMap<String, Object> queryParams = new HashMap<>();
-        if (epcFormat != null) {
-            queryParams.put("epcFormat", epcFormat.toString());
-        }
-        if (epcPrefix != null && !epcPrefix.isEmpty()) {
-            queryParams.put("epcPrefix", epcPrefix);
-        }
-        if (doorId != null) {
-            queryParams.put("doorId", doorId);
-        }
-        if (doorName != null && !doorName.isEmpty()) {
-            queryParams.put("doorName", doorName);
-        }
-        if (destination != null && !destination.isEmpty()) {
-            queryParams.put("destination", destination);
-        }
-        if (fromTime != null && !fromTime.isEmpty()) {
-            queryParams.put("fromTime", fromTime);
-        }
-        if (toTime != null && !toTime.isEmpty()) {
-            queryParams.put("toTime", toTime);
-        }
-        if (pageMarker != null && !pageMarker.isEmpty()) {
-            queryParams.put("pageMarker", pageMarker);
-        }
-        if (pageSize != null) {
-            queryParams.put("pageSize", pageSize);
-        }
-        if (alwaysIncludePageMarker != null && !alwaysIncludePageMarker.isEmpty()) {
-            queryParams.put("alwaysIncludePageMarker", alwaysIncludePageMarker);
-        }
+    do {
+      response = this.getItemDoorTransitions(
+          epcFormat,
+          epcPrefix,
+          doorId,
+          doorName,
+          destination,
+          fromTime,
+          toTime,
+          pageSize,
+          nextPageMarker,
+          null);
+      if (response.getTransitions() != null) {
+        Collections.addAll(items, response.getTransitions());
+      }
+      nextPageMarker = response.getNextPageMarker();
 
-        return this.getItemDoorTransitions(queryParams);
-    }
+    } while (nextPageMarker != null && !nextPageMarker.isEmpty());
 
-    public ArrayList<ItemDoorTransition> getAllItemDoorTransitions(EpcFormat epcFormat,
-                                                    String epcPrefix,
-                                                    String destination,
-                                                    Integer doorId,
-                                                    String doorName,
-                                                    String fromTime,
-                                                    String toTime) {
-        ItemDoorTransitionResponse response;
-        String nextPageMarker = "";
-        int pageSize = 1000;
-        ArrayList<ItemDoorTransition> items = new ArrayList<>();
+    return items;
+  }
 
-        do {
-            response = this.getItemDoorTransitions(epcFormat, epcPrefix, doorId, doorName, destination, fromTime, toTime, pageSize, nextPageMarker, null);
-            if (response.getTransitions() != null) {
-                Collections.addAll(items, response.getTransitions());
-            }
-            nextPageMarker = response.getNextPageMarker();
+  public ArrayList<ItemDoorTransition> getAllItemDoorTransitions(EpcFormat epcFormat) {
+    return getAllItemDoorTransitions(epcFormat, null, null, null, null, null, null);
+  }
 
-        } while (nextPageMarker != null && !nextPageMarker.isEmpty());
-
-        return items;
-    }
-
-    public ArrayList<ItemDoorTransition> getAllItemDoorTransitions(EpcFormat epcFormat) {
-        return getAllItemDoorTransitions(epcFormat, null, null, null, null, null, null);
-    }
-
-    public ArrayList<ItemDoorTransition> getAllItemDoorTransitions() {
-        return getAllItemDoorTransitions(null, null, null, null, null, null, null);
-    }
+  public ArrayList<ItemDoorTransition> getAllItemDoorTransitions() {
+    return getAllItemDoorTransitions(null, null, null, null, null, null, null);
+  }
 }

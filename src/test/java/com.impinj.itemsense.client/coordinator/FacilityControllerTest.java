@@ -1,13 +1,20 @@
 package com.impinj.itemsense.client.coordinator;
 
 
-import com.google.gson.Gson;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.google.gson.Gson;
 import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.facility.Facility;
 import com.impinj.itemsense.client.coordinator.facility.FacilityController;
-
+import java.util.ArrayList;
+import java.util.List;
+import javax.ws.rs.client.Client;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,84 +22,74 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.client.Client;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-
-
 
 public class FacilityControllerTest {
 
-    private CoordinatorApiController coordinatorApiController;
-    private FacilityController facilityController;
-    private Gson gson;
+  @ClassRule
+  public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
+  @Rule
+  public WireMockClassRule instanceRule = wireMockRule;
+  private CoordinatorApiController coordinatorApiController;
+  private FacilityController facilityController;
+  private Gson gson;
 
-    @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
+  @Before
+  public void setUp() throws Exception {
 
-    @Rule
-    public WireMockClassRule instanceRule = wireMockRule;
+    Client client = TestUtils.getClient();
 
+    coordinatorApiController = new CoordinatorApiController(client, TestUtils.MOCK_URI);
+    facilityController = coordinatorApiController.getFacilityController();
+    gson = new Gson();
 
-    @Before
-    public void setUp() throws Exception {
+  }
 
-        Client client = TestUtils.getClient();
+  @After
+  public void tearDown() throws Exception {
 
-        coordinatorApiController = new CoordinatorApiController(client, TestUtils.MOCK_URI);
-        facilityController = coordinatorApiController.getFacilityController();
-        gson = new Gson();
+  }
 
-    }
+  @Test
+  public void GetAllFacilities() {
+    Facility testFacility = new Facility("TestFacility");
+    ArrayList<Facility> testFacilities = new ArrayList<>();
+    testFacilities.add(testFacility);
 
-    @After
-    public void tearDown() throws Exception {
+    stubFor(get(urlEqualTo("/configuration/v1/facilities/show")).willReturn(aResponse()
+                                                                                .withStatus(200)
+                                                                                .withHeader(
+                                                                                    "Content-Type",
+                                                                                    "application/json")
+                                                                                .withBody(gson.toJson(
+                                                                                    testFacilities))));
 
-    }
+    List<Facility> facilities = facilityController.getAllFacilities();
 
-    @Test
-    public void GetAllFacilities(){
-        Facility testFacility = new Facility("TestFacility");
-        ArrayList<Facility> testFacilities = new ArrayList<>();
-        testFacilities.add(testFacility);
+    Assert.assertEquals(facilities.size(), 1);
+    Assert.assertThat(facilities, instanceOf(ArrayList.class));
+    Assert.assertThat(facilities.get(0), instanceOf(Facility.class));
+    Assert.assertEquals(facilities.get(0), testFacility);
+  }
 
-        stubFor(get(urlEqualTo("/configuration/v1/facilities/show")).willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(gson.toJson(testFacilities))));
+  @Test
+  public void GetFacility() {
+    Facility testFacility = new Facility("TestFacility");
 
-        List<Facility> facilities = facilityController.getAllFacilities();
+    stubFor(get(urlEqualTo("/configuration/v1/facilities/show/TestFacility")).willReturn(aResponse()
+                                                                                             .withStatus(
+                                                                                                 200)
+                                                                                             .withHeader(
+                                                                                                 "Content-Type",
+                                                                                                 "application/json")
+                                                                                             .withBody(
+                                                                                                 gson.toJson(
+                                                                                                     testFacility))));
 
-        Assert.assertEquals(facilities.size(), 1);
-        Assert.assertThat(facilities, instanceOf(ArrayList.class));
-        Assert.assertThat(facilities.get(0), instanceOf(Facility.class));
-        Assert.assertEquals(facilities.get(0),testFacility);
-    }
+    Facility facilityResult = facilityController.getFacility("TestFacility");
+    Assert.assertEquals(facilityResult, testFacility);
+    Assert.assertThat(facilityResult, instanceOf(Facility.class));
 
-    @Test
-    public void GetFacility(){
-        Facility testFacility = new Facility("TestFacility");
-
-        stubFor(get(urlEqualTo("/configuration/v1/facilities/show/TestFacility")).willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(gson.toJson(testFacility))));
-
-        Facility facilityResult =  facilityController.getFacility("TestFacility");
-        Assert.assertEquals(facilityResult, testFacility);
-        Assert.assertThat(facilityResult, instanceOf(Facility.class));
-
-    }
-
-
-
+  }
 
 
 }

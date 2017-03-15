@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Point {
-    private double x;
-    private double y;
-    private double z;
+
+  private double x;
+  private double y;
+  private double z;
 }

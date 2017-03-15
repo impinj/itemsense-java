@@ -15,52 +15,50 @@ import com.impinj.itemsense.client.coordinator.softwareversions.SoftwareVersions
 import com.impinj.itemsense.client.coordinator.user.UserController;
 import com.impinj.itemsense.client.coordinator.zonemap.ZoneMapController;
 import com.impinj.itemsense.client.helpers.ObjectMapperContextResolver;
-
 import java.net.URI;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
-
 import lombok.Data;
 
 @Data
 public class CoordinatorApiController {
-    private final ObjectMapperContextResolver OBJECT_MAPPER_CONTEXT_RESOLVER
-            = new ObjectMapperContextResolver();
 
-    private AuthenticationController authenticationController;
-    private CurrentZoneMapController currentZoneMapController;
-    private FacilityController facilityController;
-    private JobController jobController;
-    private ReaderConfigurationController readerConfigurationController;
-    private ReaderDefinitionController readerDefinitionController;
-    private RecipeController recipeController;
-    private UserController userController;
-    private ZoneMapController zoneMapController;
-    private SnmpController snmpController;
-    private SoftwareUpgradesController softwareUpgradesController;
-    private SoftwareVersionsController softwareVersionsController;
-    private SoftwareImagesController softwareImagesController;
-    private HealthController healthController;
+  private final ObjectMapperContextResolver OBJECT_MAPPER_CONTEXT_RESOLVER
+      = new ObjectMapperContextResolver();
 
-    private WebTarget target;
+  private AuthenticationController authenticationController;
+  private CurrentZoneMapController currentZoneMapController;
+  private FacilityController facilityController;
+  private JobController jobController;
+  private ReaderConfigurationController readerConfigurationController;
+  private ReaderDefinitionController readerDefinitionController;
+  private RecipeController recipeController;
+  private UserController userController;
+  private ZoneMapController zoneMapController;
+  private SnmpController snmpController;
+  private SoftwareUpgradesController softwareUpgradesController;
+  private SoftwareVersionsController softwareVersionsController;
+  private SoftwareImagesController softwareImagesController;
+  private HealthController healthController;
 
-    public CoordinatorApiController(final Client client, final URI uri) {
-        this.target = client.register(OBJECT_MAPPER_CONTEXT_RESOLVER).target(uri);
+  private WebTarget target;
 
-        this.currentZoneMapController = new CurrentZoneMapController(target);
-        this.facilityController = new FacilityController(target);
-        this.jobController = new JobController(target);
-        this.readerConfigurationController = new ReaderConfigurationController(target);
-        this.readerDefinitionController = new ReaderDefinitionController(target);
-        this.recipeController = new RecipeController(target);
-        this.userController = new UserController(target);
-        this.zoneMapController = new ZoneMapController(target);
-        this.authenticationController = new AuthenticationController(target);
-        this.snmpController = new SnmpController(target);
-        this.softwareUpgradesController = new SoftwareUpgradesController(target);
-        this.softwareVersionsController = new SoftwareVersionsController(target);
-        this.softwareImagesController = new SoftwareImagesController(target);
-        this.healthController = new HealthController(target);
-    }
+  public CoordinatorApiController(final Client client, final URI uri) {
+    this.target = client.register(OBJECT_MAPPER_CONTEXT_RESOLVER).target(uri);
+
+    this.currentZoneMapController = new CurrentZoneMapController(target);
+    this.facilityController = new FacilityController(target);
+    this.jobController = new JobController(target);
+    this.readerConfigurationController = new ReaderConfigurationController(target);
+    this.readerDefinitionController = new ReaderDefinitionController(target);
+    this.recipeController = new RecipeController(target);
+    this.userController = new UserController(target);
+    this.zoneMapController = new ZoneMapController(target);
+    this.authenticationController = new AuthenticationController(target);
+    this.snmpController = new SnmpController(target);
+    this.softwareUpgradesController = new SoftwareUpgradesController(target);
+    this.softwareVersionsController = new SoftwareVersionsController(target);
+    this.softwareImagesController = new SoftwareImagesController(target);
+    this.healthController = new HealthController(target);
+  }
 }

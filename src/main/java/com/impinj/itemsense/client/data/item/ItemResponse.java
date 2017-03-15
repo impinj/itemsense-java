@@ -2,11 +2,9 @@ package com.impinj.itemsense.client.data.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 
 @Data
@@ -15,10 +13,10 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ItemResponse {
 
-    @JsonProperty("items")
-    private Item[] items;
+  @JsonProperty("items")
+  private Item[] items;
 
-    @JsonProperty("nextPageMarker")
-    private String nextPageMarker;
+  @JsonProperty("nextPageMarker")
+  private String nextPageMarker;
 }
 
