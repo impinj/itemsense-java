@@ -6,11 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class LocationReaderConfigDetails extends ReaderConfigurationDetails {
+public class LocationReaderConfigDetails extends ReaderBasicConfigDetails {
 
-  private ReaderMode readerMode;
-  private Integer session;
   private List<Integer> disabledAntennas;
-  private Double transmitPowerInDbm;
-  private Filter filter;
 }
