@@ -19,8 +19,8 @@
 
     <licenses>
         <license>
-            <name>The MIT License (MIT)</name>
-            <url>https://opensource.org/licenses/MIT</url>
+            <name>GNU Lesser General Public License version 2.1</name>
+            <url>https://opensource.org/licenses/LGPL-2.1</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
