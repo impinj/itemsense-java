@@ -17,4 +17,5 @@ public class DockDoorAntennaConfiguration {
   private DockDoorSide side;
   private List<DockDoorAntennaConfigurationAntenna> in;
   private List<DockDoorAntennaConfigurationAntenna> out;
+  private List<DockDoorAntennaConfigurationAntenna> ignored;
 }
