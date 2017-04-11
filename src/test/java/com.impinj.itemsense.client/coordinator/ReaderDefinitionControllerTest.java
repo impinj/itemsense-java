@@ -3,6 +3,7 @@ package com.impinj.itemsense.client.coordinator;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
@@ -12,12 +13,19 @@ import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.TestUtils;
+import com.impinj.itemsense.client.coordinator.readerdefintion.FeatureRequest;
+import com.impinj.itemsense.client.coordinator.readerdefintion.FeatureRequestAction;
+import com.impinj.itemsense.client.coordinator.readerdefintion.FeatureStatus;
 import com.impinj.itemsense.client.coordinator.readerdefintion.Placement;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinition;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinitionController;
+import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderFeature;
+import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderFeatureStatus;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
@@ -72,6 +80,7 @@ public class ReaderDefinitionControllerTest {
             90,
             "1"),
         ReaderType.XARRAY,
+        null,
         null);
     List<ReaderDefinition> testDefinitions = new ArrayList<>();
     testDefinitions.add(testReaderDefinition);
@@ -111,6 +120,7 @@ public class ReaderDefinitionControllerTest {
             90,
             "1"),
         ReaderType.XARRAY,
+        null,
         null);
 
     stubFor(get(urlEqualTo("/configuration/v1/readerDefinitions/show/Test_Reader_Definition"))
@@ -123,11 +133,6 @@ public class ReaderDefinitionControllerTest {
         "Test_Reader_Definition");
     Assert.assertEquals(readerDefinitionResult, testReaderDefinition);
     Assert.assertThat(readerDefinitionResult, instanceOf(ReaderDefinition.class));
-
-  }
-
-  @Test
-  public void createReaderDefinitionTest() {
 
   }
 
@@ -168,5 +173,70 @@ public class ReaderDefinitionControllerTest {
 
     ReaderDefinition responseReader = readerDefinitionController.updateReaderDefinition(reader);
     Assert.assertEquals(reader, responseReader);
+  }
+
+  @Test
+  public void testConfigureFeature() {
+    ReaderFeatureStatus expected = new ReaderFeatureStatus(
+        FeatureStatus.CONFIGURING,
+        "Configuration request in process");
+
+    stubFor(post(urlEqualTo("/configuration/v1/readerDefinitions/reader1/featureChanges"))
+                .willReturn(aResponse()
+                                .withStatus(202)
+                                .withHeader(
+                                    "Location",
+                                    "http://localhost:8089/itemsense/configuration/v1/readerDefinitions/reader1/featureChanges/ANTENNA_HUB")));
+    stubFor(get(urlEqualTo(
+        "/itemsense/configuration/v1/readerDefinitions/reader1/featureChanges/ANTENNA_HUB"))
+                .willReturn(aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBody(gson.toJson(expected))));
+
+    Assert.assertEquals(
+        expected,
+        readerDefinitionController.configureFeature(
+            "reader1",
+            new FeatureRequest(
+                ReaderFeature.ANTENNA_HUB,
+                FeatureRequestAction.ENABLE)));
+  }
+
+  @Test
+  public void testGetFeatureStatus() {
+    ReaderFeatureStatus expected = new ReaderFeatureStatus(
+        FeatureStatus.ENABLED,
+        "Activated");
+
+    stubFor(get(urlEqualTo(
+        "/configuration/v1/readerDefinitions/reader1/featureChanges/ANTENNA_HUB"))
+                .willReturn(aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBody(gson.toJson(expected))));
+
+    Assert.assertEquals(
+        expected,
+        readerDefinitionController.getFeatureStatus("reader1", ReaderFeature.ANTENNA_HUB));
+  }
+
+  @Test
+  public void testGetActiveStatus() {
+    Map<ReaderFeature, ReaderFeatureStatus> expected = new HashMap<>();
+    expected.put(
+        ReaderFeature.ANTENNA_HUB,
+        new ReaderFeatureStatus(FeatureStatus.ERROR, "An error has occurred"));
+
+    stubFor(get(urlEqualTo(
+        "/configuration/v1/readerDefinitions/reader1/featureChanges"))
+                .willReturn(aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBody(gson.toJson(expected))));
+
+    Assert.assertEquals(
+        expected,
+        readerDefinitionController.getActiveFeatureRequests("reader1"));
   }
 }
