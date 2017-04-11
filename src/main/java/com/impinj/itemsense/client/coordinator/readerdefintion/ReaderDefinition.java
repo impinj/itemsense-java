@@ -22,5 +22,6 @@ public class ReaderDefinition {
   private Placement placement;
   private ReaderType type;
   private Set<String> groups;
+  private Map<ReaderFeature, ReaderFeatureStatus> features;
 }
 

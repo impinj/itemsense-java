@@ -53,7 +53,7 @@ public class CoordinatorApiController {
     this.facilityController = new FacilityController(target);
     this.jobController = new JobController(target);
     this.readerConfigurationController = new ReaderConfigurationController(target);
-    this.readerDefinitionController = new ReaderDefinitionController(target);
+    this.readerDefinitionController = new ReaderDefinitionController(target, client);
     this.recipeController = new RecipeController(target);
     this.userController = new UserController(target);
     this.zoneMapController = new ZoneMapController(target);

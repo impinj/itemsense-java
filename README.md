@@ -285,6 +285,12 @@ itemsense.getReaderDefinitionController().createReaderDefinition(readerDefinitio
 itemsense.getReaderDefinitionController().updaterReaderDefinition(readerDefinition) // updates a reader definition
 
 itemsense.getReaderDefinitionController().deleteReaderDefinition(readerDefinitionName) // deletes a reader definition based on the name
+
+itemsense.getReaderDefinitionController().configureFeature(readerDefinitionName, featureRequest) // initiate a feature configuration for a reader
+
+itemsense.getReaderDefinitionController().getFeatureStatus(readerDefinitionName, feature) // returns the current status of the given feature for the reader
+
+itemsense.getReaderDefinitionController().getActiveFeatureRequests(readerDefinitionName) // returns the current state of active feature configuration requests
 ```
 
 ### Reader Configurations

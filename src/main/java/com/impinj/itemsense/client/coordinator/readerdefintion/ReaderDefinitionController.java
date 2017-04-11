@@ -3,18 +3,24 @@ package com.impinj.itemsense.client.coordinator.readerdefintion;
 
 import com.impinj.itemsense.client.helpers.RestApiHelper;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public class ReaderDefinitionController {
 
   private static final String BASE_PATH = "/configuration/v1/readerDefinitions";
   private WebTarget target;
+  private Client client;
 
-  public ReaderDefinitionController(WebTarget target) {
+  public ReaderDefinitionController(WebTarget target, Client client) {
     this.target = target;
+    this.client = client;
   }
 
   public Response getReaderGroupsAsResponse() {
@@ -64,5 +70,31 @@ public class ReaderDefinitionController {
   public List<ReaderDefinition> getReaderDefinitions() {
     return this.getReaderDefinitionsAsResponse()
         .readEntity(new GenericType<List<ReaderDefinition>>() {});
+  }
+
+  public ReaderFeatureStatus configureFeature(String readerName, FeatureRequest request) {
+    Response response =
+        RestApiHelper.post(request, target, BASE_PATH, readerName, "featureChanges");
+    if (response.getStatus() == 202) {
+      String locationUri = response.getHeaderString("Location");
+      return client.target(locationUri)
+          .request(MediaType.APPLICATION_JSON_TYPE)
+          .get()
+          .readEntity(ReaderFeatureStatus.class);
+    } else {
+      throw new ProcessingException("Failed to create feature change request");
+    }
+  }
+
+  public ReaderFeatureStatus getFeatureStatus(String readerName, ReaderFeature feature) {
+    return RestApiHelper
+        .get(target, BASE_PATH, readerName, "featureChanges", feature.name())
+        .readEntity(ReaderFeatureStatus.class);
+  }
+
+  public Map<ReaderFeature, ReaderFeatureStatus> getActiveFeatureRequests(String readerName) {
+    return RestApiHelper
+        .get(target, BASE_PATH, readerName, "featureChanges")
+        .readEntity(new GenericType<Map<ReaderFeature, ReaderFeatureStatus>>(){});
   }
 }
