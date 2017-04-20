@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import org.apache.commons.lang3.StringUtils;
 
 
 public class ItemDoorTransitionController {
@@ -28,18 +29,20 @@ public class ItemDoorTransitionController {
   }
 
   public ItemDoorTransitionResponse getItemDoorTransitions(
-      EpcFormat epcFormat,
       String epcPrefix,
+      String jobId,
       Integer doorId,
       String doorName,
       String destination,
+      String facility,
       String fromTime,
       String toTime,
-      Integer pageSize,
+      EpcFormat epcFormat,
       String pageMarker,
+      Integer pageSize,
       String alwaysIncludePageMarker
   ) {
-    if (doorId != null && doorName != null && !doorName.isEmpty()) {
+    if (doorId != null && StringUtils.isNotEmpty(doorName)) {
       throw new IllegalArgumentException("Only one of door ID or door name may be used");
     }
 
@@ -47,31 +50,37 @@ public class ItemDoorTransitionController {
     if (epcFormat != null) {
       queryParams.put("epcFormat", epcFormat.toString());
     }
-    if (epcPrefix != null && !epcPrefix.isEmpty()) {
+    if (StringUtils.isNotEmpty(epcPrefix)) {
       queryParams.put("epcPrefix", epcPrefix);
+    }
+    if (StringUtils.isNotEmpty(jobId)) {
+      queryParams.put("jobId", jobId);
     }
     if (doorId != null) {
       queryParams.put("doorId", doorId);
     }
-    if (doorName != null && !doorName.isEmpty()) {
+    if (StringUtils.isNotEmpty(doorName)) {
       queryParams.put("doorName", doorName);
     }
-    if (destination != null && !destination.isEmpty()) {
+    if (StringUtils.isNotEmpty(destination)) {
       queryParams.put("destination", destination);
     }
-    if (fromTime != null && !fromTime.isEmpty()) {
+    if (StringUtils.isNotEmpty(facility)) {
+      queryParams.put("facility", facility);
+    }
+    if (StringUtils.isNotEmpty(fromTime)) {
       queryParams.put("fromTime", fromTime);
     }
-    if (toTime != null && !toTime.isEmpty()) {
+    if (StringUtils.isNotEmpty(toTime)) {
       queryParams.put("toTime", toTime);
     }
-    if (pageMarker != null && !pageMarker.isEmpty()) {
+    if (StringUtils.isNotEmpty(pageMarker)) {
       queryParams.put("pageMarker", pageMarker);
     }
     if (pageSize != null) {
       queryParams.put("pageSize", pageSize);
     }
-    if (alwaysIncludePageMarker != null && !alwaysIncludePageMarker.isEmpty()) {
+    if (StringUtils.isNotEmpty(alwaysIncludePageMarker)) {
       queryParams.put("alwaysIncludePageMarker", alwaysIncludePageMarker);
     }
 
@@ -79,13 +88,16 @@ public class ItemDoorTransitionController {
   }
 
   public ArrayList<ItemDoorTransition> getAllItemDoorTransitions(
-      EpcFormat epcFormat,
       String epcPrefix,
-      String destination,
+      String jobId,
       Integer doorId,
       String doorName,
+      String destination,
+      String facility,
       String fromTime,
-      String toTime) {
+      String toTime,
+      EpcFormat epcFormat
+  ) {
     ItemDoorTransitionResponse response;
     String nextPageMarker = "";
     int pageSize = 1000;
@@ -93,31 +105,33 @@ public class ItemDoorTransitionController {
 
     do {
       response = this.getItemDoorTransitions(
-          epcFormat,
           epcPrefix,
+          jobId,
           doorId,
           doorName,
           destination,
+          facility,
           fromTime,
           toTime,
-          pageSize,
+          epcFormat,
           nextPageMarker,
+          pageSize,
           null);
       if (response.getTransitions() != null) {
         Collections.addAll(items, response.getTransitions());
       }
       nextPageMarker = response.getNextPageMarker();
 
-    } while (nextPageMarker != null && !nextPageMarker.isEmpty());
+    } while (StringUtils.isNotEmpty(nextPageMarker));
 
     return items;
   }
 
   public ArrayList<ItemDoorTransition> getAllItemDoorTransitions(EpcFormat epcFormat) {
-    return getAllItemDoorTransitions(epcFormat, null, null, null, null, null, null);
+    return getAllItemDoorTransitions(null, null, null, null, null, null, null, null, epcFormat);
   }
 
   public ArrayList<ItemDoorTransition> getAllItemDoorTransitions() {
-    return getAllItemDoorTransitions(null, null, null, null, null, null, null);
+    return getAllItemDoorTransitions(null, null, null, null, null, null, null, null, null);
   }
 }
