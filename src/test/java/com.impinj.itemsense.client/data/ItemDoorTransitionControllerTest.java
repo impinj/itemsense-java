@@ -104,16 +104,7 @@ public class ItemDoorTransitionControllerTest {
                                 .withBody(itemDoorTransitionTestResponse)));
 
     ItemDoorTransitionResponse response = itemDoorTransitionController.getItemDoorTransitions(
-        EpcFormat.DEFAULT,
-        "E2",
-        null,
-        null,
-        null,
-        null,
-        null,
-        100,
-        null,
-        null);
+        "E2", null, null, null, null, null, null, null, EpcFormat.DEFAULT, null, 100, null);
     assertNotNull(response);
     assertFalse(response.isMoreHistoryAvailable());
     assertNull(response.getNextPageMarker());
