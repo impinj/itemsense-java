@@ -2,7 +2,9 @@ package com.impinj.itemsense.client.coordinator.settings.snmp;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
@@ -11,7 +13,9 @@ import lombok.Data;
     @JsonSubTypes.Type(value = SnmpCommunityAuthConfiguration.class, name = "V2_COMMUNITY"),
     @JsonSubTypes.Type(value = SnmpUserPrivAuthConfiguration.class, name = "V3_USER_PRIV")
 })
-public class SnmpAuthConfiguration {
+@AllArgsConstructor
+@NoArgsConstructor
+public abstract class SnmpAuthConfiguration {
 
   private AuthType type;
 

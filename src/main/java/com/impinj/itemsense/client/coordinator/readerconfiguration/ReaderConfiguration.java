@@ -1,13 +1,14 @@
 package com.impinj.itemsense.client.coordinator.readerconfiguration;
 
-
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
+@Builder
 public class ReaderConfiguration {
 
   private String name;

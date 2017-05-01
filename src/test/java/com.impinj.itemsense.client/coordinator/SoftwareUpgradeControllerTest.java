@@ -30,6 +30,7 @@ import com.impinj.itemsense.client.coordinator.softwareupgrades.UpgradeStatus;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.VersionIdentifier;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import javax.ws.rs.client.Client;
 import org.junit.Assert;
 import org.junit.Before;
@@ -51,19 +52,28 @@ public class SoftwareUpgradeControllerTest {
 
     TEST_UPGRADE_REQUEST_VIEW.setId("test_id");
 
-    TEST_UPGRADE_REQUEST = new UpgradeRequest();
-    ImmutableSet<String> groupingUnitIds = ImmutableSet.of("test_facility1");
-    TEST_UPGRADE_REQUEST.setTarget(new UpgradeRequestTarget(TargetType.FACILITY, groupingUnitIds));
+    Set<String> groupingUnitIds = ImmutableSet.of("test_facility1");
 
-    VersionIdentifier versionIdentifier = new VersionIdentifier();
+    TEST_UPGRADE_REQUEST = UpgradeRequest.builder()
+        .target(
+            UpgradeRequestTarget.builder()
+                .type(TargetType.FACILITY)
+                .values(groupingUnitIds)
+                .build()
+        )
+        .build();
 
-    versionIdentifier.setVersion("test_version");
-    versionIdentifier.setImageType(ImageType.CAP_ITEMSENSE);
+    VersionIdentifier versionIdentifier = VersionIdentifier.builder()
+        .version("test_version")
+        .imageType(ImageType.CAP_ITEMSENSE)
+        .build();
+
     TEST_UPGRADE_REQUEST.setVersionIdentifier(versionIdentifier);
 
-    UpgradePolicy upgradePolicy = new UpgradePolicy();
-    upgradePolicy.setMaxParallelReaders(10);
-    upgradePolicy.setAllowedReaderTypes(ImmutableSet.of(ReaderType.XPORTAL));
+    UpgradePolicy upgradePolicy = UpgradePolicy.builder()
+        .maxParallelReaders(10)
+        .allowedReaderTypes(ImmutableSet.of(ReaderType.XPORTAL))
+        .build();
     TEST_UPGRADE_REQUEST.setPolicy(upgradePolicy);
 
     TEST_UPGRADE_REQUEST_VIEW.setUpgradeRequest(TEST_UPGRADE_REQUEST);
@@ -73,17 +83,21 @@ public class SoftwareUpgradeControllerTest {
     TEST_UPGRADE_STATUS.setId("test_id2");
     TEST_UPGRADE_STATUS.setVersion(versionIdentifier);
     TEST_UPGRADE_STATUS.setStatus(UpgradeState.IN_PROGRESS);
-    TEST_UPGRADE_STATUS.setTarget(new UpgradeRequestTarget(TargetType.FACILITY, groupingUnitIds));
+    TEST_UPGRADE_STATUS.setTarget(UpgradeRequestTarget.builder()
+                                      .type(TargetType.FACILITY)
+                                      .values(groupingUnitIds)
+                                      .build());
 
     UpgradeStatus.UpgradeStatusDetails upgradeStatusDetails = new UpgradeStatus.UpgradeStatusDetails();
 
     DeviceStatus deviceStatus = new DeviceStatus();
     deviceStatus.setName("test_readerId_1");
 
-    VersionIdentifier previousVersion = new VersionIdentifier();
+    VersionIdentifier previousVersion = VersionIdentifier.builder()
+        .version("test_old_version")
+        .imageType(ImageType.CAP_ITEMSENSE)
+        .build();
 
-    previousVersion.setVersion("test_old_version");
-    previousVersion.setImageType(ImageType.CAP_ITEMSENSE);
     deviceStatus.setPreviousVersion(previousVersion);
 
     deviceStatus.setStatus(UpgradeState.IN_PROGRESS);
@@ -127,12 +141,17 @@ public class SoftwareUpgradeControllerTest {
 
   @Test
   public void emptyValuesNull() {
-    UpgradeRequest request = new UpgradeRequest();
-    request.setPolicy(new UpgradePolicy());
-    request.setTarget(new UpgradeRequestTarget(TargetType.FACILITY, ImmutableSet.of("DEFAULT")));
-    request.setVersionIdentifier(new VersionIdentifier());
-    request.getVersionIdentifier().setImageType(ImageType.CAP_ITEMSENSE);
-    request.getVersionIdentifier().setVersion("test_Version");
+    UpgradeRequest request = UpgradeRequest.builder()
+        .policy(UpgradePolicy.builder().build())
+        .target(UpgradeRequestTarget.builder()
+                    .type(TargetType.FACILITY)
+                    .values(ImmutableSet.of("DEFAULT"))
+                    .build())
+        .versionIdentifier(VersionIdentifier.builder()
+                               .imageType(ImageType.CAP_ITEMSENSE)
+                               .version("test_version")
+                               .build())
+        .build();
 
     stubFor(get(urlEqualTo("/control/v1/upgrades/show")).willReturn(
         aResponse().withStatus(200)
