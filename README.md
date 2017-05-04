@@ -12,70 +12,106 @@ itemsense-java is available as a dependency on Maven Central [here.](http://mvnr
 </dependency>
 ```
 
-## Basic Usage
-Once this dependency is included in your project, you can instantiate the two base controllers for coordination and data endpoints.
+## Dependencies
 
-Check out this sample of a class that instantiates both controllers:
+To use the client library, you need to create an HTTP client, which is an implementation of `javax.ws.rs.client.Client`, as well as including a JSON Jackson de/serilization provider in the classpath.
+
+You can use the Jersey client, which requires the following dependencies:
+```
+<dependency>
+  <groupId>org.glassfish.jersey.core</groupId>
+  <artifactId>jersey-client</artifactId>
+  <version>2.25</version>
+</dependency>
+
+<dependency>
+  <groupId>org.glassfish.jersey.media</groupId>
+  <artifactId>jersey-media-json-jackson</artifactId>
+  <version>2.25</version>
+</dependency>
+
+<dependency>
+  <groupId>com.fasterxml.jackson.jaxrs</groupId>
+  <artifactId>jackson-jaxrs-base</artifactId>
+  <version>2.8.2</version>
+</dependency>
+```
+
+The following sample creates a Resteasy client, and makes a call to both the configuration API and the data API. You can extend this sample to fulfill the needs of your application.
+
+The ITEMSENSE BASE URL is the protocol and name (or IP address) of your ItemSense server, with the `itemsense` prefix. For example: `http://itemsense.mycompany.com/itemsense`
 
 ```java
+package com.mycompany;
 
 import com.impinj.itemsense.client.coordinator.CoordinatorApiController;
+import com.impinj.itemsense.client.coordinator.facility.Facility;
 import com.impinj.itemsense.client.data.DataApiController;
+import com.impinj.itemsense.client.data.item.Item;
+
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.glassfish.jersey.filter.LoggingFilter;
+import org.glassfish.jersey.jackson.JacksonFeature;
+import com.impinj.itemsense.client.data.itemhistory.ItemHistory;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+
 import java.net.URI;
 
-public class ItemSenseConfiguration {
-    String username = ...;
-    String password = ...;
-    String url = "http://.../itemsense/";
+import java.util.List;
+import java.util.logging.Logger;
 
-    public ItemSenseConfiguration() {
+public class App
+{
+    public static void main( String[] args ) {
+
+      final String url = "<ENTER YOUR ITEMSENSE BASE URL HERE>";
+      final String username = "<ENTER YOUR ITEMSENSE USERNAME HERE>";
+      final String password = "<ENTER YOUR ITEMSENSE PASSWORD HERE>";
+
+      final Logger logger = Logger.getLogger(App.class.getName());
+
+      final LoggingFilter filter = new LoggingFilter();
+
+      logger.info("Running at: " + url + " with user: " + username );
+
+      Client client = ClientBuilder.newClient()
+          .register(JacksonFeature.class)
+          .register(filter)
+          .register(HttpAuthenticationFeature.basic(username, password));
+
+      CoordinatorApiController configApi = new CoordinatorApiController(client, URI.create(url));
+
+      List<Facility> facilities = configApi.getFacilityController().getAllFacilities();
+
+      if (facilities == null) {
+        logger.severe("Facilities is null - aborting");
+        return;
+      }
+
+      for (Facility facility : facilities) {
+        logger.info(facility.toString());
+      }
+      
+      DataApiController dataApi = new DataApiController(client, URI.create(url));
+
+      List<Item> items = dataApi.getItemController().getAllItems();
+
+      if (items == null) {
+        logger.severe("Items is null - aborting");
+        return;
+      }
+
+      for (Item item: items) {
+        logger.info(item.toString());
+      }
+
     }
-
-    public ItemSenseConfiguration(String username, String password, String url) {
-        this.username = username;
-        this.password = password;
-        this.url = url;
-    }
-
-    public String getUserName() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getBaseUrl() {
-        return url;
-    }
-}
-
-public class ItemSenseApiFactory {
-
-    private ItemSenseApiFactory() {
-    }
-
-    // Create a controller for the coordinator endpoints
-    public static CoordinatorApiController getCoordinatorApiController(ItemSenseConfiguration itemSenseConfiguration) {
-
-        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic(itemSenseConfiguration.getUserName(), itemSenseConfiguration.getPassword()));
-        CoordinatorApiController coordinatorApiController = new CoordinatorApiController( client, URI.create(itemSenseConfiguration.getBaseUrl()));
-        return coordinatorApiController;
-    }
-
-    // Creates a controller for the data endpoints
-    public static DataApiController getDataApiController(ItemSenseConfiguration itemSenseConfiguration) {
-
-        Client client = ClientBuilder.newClient().register(HttpAuthenticationFeature.basic(itemSenseConfiguration.getUserName(), itemSenseConfiguration.getPassword()));
-        DataApiController dataApiController = new DataApiController( client, URI.create(itemSenseConfiguration.getBaseUrl()));
-        return dataApiController;
-    }
-
 }
 ```
+
+
 
 ### Table of Contents
 1. <a href="#itemsenseConfig">ItemSense Configuration</a>
@@ -94,55 +130,12 @@ public class ItemSenseApiFactory {
 1. <a href= "#items">Items </a>
 
 
-
-
-### ItemSense Configuration
-<div id="itemsenseConfig" />
-<table>
-<thead>
-<tr>
-<td>
-<b>Property</b>
-</td>
-<td>
-<b>Description</b>
-</td>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>
-  baseUrl
-  </td>
-  <td>
-  The base URL for your itemsense instance. e.g. http://office.impinj.com/itemsense
-  </td>
-</tr>
-<tr>
-  <td>
-  username
-  </td>
-  <td>
-  The username for your itemsense credentials. This will be used to encode your requests with a basic auth header. This is optional if you are instead providing an authToken.
-  </td>
-</tr>
-<tr>
-  <td>
-  password
-</td>
-  <td>
-  The password for your itemsense credentials. This will be used to encode your requests with a basic auth header. This is optional if you are instead providing an authToken.
-  </td>
-</tr>
-</tbody>
-
-</table>
-
-
 ### Authentication
 <div id="authentication" />
 
 For more information about authentication, visit http://developer.impinj.com/itemsense/docs/api/#authentication
+
+Methods of `CoordinatorApiController.getAuthorizationController`: 
 
 ```java
 public Token getToken() 
@@ -165,17 +158,20 @@ public void revokeTokens(String username)
 
 For information about users, visit http://developer.impinj.com/itemsense/docs/api/#users
 
+Methods of `CoordinatorApiController.getUserController`: 
+
+
 ```java
 
-coordinator.getUserController().getUser(username) // returns a user object based on username
+public User getUserController().getUser(username) // returns a user object based on username
 
-coordinator.getUserController().getUsers() // returns all of the users for an itemsense instance
+public List<User> getUserController().getUsers() // returns all of the users for an itemsense instance
 
-coordinator.getUserController().createUser(user) // creates a user
+public User getUserController().createUser(user) // creates a user
 
-coordinator.getUserController().updateUser(user) // updates a user
+pubic User getUserController().updateUser(user) // updates a user 
 
-coordinator.getUserController().deleteUser(user) // deletes a user
+public void getUserController().deleteUser(user) // deletes a user
 
 ```
 
@@ -185,6 +181,9 @@ coordinator.getUserController().deleteUser(user) // deletes a user
 <div id="configuration" />
 
 #### SNMP Configuration
+
+Methods of `CoordinatorApiController.getSnmpController`: 
+
 ```java
 public SnmpConfiguration getSnmpConfiguration()
 
@@ -198,6 +197,9 @@ public SnmpConfiguration updateSnmpConfiguration(SnmpConfiguration snmpConfigura
 
 <div id="softwareVersions" />
 
+Methods of `CoordinatorApiController.getSoftwareVersionsController`: 
+
+
 ```java
 public List<VersionInfoView> getVersions(ImageType imageType)
 
@@ -207,6 +209,9 @@ public VersionInfoView getVersion(ImageType imageType, String softwareVersionId)
 ### Software Upgrades
 
 <div id="softwareUpgrades "/>
+
+Methods of `CoordinatorApiController.getSoftwareUpgradesController`: 
+
 
 ```Java
 public List<UpgradeRequestView> getUpgradeRequests()
@@ -225,16 +230,19 @@ public void stopUpgrade(String upgradeInstanceId)
 
 For information about facilities, visit http://developer.impinj.com/itemsense/docs/api/#facilities
 
+Methods of `CoordinatorApiController.getFacilitiesController`: 
+
+
 ```java
-coordinator.getFacilityController().getFacility(facilityName) // returns a facility object based on the name
+public Facility getFacilityController().getFacility(facilityName) // returns a facility object based on the name
 
-coordinator.getFacilityController().getFacilities() // returns all of the facilities for an itemsense instance
+public List<Facility> getFacilityController().getFacilities() // returns all of the facilities for an itemsense instance
 
-coordinator.getFacilityController().createFacility(facility) // creates a facility
+public Facility getFacilityController().createFacility(facility) // creates a facility
 
-coordinator.getFacilityController().updateFacility(facility) // updates a faciity
+public Facility getFacilityController().updateFacility(facility) // updates a faciity
 
-coordinator.getFacilityController().deleteFacility(facilityName) // deletes a faciity
+public void getFacilityController().deleteFacility(facilityName) // deletes a faciity
 ```
 
 
@@ -244,29 +252,34 @@ coordinator.getFacilityController().deleteFacility(facilityName) // deletes a fa
 
 For information about zone maps, visit http://developer.impinj.com/itemsense/docs/api/#zone-maps
 
+Methods of `CoordinatorApiController.getZoneMapController`: 
+
+
 ```java
-coordinator.getZoneMapController().getZoneMap(zoneMapName) // returns a zone map object based on the name
+public ZoneMap getZoneMapController().getZoneMap(zoneMapName) // returns a zone map object based on the name
 
-coordinator.getZoneMapController().getZoneMaps() // returns all of the zone maps for an itemsense instance
+public List<ZoneMap> getZoneMapController().getZoneMaps() // returns all of the zone maps for an itemsense instance
 
-coordinator.getZoneMapController().createZoneMap(zoneMap) // creates a zone map
+public ZoneMap getZoneMapController().createZoneMap(zoneMap) // creates a zone map
 
-coordinator.getZoneMapController().updateZoneMap(zoneMap) // updates a zone map
+public Zone Map getZoneMapController().updateZoneMap(zoneMap) // updates a zone map
 
-coordinator.getZoneMapController().deleteZoneMap(zoneMapName) // deletes a zone map
+public void getZoneMapController().deleteZoneMap(zoneMapName) // deletes a zone map
 ```
 
 ### Current Zone Map
 
 <div id="currentZoneMap" />
 
+Methods of `CoordinatorApiController.getCurrentZoneMapController`: 
+
+
 ```java
+public ZoneMap getCurrentZoneMapController().getCurrentZoneMap(facilityName) // returns the current zonemap for a specific facility
 
-coordinator.getCurrentZoneMapController().getCurrentZoneMap(facilityName) // returns the current zonemap for a specific facility
+public ZoneMap getCurrentZoneMapController().setCurrentZoneMap(zoneMapName) // updates/sets the current zone map
 
-coordinator.getCurrentZoneMapController().setCurrentZoneMap(zoneMapName) // updates/sets the current zone map
-
-coordinator.getCurrentZoneMapController().clearCurrentZoneMap(facilityName) // clears the current zone map value
+public void getCurrentZoneMapController().clearCurrentZoneMap(facilityName) // clears the current zone map value
 ```
 
 ### Reader Definitions
@@ -275,22 +288,25 @@ coordinator.getCurrentZoneMapController().clearCurrentZoneMap(facilityName) // c
 
 For information about reader definitions, visit http://developer.impinj.com/itemsense/docs/api/#reader-definitions
 
+Methods of `CoordinatorApiController.getReaderDefinitionController`: 
+
+
 ```java
-coordinator.getReaderDefinitionController().getReaderDefinition(readerDefinitionName) // returns a reader definition object based on the name
+public ReaderDefinition getReaderDefinitionController().getReaderDefinition(readerDefinitionName) // returns a reader definition object based on the name
 
-itemsense.getReaderDefinitionController().getReaderDefinitions() // returns all of the reader definitions for an itemsense instance
+public List<ReaderDefinition> getReaderDefinitionController().getReaderDefinitions() // returns all of the reader definitions for an itemsense instance
 
-itemsense.getReaderDefinitionController().createReaderDefinition(readerDefinition) // creates a reader definition
+public ReaderDefinition getReaderDefinitionController().createReaderDefinition(readerDefinition) // creates a reader definition
 
-itemsense.getReaderDefinitionController().updaterReaderDefinition(readerDefinition) // updates a reader definition
+public ReaderDefinition getReaderDefinitionController().updaterReaderDefinition(readerDefinition) // updates a reader definition
 
-itemsense.getReaderDefinitionController().deleteReaderDefinition(readerDefinitionName) // deletes a reader definition based on the name
+public void getReaderDefinitionController().deleteReaderDefinition(readerDefinitionName) // deletes a reader definition based on the name
 
-itemsense.getReaderDefinitionController().configureFeature(readerDefinitionName, featureRequest) // initiate a feature configuration for a reader
+public ReaderFeatureStatus getReaderDefinitionController().configureFeature(readerDefinitionName, featureRequest) // initiate a feature configuration for a reader
 
-itemsense.getReaderDefinitionController().getFeatureStatus(readerDefinitionName, feature) // returns the current status of the given feature for the reader
+public ReaderFeatureStatus getReaderDefinitionController().getFeatureStatus(readerDefinitionName, feature) // returns the current status of the given feature for the reader
 
-itemsense.getReaderDefinitionController().getActiveFeatureRequests(readerDefinitionName) // returns the current state of active feature configuration requests
+public Map<ReaderFeature, ReaderFeatureStatus> getReaderDefinitionController().getActiveFeatureRequests(readerDefinitionName) // returns the current state of active feature configuration requests
 ```
 
 ### Reader Configurations
@@ -299,23 +315,31 @@ itemsense.getReaderDefinitionController().getActiveFeatureRequests(readerDefinit
 
 For information about reader configurations, visit http://developer.impinj.com/itemsense/docs/api/#reader-configurations
 
+Methods of `CoordinatorApiController.getReaderConfigurationController`: 
+
+
 ```java
-coordinator.getReaderConfigurationController().getReaderConfiguration(readerConfigurationName) // returns a reader configuration object based on the name
+public ReaderConfiguration getReaderConfigurationController().getReaderConfiguration(readerConfigurationName) // returns a reader configuration object based on the name
 
-coordinator.getReaderConfigurationController().getReaderConfigurations() // returns all of the reader configurations for an itemsense instance
+public List<ReaderConfiguration> getReaderConfigurationController().getReaderConfigurations() // returns all of the reader configurations for an itemsense instance
 
-coordinator.getReaderConfigurationController().createReaderConfiguration(readerConfiguration) // creates a reader configuration
+public ReaderConfiguration getReaderConfigurationController().createReaderConfiguration(readerConfiguration) // creates a reader configuration
 
-coordinator.getReaderConfigurationController().updateReaderConfiguration(readerConfiguration) // updates a reader configuration
+public ReaderConfiguration getReaderConfigurationController().updateReaderConfiguration(readerConfiguration) // updates a reader configuration
 
-coordinator.getReaderConfigurationController().deleteReaderConfiguration(readerConfigurationName) // deletes a reader configuration based on the name
+public void getReaderConfigurationController().deleteReaderConfiguration(readerConfigurationName) // deletes a reader configuration based on the name
 ```
 
 ### Reader Health
 
 <div id="readerHealth" />
 
+Methods of `CoordinatorApiController.getHealthController`: 
+
+
+```java
 public ReaderStatus getReaderStatus(String readerName)
+```
 
 ### Recipes
 
@@ -323,16 +347,19 @@ public ReaderStatus getReaderStatus(String readerName)
 
 For information about recipes, visit http://developer.impinj.com/itemsense/docs/api/#recipes
 
+Methods of `CoordinatorApiController.getRecipeController`: 
+
+
 ```java
-coordinator.getRecipeController().getRecipe(recipeName) // returns a recipe object based on the name
+public Recipe getRecipeController().getRecipe(recipeName) // returns a recipe object based on the name
 
-coordinator.getRecipeController().getRecipes() // returns all of the recipes for an itemsense instance
+public List<Recipe> getRecipeController().getRecipes() // returns all of the recipes for an itemsense instance
 
-coordinator.getRecipeController().createRecipe(recipe) // creates a recipe
+public Recipe getRecipeController().createRecipe(recipe) // creates a recipe
 
-coordinator.getRecipeController().updateRecipe(recipe) // updates a recipe
+public Recipe getRecipeController().updateRecipe(recipe) // updates a recipe
 
-coordinator.getRecipeController().deleteRecipe(recipeName) // deletes a recipe based on the name
+public void getRecipeController().deleteRecipe(recipeName) // deletes a recipe based on the name
 ```
 
 
@@ -342,14 +369,17 @@ coordinator.getRecipeController().deleteRecipe(recipeName) // deletes a recipe b
 
 For information about jobs, visit http://developer.impinj.com/itemsense/docs/api/#jobs
 
+Methods of `CoordinatorApiController.getJobController`: 
+
+
 ```java
-coordinator.getJobController().getJob(jobId) // returns a job object based on the id
+public Job getJobController().getJob(jobId) // returns a job object based on the id
 
-coordinator.getJobController().getJobs() // returns all of the jobs for an itemsense instance
+public List<Job> getJobController().getJobs() // returns all of the jobs for an itemsense instance
 
-coordinator.getJobController().startJob(job) // starts a job
+public Job getJobController().startJob(job) // starts a job
 
-coordinator.getJobController().stopJob(jobId) // stops a job based on the id
+public Job getJobController().stopJob(jobId) // stops a job based on the id
 
 ```
 
@@ -360,12 +390,15 @@ coordinator.getJobController().stopJob(jobId) // stops a job based on the id
 
 For information about items, visit http://developer.impinj.com/itemsense/docs/api/#items
 
+Methods of `DataApiController.getDataController`: 
+
+
 ```java
-data.getItemController.get(queryParams) // Retrieves items from ItemSense. Takes in a map of query Params, but also has multiple overloads
+public List<Item> getItemController.get(queryParams) // Retrieves items from ItemSense. Takes in a map of query Params, but also has multiple overloads
 
-data.getItemHistoryController.getHistory(queryParams) // Retrieves item history records from ItemSense. Takes in a map of query Params, but also has multiple overloads
+public List<ItemHistory> getItemHistoryController.getHistory(queryParams) // Retrieves item history records from ItemSense. Takes in a map of query Params, but also has multiple overloads
 
-data.getItemThresholdTransitionController.getThresholdTransition(queryParams) //Retrieve item threshold transition records from ItemSense.  Takes in a map of query Params, but also has multiple overloads
+public List<ThresholdTransition> getItemThresholdTransitionController.getThresholdTransition(queryParams) //Retrieve item threshold transition records from ItemSense.  Takes in a map of query Params, but also has multiple overloads
 ```
 
 
