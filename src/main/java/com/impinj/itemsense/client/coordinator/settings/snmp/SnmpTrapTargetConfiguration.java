@@ -1,9 +1,15 @@
 package com.impinj.itemsense.client.coordinator.settings.snmp;
 
 import java.time.Duration;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SnmpTrapTargetConfiguration {
 
   private String host;

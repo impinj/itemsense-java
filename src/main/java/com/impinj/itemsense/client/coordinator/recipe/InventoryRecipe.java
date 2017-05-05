@@ -1,5 +1,8 @@
 package com.impinj.itemsense.client.coordinator.recipe;
 
+import java.time.Duration;
+import java.util.Map;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -15,5 +18,32 @@ public class InventoryRecipe extends Recipe {
 
   public InventoryRecipe() {
     this.setType(RecipeType.INVENTORY);
+  }
+
+  @Builder
+  public InventoryRecipe(
+      String name,
+      String readerConfigurationName,
+      Integer tagHeartbeatMinutes,
+      Duration tagHeartbeatDuration,
+      Duration tagExpiryDuration,
+      Map<String, String> readerConfigurations,
+      LocationAggregationModel locationAggregationModel,
+      Integer computeWindow,
+      Integer reportingInterval
+  ) {
+    super(
+        name,
+        RecipeType.INVENTORY,
+        readerConfigurationName,
+        tagHeartbeatMinutes,
+        tagHeartbeatDuration,
+        tagExpiryDuration,
+        readerConfigurations);
+
+    this.locationAggregationModel = locationAggregationModel;
+    this.computeWindow = computeWindow;
+    this.reportingInterval = reportingInterval;
+
   }
 }

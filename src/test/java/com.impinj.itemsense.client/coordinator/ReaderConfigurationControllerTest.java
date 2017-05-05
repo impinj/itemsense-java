@@ -61,10 +61,11 @@ public class ReaderConfigurationControllerTest {
 
   @Test
   public void createOrUpdateReaderConfigurationTest() {
-    InventoryReaderConfigDetails details = new InventoryReaderConfigDetails();
-    details.setReaderMode(ReaderMode.MODE_1002);
-    details.setSession(2);
-    details.setSearchMode(SearchMode.SINGLE_TARGET);
+    InventoryReaderConfigDetails details = InventoryReaderConfigDetails.builder()
+        .readerMode(ReaderMode.MODE_1002)
+        .session(2)
+        .searchMode(SearchMode.SINGLE_TARGET)
+        .build();
 
     ReaderConfiguration configuration = new ReaderConfiguration();
     configuration.setName("SPEEDWAY_CONFIG");
@@ -92,9 +93,10 @@ public class ReaderConfigurationControllerTest {
 
   @Test
   public void getReaderConfigurationsTest() {
-    InventoryReaderConfigDetails details = new InventoryReaderConfigDetails();
-    details.setReaderMode(ReaderMode.MODE_1002);
-    details.setSession(1);
+    InventoryReaderConfigDetails details = InventoryReaderConfigDetails.builder()
+        .readerMode(ReaderMode.MODE_1002)
+        .session(1)
+        .build();
 
     ReaderConfiguration testReaderConfiguration = new ReaderConfiguration(
         "Test_Configuration",
@@ -124,12 +126,14 @@ public class ReaderConfigurationControllerTest {
 
   @Test
   public void getReaderConfigurationTest() throws IOException {
-    LocationReaderConfigDetails details = new LocationReaderConfigDetails();
-    details.setReaderMode(ReaderMode.MODE_1002);
-    details.setSession(1);
-    details.setTransmitPowerInDbm(12.25);
-    details.setDisabledAntennas(ImmutableList.of(1, 2, 3, 4, 5));
-    details.setFilter(new Filter());
+    LocationReaderConfigDetails details = LocationReaderConfigDetails.builder()
+        .readerMode(ReaderMode.MODE_1002)
+        .session(1)
+        .transmitPowerInDbm(12.25)
+        .disabledAntennas(ImmutableList.of(1, 2, 3, 4, 5))
+        .filter(new Filter())
+        .build();
+
     ReaderConfiguration testReaderConfiguration = new ReaderConfiguration(
         "Test_Configuration",
         Operation.LOCATION,

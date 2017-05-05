@@ -1,12 +1,15 @@
 package com.impinj.itemsense.client.coordinator.readerconfiguration;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-@Data
 @EqualsAndHashCode(callSuper = true)
-public class ReaderBasicConfigDetails extends ReaderConfigurationDetails {
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public abstract class ReaderBasicConfigDetails extends ReaderConfigurationDetails {
   private SearchMode searchMode;
   private ReaderMode readerMode;
   private Integer session;

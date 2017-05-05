@@ -3,6 +3,7 @@ package com.impinj.itemsense.client.coordinator.job;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Set;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Builder
 public class Job {
 
   private String recipeName;
@@ -17,6 +19,7 @@ public class Job {
   private String startDelay;
   private int durationSeconds;
   private boolean reportToDatabaseEnabled;
+  private boolean reportToHistoryEnabled;
   private boolean reportToMessageQueueEnabled;
   private boolean reportToFileEnabled;
   private Set<String> readerGroups;

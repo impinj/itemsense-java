@@ -34,26 +34,27 @@ public class SoftwareVersionsControllerTest {
   public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
 
   static {
-    VersionInfoView capVersion = new VersionInfoView();
+    VersionIdentifier versionIdentifier = VersionIdentifier
+        .builder()
+        .version("test_version")
+        .imageType(ImageType.CAP_ITEMSENSE)
+        .build();
 
-    VersionInfo versionInfo = new VersionInfo();
+    VersionInfo versionInfo = VersionInfo
+        .builder()
+        .versionIdentifier(versionIdentifier)
+        .imageName("test_image_name")
+        .checksum("irrelevant_test_checksum")
+        .build();
 
-    VersionIdentifier versionIdentifier = new VersionIdentifier();
-    versionIdentifier.setVersion("test_version");
-    versionIdentifier.setImageType(ImageType.CAP_ITEMSENSE);
-
-    versionInfo.setVersionIdentifier(versionIdentifier);
-    versionInfo.setImageName("test_image_name");
-    versionInfo.setChecksum("irrelevant_test_checksum");
-
-    capVersion.setVersionInfo(versionInfo);
-    capVersion.setDescription("test_description");
-    capVersion.setCreated(LocalDateTime.now());
-    capVersion.setUpdated(LocalDateTime.now());
-    capVersion.setUpdateComment("i_updated_the_thing");
-    capVersion.setRecordVersionNumber(1);
-
-    CAP_VERSION = capVersion;
+    CAP_VERSION = VersionInfoView.builder()
+        .versionInfo(versionInfo)
+        .description("test_description")
+        .created(LocalDateTime.now())
+        .updated(LocalDateTime.now())
+        .updateComment("i_updated_the_thing")
+        .recordVersionNumber(1)
+        .build();;
   }
 
   @Rule

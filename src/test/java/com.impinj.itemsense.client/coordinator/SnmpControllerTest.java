@@ -46,16 +46,21 @@ public class SnmpControllerTest {
 
   @Test
   public void testGetSnmpConfiguration() {
-    SnmpCommunityAuthConfiguration authConfig = new SnmpCommunityAuthConfiguration();
-    authConfig.setType(SnmpAuthConfiguration.AuthType.V2_COMMUNITY);
-    authConfig.setCommunityName("foo");
+    SnmpCommunityAuthConfiguration authConfig = SnmpCommunityAuthConfiguration
+        .builder()
+        .communityName("foo")
+        .build();
 
-    SnmpTrapTargetConfiguration snmpTrapConfig = new SnmpTrapTargetConfiguration();
-    snmpTrapConfig.setHost("127.0.0.1");
+    SnmpTrapTargetConfiguration snmpTrapConfig = SnmpTrapTargetConfiguration
+        .builder()
+        .host("127.0.0.1")
+        .build();
 
-    SnmpConfiguration snmpConfig = new SnmpConfiguration();
-    snmpConfig.setAuthConfig(authConfig);
-    snmpConfig.setTrapTargetConfig(snmpTrapConfig);
+    SnmpConfiguration snmpConfig = SnmpConfiguration
+        .builder()
+        .authConfig(authConfig)
+        .trapTargetConfig(snmpTrapConfig)
+        .build();
 
     stubFor(get(urlEqualTo("/configuration/v1/settings/SNMP")).willReturn(aResponse()
                                                                               .withStatus(200)
@@ -76,12 +81,15 @@ public class SnmpControllerTest {
 
   @Test
   public void testUpdateSnmpConfiguration() {
-    SnmpCommunityAuthConfiguration authConfig = new SnmpCommunityAuthConfiguration();
-    authConfig.setType(SnmpAuthConfiguration.AuthType.V2_COMMUNITY);
-    authConfig.setCommunityName("foo");
+    SnmpCommunityAuthConfiguration authConfig = SnmpCommunityAuthConfiguration
+        .builder()
+        .communityName("foo")
+        .build();
 
-    SnmpTrapTargetConfiguration snmpTrapConfig = new SnmpTrapTargetConfiguration();
-    snmpTrapConfig.setHost("127.0.0.1");
+    SnmpTrapTargetConfiguration snmpTrapConfig = SnmpTrapTargetConfiguration
+        .builder()
+        .host("127.0.0.1")
+        .build();
 
     SnmpConfiguration snmpConfig = new SnmpConfiguration();
     snmpConfig.setAuthConfig(authConfig);
