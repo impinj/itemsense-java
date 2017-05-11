@@ -18,7 +18,7 @@ public class ItemHistory {
   private String jobId;
   private String fromZone;
   private String toZone;
-  private String fromFLoor;
+  private String fromFloor;
   private String toFloor;
   private String fromFacility;
   private String toFacility;
