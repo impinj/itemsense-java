@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.impinj.itemsense.client.TestUtils;
 import com.impinj.itemsense.client.coordinator.readerdefintion.FeatureRequest;
 import com.impinj.itemsense.client.coordinator.readerdefintion.FeatureRequestAction;
+import com.impinj.itemsense.client.coordinator.readerdefintion.FeatureRequestStatus;
 import com.impinj.itemsense.client.coordinator.readerdefintion.FeatureStatus;
 import com.impinj.itemsense.client.coordinator.readerdefintion.Placement;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinition;
@@ -22,6 +23,7 @@ import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinitionC
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderFeature;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderFeatureStatus;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,15 +87,10 @@ public class ReaderDefinitionControllerTest {
     List<ReaderDefinition> testDefinitions = new ArrayList<>();
     testDefinitions.add(testReaderDefinition);
 
-    stubFor(get(urlEqualTo("/configuration/v1/readerDefinitions/show")).willReturn(aResponse()
-                                                                                       .withStatus(
-                                                                                           200)
-                                                                                       .withHeader(
-                                                                                           "Content-Type",
-                                                                                           "application/json")
-                                                                                       .withBody(
-                                                                                           gson.toJson(
-                                                                                               testDefinitions))));
+    stubFor(get(urlEqualTo("/configuration/v1/readerDefinitions/show"))
+                .willReturn(aResponse().withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBody(gson.toJson(testDefinitions))));
 
     List<ReaderDefinition> configurations = readerDefinitionController.getReaderDefinitions();
 
@@ -138,14 +135,10 @@ public class ReaderDefinitionControllerTest {
 
   @Test
   public void getReaderGroupsTest() {
-    stubFor(get(urlEqualTo("/configuration/v1/readerDefinitions/groups")).willReturn(aResponse()
-                                                                                         .withStatus(
-                                                                                             200)
-                                                                                         .withHeader(
-                                                                                             "Content-Type",
-                                                                                             "application/json")
-                                                                                         .withBody(
-                                                                                             "[\"AA\",\"BB\",\"CC\"]")));
+    stubFor(get(urlEqualTo("/configuration/v1/readerDefinitions/groups"))
+                .willReturn(aResponse().withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBody("[\"AA\",\"BB\",\"CC\"]")));
     Set<String> actual = readerDefinitionController.getReaderGroups();
 
     Set<String> expected = ImmutableSet.of("AA", "BB", "CC");
@@ -177,18 +170,23 @@ public class ReaderDefinitionControllerTest {
 
   @Test
   public void testConfigureFeature() {
-    ReaderFeatureStatus expected = new ReaderFeatureStatus(
-        FeatureStatus.CONFIGURING,
-        "Configuration request in process");
+    ReaderFeatureStatus expected = ReaderFeatureStatus.builder()
+        .status(FeatureStatus.DISABLED)
+        .statusLastUpdated(ZonedDateTime.now().minusDays(1))
+        .requestStatus(FeatureRequestStatus.CONFIGURING)
+        .requestStatusLastUpdated(ZonedDateTime.now())
+        .requestTargetStatus(FeatureStatus.ENABLED)
+        .message("Configuration request in process")
+        .build();
 
+    String locationUri = "/itemsense/configuration/v1/readerDefinitions/reader1/featureChanges/ANTENNA_HUB";
     stubFor(post(urlEqualTo("/configuration/v1/readerDefinitions/reader1/featureChanges"))
                 .willReturn(aResponse()
                                 .withStatus(202)
                                 .withHeader(
                                     "Location",
-                                    "http://localhost:8089/itemsense/configuration/v1/readerDefinitions/reader1/featureChanges/ANTENNA_HUB")));
-    stubFor(get(urlEqualTo(
-        "/itemsense/configuration/v1/readerDefinitions/reader1/featureChanges/ANTENNA_HUB"))
+                                    "http://localhost:8089" + locationUri)));
+    stubFor(get(urlEqualTo(locationUri))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")
@@ -205,9 +203,10 @@ public class ReaderDefinitionControllerTest {
 
   @Test
   public void testGetFeatureStatus() {
-    ReaderFeatureStatus expected = new ReaderFeatureStatus(
-        FeatureStatus.ENABLED,
-        "Activated");
+    ReaderFeatureStatus expected = ReaderFeatureStatus.builder()
+        .status(FeatureStatus.ENABLED)
+        .statusLastUpdated(ZonedDateTime.now().minusDays(1))
+        .build();
 
     stubFor(get(urlEqualTo(
         "/configuration/v1/readerDefinitions/reader1/featureChanges/ANTENNA_HUB"))
@@ -226,7 +225,14 @@ public class ReaderDefinitionControllerTest {
     Map<ReaderFeature, ReaderFeatureStatus> expected = new HashMap<>();
     expected.put(
         ReaderFeature.ANTENNA_HUB,
-        new ReaderFeatureStatus(FeatureStatus.ERROR, "An error has occurred"));
+        ReaderFeatureStatus.builder()
+            .status(FeatureStatus.DISABLED)
+            .statusLastUpdated(ZonedDateTime.now().minusDays(1))
+            .requestStatus(FeatureRequestStatus.ERROR)
+            .requestStatusLastUpdated(ZonedDateTime.now().minusMinutes(5))
+            .requestTargetStatus(FeatureStatus.ENABLED)
+            .message("An error has occurred")
+            .build());
 
     stubFor(get(urlEqualTo(
         "/configuration/v1/readerDefinitions/reader1/featureChanges"))
