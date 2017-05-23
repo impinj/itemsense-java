@@ -13,10 +13,10 @@ import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.TestUtils;
-import com.impinj.itemsense.client.coordinator.dockdoors.DockDoorAntennaConfiguration;
-import com.impinj.itemsense.client.coordinator.dockdoors.DockDoorAntennaConfigurationAntenna;
-import com.impinj.itemsense.client.coordinator.dockdoors.DockDoorController;
-import com.impinj.itemsense.client.coordinator.dockdoors.Door;
+import com.impinj.itemsense.client.coordinator.thresholds.ThresholdAntennaConfiguration;
+import com.impinj.itemsense.client.coordinator.thresholds.ThresholdAntennaConfigurationAntenna;
+import com.impinj.itemsense.client.coordinator.thresholds.ThresholdController;
+import com.impinj.itemsense.client.coordinator.thresholds.Threshold;
 import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.GenericType;
@@ -27,34 +27,34 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class DockDoorControllerTest {
+public class ThresholdControllerTest {
 
   @ClassRule
   public static WireMockClassRule wireMockRule = new WireMockClassRule(TestUtils.MOCK_PORT);
   @Rule
   public WireMockClassRule instanceRule = wireMockRule;
-  private DockDoorController dockDoorController;
+  private ThresholdController thresholdController;
   private Gson gson;
 
   @Before
   public void setUp() throws Exception {
     Client client = TestUtils.getClient();
 
-    dockDoorController = new CoordinatorApiController(client, TestUtils.MOCK_URI)
-        .getDockDoorController();
+    thresholdController = new CoordinatorApiController(client, TestUtils.MOCK_URI)
+        .getThresholdController();
 
     gson = new Gson();
   }
 
   @Test
-  public void testGetDockDoors() {
-    List<Door> expected = ImmutableList.of(
-        Door.builder()
+  public void testGetThresholds() {
+    List<Threshold> expected = ImmutableList.of(
+        Threshold.builder()
             .id(1)
             .name("FOO")
             .facility("DEFAULT")
             .build(),
-        Door.builder()
+        Threshold.builder()
             .id(2)
             .name("FOO1")
             .facility("DEFAULT1")
@@ -62,24 +62,24 @@ public class DockDoorControllerTest {
 
     String requestBody = gson.toJson(expected);
 
-    stubFor(get(urlEqualTo("/configuration/v1/dockDoors"))
+    stubFor(get(urlEqualTo("/configuration/v1/thresholds"))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(requestBody)));
 
-    Response response = dockDoorController.getDockDoorsAsResponse();
+    Response response = thresholdController.getThresholdsAsResponse();
     Assert.assertEquals(200, response.getStatus());
 
-    List<Door> actual = response.readEntity(new GenericType<List<Door>>() {});
+    List<Threshold> actual = response.readEntity(new GenericType<List<Threshold>>() {});
     response.close();
 
     Assert.assertEquals(expected, actual);
   }
 
   @Test
-  public void testGetDockDoor() {
-    Door expected = Door.builder()
+  public void testGetThreshold() {
+    Threshold expected = Threshold.builder()
         .id(1)
         .name("FOO")
         .facility("DEFAULT")
@@ -87,49 +87,49 @@ public class DockDoorControllerTest {
 
     String requestBody = gson.toJson(expected);
 
-    stubFor(get(urlEqualTo("/configuration/v1/dockDoors/1"))
+    stubFor(get(urlEqualTo("/configuration/v1/thresholds/1"))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(requestBody)));
 
-    Response response = dockDoorController.getDockDoorAsResponse(1);
+    Response response = thresholdController.getThresholdAsResponse(1);
     Assert.assertEquals(200, response.getStatus());
 
-    Door actual = response.readEntity(new GenericType<Door>() {});
+    Threshold actual = response.readEntity(new GenericType<Threshold>() {});
     response.close();
 
     Assert.assertEquals(expected, actual);
   }
 
   @Test
-  public void testPostDockDoor() {
-    Door expected = Door.builder()
+  public void testPostThreshold() {
+    Threshold expected = Threshold.builder()
         .name("FOO")
         .facility("DEFAULT")
         .build();
 
     String requestBody = gson.toJson(expected);
 
-    stubFor(post(urlEqualTo("/configuration/v1/dockDoors"))
+    stubFor(post(urlEqualTo("/configuration/v1/thresholds"))
                 .withRequestBody(equalToJson(requestBody, true, true))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(requestBody)));
 
-    Response response = dockDoorController.createDockDoorAsResponse(expected);
+    Response response = thresholdController.createThresholdAsResponse(expected);
     Assert.assertEquals(200, response.getStatus());
 
-    Door actual = response.readEntity(new GenericType<Door>() {});
+    Threshold actual = response.readEntity(new GenericType<Threshold>() {});
     response.close();
 
     Assert.assertEquals(expected, actual);
   }
 
   @Test
-  public void testPutDockDoor() {
-    Door expected = Door.builder()
+  public void testPutThreshold() {
+    Threshold expected = Threshold.builder()
         .id(5)
         .name("FOO")
         .facility("DEFAULT")
@@ -137,56 +137,56 @@ public class DockDoorControllerTest {
 
     String requestBody = gson.toJson(expected);
 
-    stubFor(put(urlEqualTo("/configuration/v1/dockDoors/5"))
+    stubFor(put(urlEqualTo("/configuration/v1/thresholds/5"))
                 .withRequestBody(equalToJson(requestBody, true, true))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(requestBody)));
 
-    Response response = dockDoorController.updateDockDoorAsResponse(expected);
+    Response response = thresholdController.updateThresholdAsResponse(expected);
     Assert.assertEquals(200, response.getStatus());
 
-    Door actual = response.readEntity(new GenericType<Door>() {});
+    Threshold actual = response.readEntity(new GenericType<Threshold>() {});
     response.close();
 
     Assert.assertEquals(expected, actual);
   }
 
   @Test
-  public void testDeleteDockDoor() {
-    stubFor(delete(urlEqualTo("/configuration/v1/dockDoors/1"))
+  public void testDeleteThreshold() {
+    stubFor(delete(urlEqualTo("/configuration/v1/thresholds/1"))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")));
 
-    Response response = dockDoorController.deleteDockDoorAsResponse(1);
+    Response response = thresholdController.deleteThresholdAsResponse(1);
     Assert.assertEquals(200, response.getStatus());
   }
 
   @Test
   public void testGetAntennaConfig() {
-    DockDoorAntennaConfiguration expected = DockDoorAntennaConfiguration
+    ThresholdAntennaConfiguration expected = ThresholdAntennaConfiguration
         .builder()
         .id(5)
         .name("FOO")
-        .out(ImmutableList.of(DockDoorAntennaConfigurationAntenna.builder().antennaId(1).build()))
-        .in(ImmutableList.of(DockDoorAntennaConfigurationAntenna.builder().antennaId(2).build()))
+        .out(ImmutableList.of(ThresholdAntennaConfigurationAntenna.builder().antennaId(1).build()))
+        .in(ImmutableList.of(ThresholdAntennaConfigurationAntenna.builder().antennaId(2).build()))
         .build();
 
     String requestBody = gson.toJson(expected);
 
-    stubFor(get(urlEqualTo("/configuration/v1/dockDoors/antennaConfigurations/5"))
+    stubFor(get(urlEqualTo("/configuration/v1/thresholds/antennaConfigurations/5"))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(requestBody)));
 
-    Response response = dockDoorController.getAntennaConfigurationAsResponse(5);
+    Response response = thresholdController.getAntennaConfigurationAsResponse(5);
     Assert.assertEquals(200, response.getStatus());
 
-    DockDoorAntennaConfiguration actual = response
-        .readEntity(new GenericType<DockDoorAntennaConfiguration>() {});
+    ThresholdAntennaConfiguration actual = response
+        .readEntity(new GenericType<ThresholdAntennaConfiguration>() {});
 
     response.close();
 
@@ -195,39 +195,39 @@ public class DockDoorControllerTest {
 
   @Test
   public void testGetAntennaConfigs() {
-    List<DockDoorAntennaConfiguration> expected = ImmutableList.of(
-        DockDoorAntennaConfiguration
+    List<ThresholdAntennaConfiguration> expected = ImmutableList.of(
+        ThresholdAntennaConfiguration
             .builder()
             .id(5)
             .name("FOO")
             .out(ImmutableList
-                     .of(DockDoorAntennaConfigurationAntenna.builder().antennaId(1).build()))
+                     .of(ThresholdAntennaConfigurationAntenna.builder().antennaId(1).build()))
             .in(ImmutableList
-                    .of(DockDoorAntennaConfigurationAntenna.builder().antennaId(2).build()))
+                    .of(ThresholdAntennaConfigurationAntenna.builder().antennaId(2).build()))
             .build(),
-        DockDoorAntennaConfiguration
+        ThresholdAntennaConfiguration
             .builder()
             .id(6)
             .name("FOO1")
             .out(ImmutableList
-                     .of(DockDoorAntennaConfigurationAntenna.builder().antennaId(1).build()))
+                     .of(ThresholdAntennaConfigurationAntenna.builder().antennaId(1).build()))
             .in(ImmutableList
-                    .of(DockDoorAntennaConfigurationAntenna.builder().antennaId(2).build()))
+                    .of(ThresholdAntennaConfigurationAntenna.builder().antennaId(2).build()))
             .build());
 
     String requestBody = gson.toJson(expected);
 
-    stubFor(get(urlEqualTo("/configuration/v1/dockDoors/antennaConfigurations"))
+    stubFor(get(urlEqualTo("/configuration/v1/thresholds/antennaConfigurations"))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(requestBody)));
 
-    Response response = dockDoorController.getAntennaConfigurationsAsResponse();
+    Response response = thresholdController.getAntennaConfigurationsAsResponse();
     Assert.assertEquals(200, response.getStatus());
 
-    List<DockDoorAntennaConfiguration> actual = response
-        .readEntity(new GenericType<List<DockDoorAntennaConfiguration>>() {});
+    List<ThresholdAntennaConfiguration> actual = response
+        .readEntity(new GenericType<List<ThresholdAntennaConfiguration>>() {});
 
     response.close();
 
@@ -236,28 +236,28 @@ public class DockDoorControllerTest {
 
   @Test
   public void testPostAntennaConfig() {
-    DockDoorAntennaConfiguration expected = DockDoorAntennaConfiguration
+    ThresholdAntennaConfiguration expected = ThresholdAntennaConfiguration
         .builder()
         .id(5)
         .name("FOO")
-        .out(ImmutableList.of(DockDoorAntennaConfigurationAntenna.builder().antennaId(1).build()))
-        .in(ImmutableList.of(DockDoorAntennaConfigurationAntenna.builder().antennaId(2).build()))
+        .out(ImmutableList.of(ThresholdAntennaConfigurationAntenna.builder().antennaId(1).build()))
+        .in(ImmutableList.of(ThresholdAntennaConfigurationAntenna.builder().antennaId(2).build()))
         .build();
 
     String requestBody = gson.toJson(expected);
 
-    stubFor(post(urlEqualTo("/configuration/v1/dockDoors/antennaConfigurations"))
+    stubFor(post(urlEqualTo("/configuration/v1/thresholds/antennaConfigurations"))
                 .withRequestBody(equalToJson(requestBody, true, true))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(requestBody)));
 
-    Response response = dockDoorController.createAntennaConfigurationAsResponse(expected);
+    Response response = thresholdController.createAntennaConfigurationAsResponse(expected);
     Assert.assertEquals(200, response.getStatus());
 
-    DockDoorAntennaConfiguration actual = response
-        .readEntity(new GenericType<DockDoorAntennaConfiguration>() {});
+    ThresholdAntennaConfiguration actual = response
+        .readEntity(new GenericType<ThresholdAntennaConfiguration>() {});
 
     response.close();
 
@@ -266,28 +266,28 @@ public class DockDoorControllerTest {
 
   @Test
   public void testPutAntennaConfig() {
-    DockDoorAntennaConfiguration expected = DockDoorAntennaConfiguration
+    ThresholdAntennaConfiguration expected = ThresholdAntennaConfiguration
         .builder()
         .id(5)
         .name("FOO")
-        .out(ImmutableList.of(DockDoorAntennaConfigurationAntenna.builder().antennaId(1).build()))
-        .in(ImmutableList.of(DockDoorAntennaConfigurationAntenna.builder().antennaId(2).build()))
+        .out(ImmutableList.of(ThresholdAntennaConfigurationAntenna.builder().antennaId(1).build()))
+        .in(ImmutableList.of(ThresholdAntennaConfigurationAntenna.builder().antennaId(2).build()))
         .build();
 
     String requestBody = gson.toJson(expected);
 
-    stubFor(put(urlEqualTo("/configuration/v1/dockDoors/antennaConfigurations/5"))
+    stubFor(put(urlEqualTo("/configuration/v1/thresholds/antennaConfigurations/5"))
                 .withRequestBody(equalToJson(requestBody, true, true))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(requestBody)));
 
-    Response response = dockDoorController.updateAntennaConfigurationAsResponse(expected);
+    Response response = thresholdController.updateAntennaConfigurationAsResponse(expected);
     Assert.assertEquals(200, response.getStatus());
 
-    DockDoorAntennaConfiguration actual = response
-        .readEntity(new GenericType<DockDoorAntennaConfiguration>() {});
+    ThresholdAntennaConfiguration actual = response
+        .readEntity(new GenericType<ThresholdAntennaConfiguration>() {});
 
     response.close();
 
@@ -296,12 +296,12 @@ public class DockDoorControllerTest {
 
   @Test
   public void testDeleteAntennaConfig() {
-    stubFor(delete(urlEqualTo("/configuration/v1/dockDoors/antennaConfigurations/55"))
+    stubFor(delete(urlEqualTo("/configuration/v1/thresholds/antennaConfigurations/55"))
                 .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "application/json")));
 
-    Response response = dockDoorController.deleteAntennaConfigurationAsResponse(55);
+    Response response = thresholdController.deleteAntennaConfigurationAsResponse(55);
     Assert.assertEquals(200, response.getStatus());
   }
 }

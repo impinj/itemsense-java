@@ -2,7 +2,7 @@ package com.impinj.itemsense.client.coordinator;
 
 import com.impinj.itemsense.client.coordinator.authentication.AuthenticationController;
 import com.impinj.itemsense.client.coordinator.currentZoneMap.CurrentZoneMapController;
-import com.impinj.itemsense.client.coordinator.dockdoors.DockDoorController;
+import com.impinj.itemsense.client.coordinator.thresholds.ThresholdController;
 import com.impinj.itemsense.client.coordinator.facility.FacilityController;
 import com.impinj.itemsense.client.coordinator.job.JobController;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigurationController;
@@ -29,7 +29,7 @@ public class CoordinatorApiController {
 
   private AuthenticationController authenticationController;
   private CurrentZoneMapController currentZoneMapController;
-  private DockDoorController dockDoorController;
+  private ThresholdController thresholdController;
   private FacilityController facilityController;
   private JobController jobController;
   private ReaderConfigurationController readerConfigurationController;
@@ -49,7 +49,7 @@ public class CoordinatorApiController {
     this.target = client.register(OBJECT_MAPPER_CONTEXT_RESOLVER).target(uri);
 
     this.currentZoneMapController = new CurrentZoneMapController(target);
-    this.dockDoorController = new DockDoorController(target);
+    this.thresholdController = new ThresholdController(target);
     this.facilityController = new FacilityController(target);
     this.jobController = new JobController(target);
     this.readerConfigurationController = new ReaderConfigurationController(target);

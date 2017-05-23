@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.coordinator.dockdoors;
+package com.impinj.itemsense.client.coordinator.thresholds;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DoorReaderConfiguration {
+public class ThresholdAntennaConfigurationAntenna {
 
-  private Integer antennaConfigurationId;
+  private Integer antennaId;
 }

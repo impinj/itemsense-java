@@ -23,6 +23,7 @@ import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinitionC
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderFeature;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderFeatureStatus;
 import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class ReaderDefinitionControllerTest {
 
     coordinatorApiController = new CoordinatorApiController(client, TestUtils.MOCK_URI);
     readerDefinitionController = coordinatorApiController.getReaderDefinitionController();
-    gson = new Gson();
+    gson = TestUtils.getGson();
 
   }
 
@@ -172,9 +173,9 @@ public class ReaderDefinitionControllerTest {
   public void testConfigureFeature() {
     ReaderFeatureStatus expected = ReaderFeatureStatus.builder()
         .status(FeatureStatus.DISABLED)
-        .statusLastUpdated(ZonedDateTime.now().minusDays(1))
+        .statusLastUpdated(ZonedDateTime.now(ZoneId.of("UTC")).minusDays(1))
         .requestStatus(FeatureRequestStatus.CONFIGURING)
-        .requestStatusLastUpdated(ZonedDateTime.now())
+        .requestStatusLastUpdated(ZonedDateTime.now(ZoneId.of("UTC")))
         .requestTargetStatus(FeatureStatus.ENABLED)
         .message("Configuration request in process")
         .build();
@@ -205,7 +206,7 @@ public class ReaderDefinitionControllerTest {
   public void testGetFeatureStatus() {
     ReaderFeatureStatus expected = ReaderFeatureStatus.builder()
         .status(FeatureStatus.ENABLED)
-        .statusLastUpdated(ZonedDateTime.now().minusDays(1))
+        .statusLastUpdated(ZonedDateTime.now(ZoneId.of("UTC")).minusDays(1))
         .build();
 
     stubFor(get(urlEqualTo(
@@ -227,9 +228,9 @@ public class ReaderDefinitionControllerTest {
         ReaderFeature.ANTENNA_HUB,
         ReaderFeatureStatus.builder()
             .status(FeatureStatus.DISABLED)
-            .statusLastUpdated(ZonedDateTime.now().minusDays(1))
+            .statusLastUpdated(ZonedDateTime.now(ZoneId.of("UTC")).minusDays(1))
             .requestStatus(FeatureRequestStatus.ERROR)
-            .requestStatusLastUpdated(ZonedDateTime.now().minusMinutes(5))
+            .requestStatusLastUpdated(ZonedDateTime.now(ZoneId.of("UTC")).minusMinutes(5))
             .requestTargetStatus(FeatureStatus.ENABLED)
             .message("An error has occurred")
             .build());

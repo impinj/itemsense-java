@@ -11,36 +11,36 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class DockDoorRecipe extends Recipe {
+public class ThresholdRecipe extends Recipe {
 
-  private LinkedHashSet<Integer> doorIds;
+  private LinkedHashSet<Integer> thresholdIds;
   private String profile;
 
-  public DockDoorRecipe() {
-    this.setType(RecipeType.DOCK_DOOR);
+  public ThresholdRecipe() {
+    this.setType(RecipeType.THRESHOLD);
   }
 
   @Builder
-  public DockDoorRecipe(
+  public ThresholdRecipe(
       String name,
       String readerConfigurationName,
       Integer tagHeartbeatMinutes,
       Duration tagHeartbeatDuration,
       Duration tagExpiryDuration,
       Map<String, String> readerConfigurations,
-      LinkedHashSet<Integer> doorIds,
+      LinkedHashSet<Integer> thresholdIds,
       String profile
   ) {
     super(
         name,
-        RecipeType.DOCK_DOOR,
+        RecipeType.THRESHOLD,
         readerConfigurationName,
         tagHeartbeatMinutes,
         tagHeartbeatDuration,
         tagExpiryDuration,
         readerConfigurations);
 
-    this.doorIds = doorIds;
+    this.thresholdIds = thresholdIds;
     this.profile = profile;
   }
 }

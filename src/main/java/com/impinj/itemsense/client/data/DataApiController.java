@@ -1,7 +1,7 @@
 package com.impinj.itemsense.client.data;
 
 import com.impinj.itemsense.client.data.item.ItemController;
-import com.impinj.itemsense.client.data.itemdoortransition.ItemDoorTransitionController;
+import com.impinj.itemsense.client.data.itemthresholdtransition.ItemThresholdTransitionController;
 import com.impinj.itemsense.client.data.itemhistory.ItemHistoryController;
 import com.impinj.itemsense.client.helpers.ObjectMapperContextResolver;
 import java.net.URI;
@@ -18,7 +18,7 @@ public class DataApiController {
 
   private ItemController itemController;
   private ItemHistoryController itemHistoryController;
-  private ItemDoorTransitionController itemDoorTransitionController;
+  private ItemThresholdTransitionController itemThresholdTransitionController;
   private WebTarget target;
 
   public DataApiController(final Client client, final URI uri) {
@@ -26,6 +26,6 @@ public class DataApiController {
 
     this.itemController = new ItemController(target);
     this.itemHistoryController = new ItemHistoryController(target);
-    this.itemDoorTransitionController = new ItemDoorTransitionController(target);
+    this.itemThresholdTransitionController = new ItemThresholdTransitionController(target);
   }
 }
