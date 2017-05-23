@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.data.itemdoortransition;
+package com.impinj.itemsense.client.data.itemthresholdtransition;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ItemDoorTransitionResponse {
+public class ItemThresholdTransitionResponse {
 
-  private ItemDoorTransition[] transitions;
+  private ItemThresholdTransition[] transitions;
   private String nextPageMarker;
   private boolean moreHistoryAvailable;
 }

@@ -2,9 +2,9 @@ package com.impinj.itemsense.client.coordinator.readerconfiguration;
 
 import lombok.Builder;
 
-public class DockDoorReaderConfigDetails extends ReaderBasicConfigDetails {
+public class ThresholdReaderConfigDetails extends ReaderBasicConfigDetails {
   @Builder
-  private DockDoorReaderConfigDetails(
+  private ThresholdReaderConfigDetails(
       SearchMode searchMode,
       ReaderMode readerMode,
       Integer session,

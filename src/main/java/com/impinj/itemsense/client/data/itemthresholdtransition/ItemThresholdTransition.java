@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.data.itemdoortransition;
+package com.impinj.itemsense.client.data.itemthresholdtransition;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.ZonedDateTime;
@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ItemDoorTransition {
+public class ItemThresholdTransition {
 
   private String epc;
-  private int doorId;
+  private int thresholdId;
   private String destination;
   private double confidence;
   private ZonedDateTime creationTime;

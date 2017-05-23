@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.data.itemdoortransition;
+package com.impinj.itemsense.client.data.itemthresholdtransition;
 
 import com.impinj.itemsense.client.data.EpcFormat;
 import com.impinj.itemsense.client.helpers.RestApiHelper;
@@ -11,28 +11,28 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 
 
-public class ItemDoorTransitionController {
+public class ItemThresholdTransitionController {
 
   private WebTarget target;
 
-  public ItemDoorTransitionController(WebTarget target) {
+  public ItemThresholdTransitionController(WebTarget target) {
     this.target = target;
   }
 
-  public Response getItemDoorTransitionsAsResponse(Map<String, Object> queryParams) {
+  public Response getItemThresholdTransitionsAsResponse(Map<String, Object> queryParams) {
     return RestApiHelper.get(queryParams, target, "/data/v1/items/show/transitions");
   }
 
-  public ItemDoorTransitionResponse getItemDoorTransitions(Map<String, Object> queryParams) {
-    return this.getItemDoorTransitionsAsResponse(queryParams)
-        .readEntity(ItemDoorTransitionResponse.class);
+  public ItemThresholdTransitionResponse getItemThresholdTransitions(Map<String, Object> queryParams) {
+    return this.getItemThresholdTransitionsAsResponse(queryParams)
+        .readEntity(ItemThresholdTransitionResponse.class);
   }
 
-  public ItemDoorTransitionResponse getItemDoorTransitions(
+  public ItemThresholdTransitionResponse getItemThresholdTransitions(
       String epcPrefix,
       String jobId,
-      Integer doorId,
-      String doorName,
+      Integer thresholdId,
+      String thresholdName,
       String destination,
       String facility,
       String fromTime,
@@ -42,8 +42,8 @@ public class ItemDoorTransitionController {
       Integer pageSize,
       String alwaysIncludePageMarker
   ) {
-    if (doorId != null && StringUtils.isNotEmpty(doorName)) {
-      throw new IllegalArgumentException("Only one of door ID or door name may be used");
+    if (thresholdId != null && StringUtils.isNotEmpty(thresholdName)) {
+      throw new IllegalArgumentException("Only one of threshold ID or threshold name may be used");
     }
 
     HashMap<String, Object> queryParams = new HashMap<>();
@@ -56,11 +56,11 @@ public class ItemDoorTransitionController {
     if (StringUtils.isNotEmpty(jobId)) {
       queryParams.put("jobId", jobId);
     }
-    if (doorId != null) {
-      queryParams.put("doorId", doorId);
+    if (thresholdId != null) {
+      queryParams.put("thresholdId", thresholdId);
     }
-    if (StringUtils.isNotEmpty(doorName)) {
-      queryParams.put("doorName", doorName);
+    if (StringUtils.isNotEmpty(thresholdName)) {
+      queryParams.put("thresholdName", thresholdName);
     }
     if (StringUtils.isNotEmpty(destination)) {
       queryParams.put("destination", destination);
@@ -84,31 +84,31 @@ public class ItemDoorTransitionController {
       queryParams.put("alwaysIncludePageMarker", alwaysIncludePageMarker);
     }
 
-    return this.getItemDoorTransitions(queryParams);
+    return this.getItemThresholdTransitions(queryParams);
   }
 
-  public ArrayList<ItemDoorTransition> getAllItemDoorTransitions(
+  public ArrayList<ItemThresholdTransition> getAllItemThresholdTransitions(
       String epcPrefix,
       String jobId,
-      Integer doorId,
-      String doorName,
+      Integer thresholdId,
+      String thresholdName,
       String destination,
       String facility,
       String fromTime,
       String toTime,
       EpcFormat epcFormat
   ) {
-    ItemDoorTransitionResponse response;
+    ItemThresholdTransitionResponse response;
     String nextPageMarker = "";
     int pageSize = 1000;
-    ArrayList<ItemDoorTransition> items = new ArrayList<>();
+    ArrayList<ItemThresholdTransition> items = new ArrayList<>();
 
     do {
-      response = this.getItemDoorTransitions(
+      response = this.getItemThresholdTransitions(
           epcPrefix,
           jobId,
-          doorId,
-          doorName,
+          thresholdId,
+          thresholdName,
           destination,
           facility,
           fromTime,
@@ -127,11 +127,11 @@ public class ItemDoorTransitionController {
     return items;
   }
 
-  public ArrayList<ItemDoorTransition> getAllItemDoorTransitions(EpcFormat epcFormat) {
-    return getAllItemDoorTransitions(null, null, null, null, null, null, null, null, epcFormat);
+  public ArrayList<ItemThresholdTransition> getAllItemThresholdTransitions(EpcFormat epcFormat) {
+    return getAllItemThresholdTransitions(null, null, null, null, null, null, null, null, epcFormat);
   }
 
-  public ArrayList<ItemDoorTransition> getAllItemDoorTransitions() {
-    return getAllItemDoorTransitions(null, null, null, null, null, null, null, null, null);
+  public ArrayList<ItemThresholdTransition> getAllItemThresholdTransitions() {
+    return getAllItemThresholdTransitions(null, null, null, null, null, null, null, null, null);
   }
 }

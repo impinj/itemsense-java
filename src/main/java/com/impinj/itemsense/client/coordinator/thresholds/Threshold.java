@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.coordinator.dockdoors;
+package com.impinj.itemsense.client.coordinator.thresholds;
 
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Door {
+public class Threshold {
 
   private Integer id;
   private String name;
   private String facility;
-  private DockDoorReaderArrangement readerArrangement;
-  private Map<String, DoorReaderConfiguration> readers;
+  private ThresholdReaderArrangement readerArrangement;
+  private Map<String, ThresholdReaderConfiguration> readers;
 }
