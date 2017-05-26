@@ -4,5 +4,6 @@ public enum UpgradeState {
   WAITING,
   IN_PROGRESS,
   COMPLETED,
-  FAILED
+  FAILED,
+  SKIPPED
 }
