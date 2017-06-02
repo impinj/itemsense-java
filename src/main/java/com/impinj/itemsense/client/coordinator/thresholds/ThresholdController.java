@@ -115,7 +115,7 @@ public class ThresholdController {
     deleteAntennaConfigurationAsResponse(id);
   }
 
-  public Response repalceAndDeleteAntennaConfigurationAsResponse(int id, int replacementId) {
+  public Response replaceAndDeleteAntennaConfigurationAsResponse(int id, int replacementId) {
     return target
         .path(String.join("/", ANTENNA_BASE_PATH, Integer.toString(id)))
         .queryParam("replacementId", replacementId)
@@ -124,6 +124,6 @@ public class ThresholdController {
   }
 
   public void replaceAndDeleteAntennaConfiguration(int id, int replacementId) {
-    repalceAndDeleteAntennaConfigurationAsResponse(id, replacementId);
+    replaceAndDeleteAntennaConfigurationAsResponse(id, replacementId);
   }
 }
