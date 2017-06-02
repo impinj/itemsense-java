@@ -4,6 +4,7 @@ import com.impinj.itemsense.client.helpers.RestApiHelper;
 import java.util.List;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public class ThresholdController {
@@ -110,7 +111,19 @@ public class ThresholdController {
     return RestApiHelper.delete(target, ANTENNA_BASE_PATH, id.toString());
   }
 
-  public void deleteAntennaConfigurationAs(Integer id) {
+  public void deleteAntennaConfiguration(Integer id) {
     deleteAntennaConfigurationAsResponse(id);
+  }
+
+  public Response replaceAndDeleteAntennaConfigurationAsResponse(int id, int replacementId) {
+    return target
+        .path(String.join("/", ANTENNA_BASE_PATH, Integer.toString(id)))
+        .queryParam("replacementId", replacementId)
+        .request(MediaType.APPLICATION_JSON_TYPE)
+        .delete();
+  }
+
+  public void replaceAndDeleteAntennaConfiguration(int id, int replacementId) {
+    replaceAndDeleteAntennaConfigurationAsResponse(id, replacementId);
   }
 }
