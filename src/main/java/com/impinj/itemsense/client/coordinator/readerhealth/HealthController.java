@@ -33,6 +33,6 @@ public class HealthController {
   }
 
   public Response queryHealthEventsAsResponse(HealthEventQuery query) {
-    return RestApiHelper.post(query, target, "events");
+    return RestApiHelper.post(query, target, BASE_PATH, "events");
   }
 }
