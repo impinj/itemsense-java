@@ -11,6 +11,6 @@ public class UpgradeRequestView {
   private ZonedDateTime created;
   private ZonedDateTime updated;
   private int numDevices;
-  private boolean isCancelled;
+  private boolean cancelled;
   private int numFailures;
 }

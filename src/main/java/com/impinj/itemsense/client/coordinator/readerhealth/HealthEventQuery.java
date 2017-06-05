@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HealthEventQuery {
 
-  private Set<String> readerIds;
+  private Set<String> readerNames;
 
   private Set<String> types;
 
