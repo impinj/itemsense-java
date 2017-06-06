@@ -1,7 +1,6 @@
 package com.impinj.itemsense.client.coordinator.readerconfiguration;
 
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,9 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InventoryReaderConfigDetails extends ReaderBasicConfigDetails {
 
-  private Boolean polarization;
   private List<Integer> antennas;
-  private ChannelConfig channelConfig;
 
   @Builder
   public InventoryReaderConfigDetails(
@@ -29,10 +26,8 @@ public class InventoryReaderConfigDetails extends ReaderBasicConfigDetails {
       ChannelConfig channelConfig) {
 
     super(searchMode, readerMode, session, transmitPowerInDbm,
-          filter, tagPopulationEstimate);
+          filter, tagPopulationEstimate, polarization, channelConfig);
 
-    this.polarization = polarization;
     this.antennas = antennas;
-    this.channelConfig = channelConfig;
   }
 }

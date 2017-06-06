@@ -16,4 +16,6 @@ public abstract class ReaderBasicConfigDetails extends ReaderConfigurationDetail
   private Double transmitPowerInDbm;
   private Filter filter;
   private Integer tagPopulationEstimate;
+  private Boolean polarization;
+  private ChannelConfig channelConfig;
 }

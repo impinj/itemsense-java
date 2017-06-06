@@ -71,6 +71,8 @@ public class ReaderDefinitionControllerTest {
     ReaderDefinition testReaderDefinition = new ReaderDefinition(
         "test-xarray",
         "xarray-test.local",
+        "agentId",
+        "serial",
         "TestFacility",
         null,
         null,
@@ -106,6 +108,8 @@ public class ReaderDefinitionControllerTest {
     ReaderDefinition testReaderDefinition = new ReaderDefinition(
         "test-xarray",
         "xarray-test.local",
+        "agentId",
+        "serial",
         "TestFacility",
         null,
         null,
