@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class ChannelConfig {
 
   private int channelIndex;
-  private int[] txFrequenciesInMhz;
+  private double[] txFrequenciesInMhz;
 
 }

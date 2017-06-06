@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @JsonSubTypes({
     @JsonSubTypes.Type(value = InventoryRecipe.class, name = "INVENTORY"),
     @JsonSubTypes.Type(value = LocationRecipe.class, name = "LOCATION"),
+    @JsonSubTypes.Type(value = ThresholdRecipe.class, name = "THRESHOLD")
 })
 public abstract class Recipe {
 

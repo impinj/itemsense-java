@@ -1,8 +1,11 @@
 package com.impinj.itemsense.client.coordinator.readerconfiguration;
 
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class ThresholdReaderConfigDetails extends ReaderBasicConfigDetails {
+
   @Builder
   private ThresholdReaderConfigDetails(
       SearchMode searchMode,
@@ -10,9 +13,11 @@ public class ThresholdReaderConfigDetails extends ReaderBasicConfigDetails {
       Integer session,
       Double transmitPowerInDbm,
       Filter filter,
-      Integer tagPopulationEstimate) {
+      Integer tagPopulationEstimate,
+      Boolean polarization,
+      ChannelConfig channelConfig) {
 
     super(searchMode, readerMode, session, transmitPowerInDbm,
-          filter, tagPopulationEstimate);
+          filter, tagPopulationEstimate, polarization, channelConfig);
   }
 }

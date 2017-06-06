@@ -17,6 +17,8 @@ public class ReaderDefinition {
 
   private String name;
   private String address;
+  private String agentIdentifier;
+  private String serialNumber;
   private String facility;
   private String readerZone;
   private Map<Integer, String> antennaZones;
