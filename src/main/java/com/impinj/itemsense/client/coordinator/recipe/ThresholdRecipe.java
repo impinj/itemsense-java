@@ -15,6 +15,7 @@ public class ThresholdRecipe extends Recipe {
 
   private LinkedHashSet<Integer> thresholdIds;
   private String profile;
+  private boolean iterationDataLogEnabled;
 
   public ThresholdRecipe() {
     this.setType(RecipeType.THRESHOLD);
@@ -29,7 +30,8 @@ public class ThresholdRecipe extends Recipe {
       Duration tagExpiryDuration,
       Map<String, String> readerConfigurations,
       LinkedHashSet<Integer> thresholdIds,
-      String profile
+      String profile,
+      boolean iterationDataLogEnabled
   ) {
     super(
         name,
@@ -42,5 +44,6 @@ public class ThresholdRecipe extends Recipe {
 
     this.thresholdIds = thresholdIds;
     this.profile = profile;
+    this.iterationDataLogEnabled = iterationDataLogEnabled;
   }
 }
