@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Job {
 
+  private String name;
   private String recipeName;
   private String facility;
   private String startDelay;
