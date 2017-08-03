@@ -13,10 +13,12 @@ import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.TestUtils;
+import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
 import com.impinj.itemsense.client.coordinator.thresholds.ThresholdAntennaConfiguration;
 import com.impinj.itemsense.client.coordinator.thresholds.ThresholdAntennaConfigurationAntenna;
 import com.impinj.itemsense.client.coordinator.thresholds.ThresholdController;
 import com.impinj.itemsense.client.coordinator.thresholds.Threshold;
+import com.impinj.itemsense.client.coordinator.thresholds.ThresholdReaderArrangement;
 import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.GenericType;
@@ -200,6 +202,8 @@ public class ThresholdControllerTest {
             .builder()
             .id(5)
             .name("FOO")
+            .readerType(ReaderType.XPORTAL)
+            .readerArrangement(ThresholdReaderArrangement.OVERHEAD)
             .out(ImmutableList
                      .of(ThresholdAntennaConfigurationAntenna.builder().antennaId(1).build()))
             .in(ImmutableList
@@ -209,6 +213,8 @@ public class ThresholdControllerTest {
             .builder()
             .id(6)
             .name("FOO1")
+            .readerType(ReaderType.XARRAY)
+            .readerArrangement(ThresholdReaderArrangement.SIDE_BY_SIDE)
             .out(ImmutableList
                      .of(ThresholdAntennaConfigurationAntenna.builder().antennaId(1).build()))
             .in(ImmutableList
