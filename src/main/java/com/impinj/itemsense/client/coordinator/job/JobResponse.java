@@ -18,6 +18,7 @@ public class JobResponse {
   private String id;
   private String status;
   private String[] readerNames;
+  private String[] failedReaderNames;
 
   private ZonedDateTime creationTime;
   private ZonedDateTime lastActivityTime;
