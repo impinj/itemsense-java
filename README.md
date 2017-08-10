@@ -8,7 +8,7 @@ itemsense-java is available as a dependency on Maven Central [here.](http://mvnr
 <dependency>
 	<groupId>com.impinj</groupId>
 	<artifactId>itemsense-client</artifactId>
-	<version>4.0.0</version>
+	<version>5.0.0</version>
 </dependency>
 ```
 
