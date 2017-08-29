@@ -14,9 +14,8 @@ itemsense-java is available as a dependency on Maven Central [here.](http://mvnr
 
 ## Dependencies
 
-To use the client library, you need to create an HTTP client, which is an implementation of `javax.ws.rs.client.Client`, as well as including a JSON Jackson de/serilization provider in the classpath.
+To use the client library, you need to create an HTTP client, which is an implementation of `javax.ws.rs.client.Client`, as well as include a JSON Jackson de/serilization provider in the classpath:
 
-You can use the Jersey client, which requires the following dependencies:
 ```
 <dependency>
   <groupId>org.glassfish.jersey.core</groupId>
@@ -37,7 +36,7 @@ You can use the Jersey client, which requires the following dependencies:
 </dependency>
 ```
 
-The following sample creates a Resteasy client, and makes a call to both the configuration API and the data API. You can extend this sample to fulfill the needs of your application.
+The following sample creates a Jersey client, and makes a call to both the configuration API and the data API. You can extend this sample to fulfill the needs of your application.
 
 The ITEMSENSE BASE URL is the protocol and name (or IP address) of your ItemSense server, with the `itemsense` prefix. For example: `http://itemsense.mycompany.com/itemsense`
 
