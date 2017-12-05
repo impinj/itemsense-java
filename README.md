@@ -14,7 +14,9 @@ itemsense-java is available as a dependency on Maven Central [here.](http://mvnr
 
 ## Dependencies
 
-To use the client library, you need to create an HTTP client, which is an implementation of `javax.ws.rs.client.Client`, as well as include a JSON Jackson de/serilization provider in the classpath:
+To use the client library, you need to create an HTTP client, which is an implementation of `javax.ws.rs.client.Client`, as well as include a JSON Jackson de/serialization provider in the classpath:
+
+> Note: do not use the jersey-media-json-jackson as the Jackson de/serialization library. It has known issues with de/serializing collection classes (of which there are many in the ItemSense API).
 
 ```
 <dependency>
