@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.coordinator.readerdefintion;
+package com.impinj.itemsense.client.coordinator.readerdefinition;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -55,7 +55,7 @@ public class FeatureRequest {
   }
 
   public String toString() {
-    return "com.impinj.itemsense.client.coordinator.readerdefintion.FeatureRequest(feature=" + this
+    return "com.impinj.itemsense.client.coordinator.readerdefinition.FeatureRequest(feature=" + this
         .getFeature() + ", action=" + this.getAction() + ")";
   }
 
@@ -82,7 +82,7 @@ public class FeatureRequest {
 
     public String toString() {
       return
-          "com.impinj.itemsense.client.coordinator.readerdefintion.FeatureRequest.FeatureRequestBuilder(feature="
+          "com.impinj.itemsense.client.coordinator.readerdefinition.FeatureRequest.FeatureRequestBuilder(feature="
               + this.feature + ", action=" + this.action + ")";
     }
   }

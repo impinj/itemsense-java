@@ -1,6 +1,6 @@
 package com.impinj.itemsense.client.coordinator.softwareupgrades;
 
-import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
+import com.impinj.itemsense.client.coordinator.readerdefinition.ReaderType;
 import java.util.Set;
 
 public class UpgradePolicy {

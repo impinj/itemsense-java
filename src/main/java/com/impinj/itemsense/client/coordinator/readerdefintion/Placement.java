@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.coordinator.readerdefintion;
+package com.impinj.itemsense.client.coordinator.readerdefinition;
 
 
 public class Placement {
@@ -100,7 +100,7 @@ public class Placement {
   }
 
   public String toString() {
-    return "com.impinj.itemsense.client.coordinator.readerdefintion.Placement(x=" + this.getX()
+    return "com.impinj.itemsense.client.coordinator.readerdefinition.Placement(x=" + this.getX()
         + ", y=" + this.getY() + ", z=" + this.getZ() + ", yaw=" + this.getYaw() + ", pitch=" + this
         .getPitch() + ", roll=" + this.getRoll() + ", floor=" + this.getFloor() + ")";
   }
@@ -157,7 +157,7 @@ public class Placement {
     }
 
     public String toString() {
-      return "com.impinj.itemsense.client.coordinator.readerdefintion.Placement.PlacementBuilder(x="
+      return "com.impinj.itemsense.client.coordinator.readerdefinition.Placement.PlacementBuilder(x="
           + this.x + ", y=" + this.y + ", z=" + this.z + ", yaw=" + this.yaw + ", pitch="
           + this.pitch
           + ", roll=" + this.roll + ", floor=" + this.floor + ")";

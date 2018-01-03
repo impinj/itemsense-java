@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.coordinator.readerdefintion;
+package com.impinj.itemsense.client.coordinator.readerdefinition;
 
 
 import com.impinj.itemsense.client.helpers.RestApiHelper;

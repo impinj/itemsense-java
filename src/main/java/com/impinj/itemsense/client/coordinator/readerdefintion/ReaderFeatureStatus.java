@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.coordinator.readerdefintion;
+package com.impinj.itemsense.client.coordinator.readerdefinition;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.ZonedDateTime;
@@ -122,7 +122,7 @@ public class ReaderFeatureStatus {
   }
 
   public String toString() {
-    return "com.impinj.itemsense.client.coordinator.readerdefintion.ReaderFeatureStatus(status="
+    return "com.impinj.itemsense.client.coordinator.readerdefinition.ReaderFeatureStatus(status="
         + this.getStatus() + ", statusLastUpdated=" + this.getStatusLastUpdated()
         + ", requestStatus=" + this.getRequestStatus() + ", requestStatusLastUpdated=" + this
         .getRequestStatusLastUpdated() + ", requestTargetStatus=" + this.getRequestTargetStatus()
@@ -182,7 +182,7 @@ public class ReaderFeatureStatus {
 
     public String toString() {
       return
-          "com.impinj.itemsense.client.coordinator.readerdefintion.ReaderFeatureStatus.ReaderFeatureStatusBuilder(status="
+          "com.impinj.itemsense.client.coordinator.readerdefinition.ReaderFeatureStatus.ReaderFeatureStatusBuilder(status="
               + this.status + ", statusLastUpdated=" + this.statusLastUpdated + ", requestStatus="
               + this.requestStatus + ", requestStatusLastUpdated=" + this.requestStatusLastUpdated
               + ", requestTargetStatus=" + this.requestTargetStatus + ", message=" + this.message

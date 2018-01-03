@@ -15,7 +15,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.TestUtils;
-import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
+import com.impinj.itemsense.client.coordinator.readerdefinition.ReaderType;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.DeviceStatus;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.ImageType;
 import com.impinj.itemsense.client.coordinator.softwareupgrades.SoftwareUpgradesController;

@@ -1,6 +1,6 @@
 package com.impinj.itemsense.client.coordinator.thresholds;
 
-import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
+import com.impinj.itemsense.client.coordinator.readerdefinition.ReaderType;
 import java.util.List;
 
 public class ThresholdAntennaConfiguration {

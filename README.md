@@ -285,7 +285,7 @@ public void getCurrentZoneMapController().clearCurrentZoneMap(facilityName) // c
 
 ### Reader Definitions
 
-<div id="readerDefintions" />
+<div id="readerDefinitions" />
 
 For information about reader definitions, visit http://developer.impinj.com/itemsense/docs/api/#reader-definitions
 
