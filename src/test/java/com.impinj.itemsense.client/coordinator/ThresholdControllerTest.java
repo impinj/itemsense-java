@@ -13,7 +13,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.impinj.itemsense.client.TestUtils;
-import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderType;
+import com.impinj.itemsense.client.coordinator.readerdefinition.ReaderType;
 import com.impinj.itemsense.client.coordinator.thresholds.ThresholdAntennaConfiguration;
 import com.impinj.itemsense.client.coordinator.thresholds.ThresholdAntennaConfigurationAntenna;
 import com.impinj.itemsense.client.coordinator.thresholds.ThresholdController;

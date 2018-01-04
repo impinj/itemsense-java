@@ -1,4 +1,4 @@
-package com.impinj.itemsense.client.coordinator.readerdefintion;
+package com.impinj.itemsense.client.coordinator.readerdefinition;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Map;
@@ -209,7 +209,7 @@ public class ReaderDefinition {
   }
 
   public String toString() {
-    return "com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinition(name=" + this
+    return "com.impinj.itemsense.client.coordinator.readerdefinition.ReaderDefinition(name=" + this
         .getName() + ", address=" + this.getAddress() + ", agentIdentifier=" + this
         .getAgentIdentifier() + ", serialNumber=" + this.getSerialNumber() + ", facility=" + this
         .getFacility() + ", readerZone=" + this.getReaderZone() + ", antennaZones=" + this
@@ -305,7 +305,7 @@ public class ReaderDefinition {
 
     public String toString() {
       return
-          "com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinition.ReaderDefinitionBuilder(name="
+          "com.impinj.itemsense.client.coordinator.readerdefinition.ReaderDefinition.ReaderDefinitionBuilder(name="
               + this.name + ", address=" + this.address + ", agentIdentifier="
               + this.agentIdentifier
               + ", serialNumber=" + this.serialNumber + ", facility=" + this.facility

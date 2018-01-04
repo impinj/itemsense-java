@@ -5,7 +5,7 @@ import com.impinj.itemsense.client.coordinator.currentZoneMap.CurrentZoneMapCont
 import com.impinj.itemsense.client.coordinator.facility.FacilityController;
 import com.impinj.itemsense.client.coordinator.job.JobController;
 import com.impinj.itemsense.client.coordinator.readerconfiguration.ReaderConfigurationController;
-import com.impinj.itemsense.client.coordinator.readerdefintion.ReaderDefinitionController;
+import com.impinj.itemsense.client.coordinator.readerdefinition.ReaderDefinitionController;
 import com.impinj.itemsense.client.coordinator.readerhealth.HealthController;
 import com.impinj.itemsense.client.coordinator.recipe.RecipeController;
 import com.impinj.itemsense.client.coordinator.settings.snmp.SnmpController;
