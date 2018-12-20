@@ -22,19 +22,19 @@ To use the client library, you need to create an HTTP client, which is an implem
 <dependency>
   <groupId>org.glassfish.jersey.core</groupId>
   <artifactId>jersey-client</artifactId>
-  <version>2.25</version>
+  <version>2.27</version>
 </dependency>
 
 <dependency>
   <groupId>org.glassfish.jersey.media</groupId>
   <artifactId>jersey-media-json-jackson</artifactId>
-  <version>2.25</version>
+  <version>2.27</version>
 </dependency>
 
 <dependency>
   <groupId>com.fasterxml.jackson.jaxrs</groupId>
   <artifactId>jackson-jaxrs-base</artifactId>
-  <version>2.8.2</version>
+  <version>2.9.7</version>
 </dependency>
 ```
 
@@ -407,6 +407,8 @@ public List<ThresholdTransition> getItemThresholdTransitionController.getThresho
 
 |ItemSense server version|itemsense-client version|Serialization libraries
 |------------------------|------------------------|-----------------------|
+|2018r2|5.1.0|Jackson 2.9.7|
+|2018r1|5.0.0|Jackson 2.8.2|
 |2017r1|5.0.0|Jackson 2.8.2|
 |2016r6|4.0.0|Jackson 2.8.2|
 |2016r4|2.2|Jackson 2.5.1|

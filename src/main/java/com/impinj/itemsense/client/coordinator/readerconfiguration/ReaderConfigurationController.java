@@ -11,11 +11,9 @@ public class ReaderConfigurationController {
 
   private static final String BASE_PATH = "/configuration/v1/readerConfigurations";
   private WebTarget target;
-  private RestApiHelper restApiHelper;
 
   public ReaderConfigurationController(WebTarget target) {
     this.target = target;
-    this.restApiHelper = new RestApiHelper();
   }
 
   public Response createReaderConfigurationAsResponse(ReaderConfiguration readerConfiguration) {

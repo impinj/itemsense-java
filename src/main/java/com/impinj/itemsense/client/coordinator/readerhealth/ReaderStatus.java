@@ -267,7 +267,7 @@ public class ReaderStatus {
       if (!(o instanceof ConnectionStatus)) {
         return false;
       }
-      final ConnectionStatus other = (ConnectionStatus) o;
+      //final ConnectionStatus other = (ConnectionStatus) o;
       return super.equals(o);
     }
 
@@ -300,7 +300,7 @@ public class ReaderStatus {
       if (!(o instanceof ThroughputStatus)) {
         return false;
       }
-      final ThroughputStatus other = (ThroughputStatus) o;
+      //final ThroughputStatus other = (ThroughputStatus) o;
       return super.equals(o);
     }
 
@@ -484,7 +484,7 @@ public class ReaderStatus {
       if (!(o instanceof SoftwareStatus)) {
         return false;
       }
-      final SoftwareStatus other = (SoftwareStatus) o;
+      //final SoftwareStatus other = (SoftwareStatus) o;
       return super.equals(o);
     }
 

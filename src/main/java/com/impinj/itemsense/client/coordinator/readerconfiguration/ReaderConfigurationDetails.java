@@ -19,7 +19,7 @@ public abstract class ReaderConfigurationDetails {
     if (!(o instanceof ReaderConfigurationDetails)) {
       return false;
     }
-    final ReaderConfigurationDetails other = (ReaderConfigurationDetails) o;
+    //final ReaderConfigurationDetails other = (ReaderConfigurationDetails) o;
     return true;
   }
 

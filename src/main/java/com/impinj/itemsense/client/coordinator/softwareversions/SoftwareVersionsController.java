@@ -11,11 +11,9 @@ public class SoftwareVersionsController {
 
   private static final String BASE_PATH = "configuration/v1/softwareVersions";
   private WebTarget target;
-  private RestApiHelper restApiHelper;
 
   public SoftwareVersionsController(WebTarget target) {
     this.target = target;
-    restApiHelper = new RestApiHelper();
   }
 
   public List<VersionInfoView> getVersions(ImageType imageType) {
