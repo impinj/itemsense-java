@@ -9,11 +9,9 @@ public class SoftwareImagesController {
 
   private static final String BASE_PATH = "configuration/v1/images";
   private WebTarget target;
-  private RestApiHelper restApiHelper;
 
   public SoftwareImagesController(WebTarget target) {
     this.target = target;
-    restApiHelper = new RestApiHelper();
   }
 
   public InputStream downloadSoftwareImage(ImageType imageType, String imageName) {

@@ -22,19 +22,19 @@ To use the client library, you need to create an HTTP client, which is an implem
 <dependency>
   <groupId>org.glassfish.jersey.core</groupId>
   <artifactId>jersey-client</artifactId>
-  <version>2.25</version>
+  <version>2.27</version>
 </dependency>
 
 <dependency>
   <groupId>org.glassfish.jersey.media</groupId>
   <artifactId>jersey-media-json-jackson</artifactId>
-  <version>2.25</version>
+  <version>2.27</version>
 </dependency>
 
 <dependency>
   <groupId>com.fasterxml.jackson.jaxrs</groupId>
   <artifactId>jackson-jaxrs-base</artifactId>
-  <version>2.8.2</version>
+  <version>2.9.7</version>
 </dependency>
 ```
 
@@ -115,18 +115,16 @@ public class App
 
 
 ### Table of Contents
-1. <a href="#itemsenseConfig">ItemSense Configuration</a>
-1. <a href="#authentication">Authentication</a>
-1. <a href="#users">Users</a>
+1. <a href= "#authentication">Authentication</a>
+1. <a href= "#users">Users</a>
 1. <a href= "#configuration">Global Configuration </a>
 1. <a href= "#softwareVersions">Software Versions </a>
-1. <a href= "#softwareUpgrades">Software Upgrades </a>
-1. <a href="#zoneMaps">Zone Maps </a>
+1. <a href= "#zoneMaps">Zone Maps </a>
 1. <a href= "#currentZoneMap">Current Zone Map </a>
 1. <a href= "#readerDefinitions" >Reader Definitions </a>
-1. <a href ="#readerConfigurations">Reader Configurations </a>
-1. <a href ="#readerHealth">Reader Health </a>
-1. <a href ="#recipes">Recipes </a>
+1. <a href= "#readerConfigurations">Reader Configurations </a>
+1. <a href= "#readerHealth">Reader Health </a>
+1. <a href= "#recipes">Recipes </a>
 1. <a href= "#jobs" >Jobs </a>
 1. <a href= "#items">Items </a>
 
@@ -134,7 +132,7 @@ public class App
 ### Authentication
 <div id="authentication" />
 
-For more information about authentication, visit http://developer.impinj.com/itemsense/docs/api/#authentication
+For more information about authentication, visit https://platform.impinj.com/site/developer/itemsense/apidocs/#TOC15
 
 Methods of `CoordinatorApiController.getAuthorizationController`: 
 
@@ -157,7 +155,7 @@ public void revokeTokens(String username)
 
 <div id="users" />
 
-For information about users, visit http://developer.impinj.com/itemsense/docs/api/#users
+For information about users, visit https://platform.impinj.com/site/developer/itemsense/apidocs/#TOC6
 
 Methods of `CoordinatorApiController.getUserController`: 
 
@@ -229,7 +227,7 @@ public void stopUpgrade(String upgradeInstanceId)
 
 <div id="facilities" />
 
-For information about facilities, visit http://developer.impinj.com/itemsense/docs/api/#facilities
+For information about facilities, visit https://platform.impinj.com/site/developer/itemsense/apidocs/#TOC23
 
 Methods of `CoordinatorApiController.getFacilitiesController`: 
 
@@ -251,7 +249,7 @@ public void getFacilityController().deleteFacility(facilityName) // deletes a fa
 
 <div id="zoneMaps" />
 
-For information about zone maps, visit http://developer.impinj.com/itemsense/docs/api/#zone-maps
+For information about zone maps, visit https://platform.impinj.com/site/developer/itemsense/apidocs/#TOC29
 
 Methods of `CoordinatorApiController.getZoneMapController`: 
 
@@ -287,7 +285,7 @@ public void getCurrentZoneMapController().clearCurrentZoneMap(facilityName) // c
 
 <div id="readerDefinitions" />
 
-For information about reader definitions, visit http://developer.impinj.com/itemsense/docs/api/#reader-definitions
+For information about reader definitions, visit https://platform.impinj.com/site/developer/itemsense/apidocs/#TOC39
 
 Methods of `CoordinatorApiController.getReaderDefinitionController`: 
 
@@ -314,7 +312,7 @@ public Map<ReaderFeature, ReaderFeatureStatus> getReaderDefinitionController().g
 
 <div id="readerConfigurations" />
 
-For information about reader configurations, visit http://developer.impinj.com/itemsense/docs/api/#reader-configurations
+For information about reader configurations, visit https://platform.impinj.com/site/developer/itemsense/apidocs/#TOC51
 
 Methods of `CoordinatorApiController.getReaderConfigurationController`: 
 
@@ -346,7 +344,7 @@ public ReaderStatus getReaderStatus(String readerName)
 
 <div id="recipes" />
 
-For information about recipes, visit http://developer.impinj.com/itemsense/docs/api/#recipes
+For information about recipes, visit https://platform.impinj.com/site/developer/itemsense/apidocs/#TOC70
 
 Methods of `CoordinatorApiController.getRecipeController`: 
 
@@ -368,7 +366,7 @@ public void getRecipeController().deleteRecipe(recipeName) // deletes a recipe b
 
 <div id="jobs" />
 
-For information about jobs, visit http://developer.impinj.com/itemsense/docs/api/#jobs
+For information about jobs, visit https://platform.impinj.com/site/developer/itemsense/apidocs/#TOC76
 
 Methods of `CoordinatorApiController.getJobController`: 
 
@@ -389,7 +387,7 @@ public Job getJobController().stopJob(jobId) // stops a job based on the id
 
 <div id="items" />
 
-For information about items, visit http://developer.impinj.com/itemsense/docs/api/#items
+For information about items, visit https://platform.impinj.com/site/developer/itemsense/apidocs/#TOC81
 
 Methods of `DataApiController.getDataController`: 
 
@@ -407,6 +405,8 @@ public List<ThresholdTransition> getItemThresholdTransitionController.getThresho
 
 |ItemSense server version|itemsense-client version|Serialization libraries
 |------------------------|------------------------|-----------------------|
+|2018r2|5.1.0|Jackson 2.9.7|
+|2018r1|5.0.0|Jackson 2.8.2|
 |2017r1|5.0.0|Jackson 2.8.2|
 |2016r6|4.0.0|Jackson 2.8.2|
 |2016r4|2.2|Jackson 2.5.1|
